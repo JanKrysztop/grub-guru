@@ -4,19 +4,90 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const secret = process.env.SECRET_KEY;
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
 
 const verifyToken = require("../middleware/verifyToken");
 
-router.post("/register", async (req, res) => {
-  const { username, password } = req.body;
+let transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USERNAME,
+    pass: proccess.env.EMAIL_PASSWORD,
+  },
+});
 
-  const user = new User({ username, password });
+const sendConfirmationEmail = async (user, host, confirmationToken) => {
+  //Send confirmation email
+  const mailOptions = {
+    from: process.env.EMAIL_USERNAME,
+    to: user.email,
+    subject: "Please confirm your account",
+    text: `Welcome to Grub Guru! \n\n Please confirm your account by clicking on the following link: \n\n http://${req.headers.host}/confirm/${confirmationToken} \n\n`,
+  };
+  try {
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    throw new Error("Error sending confirmation email");
+  }
+};
+
+router.post("/register", async (req, res) => {
+  const { username, password, email, age, height, weight, gender } = req.body;
 
   try {
+    //Generate confirmation token
+    const confirmationToken = crypto.randomBytes(20).toString("hex");
+    //const confirmationTokenExpiresAt = new Date();
+    // confirmationTokenExpiresAt.setHours(confirmationTokenExpiresAt.getHours() + 1)
+
+    const user = new User({
+      username,
+      password,
+      email,
+      age,
+      height,
+      weight,
+      gender,
+      confirmation_token: confirmationToken,
+      //confirmation_token_expires_at: confirmationTokenExpiresAt,
+    });
+
+    await sendConfirmationEmail(user, req.headers.host, confirmationToken);
+
+    // Save user
     await user.save();
-    res.status(201).json({ message: "User created successfully" });
+
+    res
+      .status(201)
+      .json({ message: "User created successfully, confirmation email sent" });
   } catch (error) {
     res.status(500).json({ error: "Error registering new user" });
+  }
+});
+
+router.get("/confirm/:token", async (req, res) => {
+  try {
+    const user = await User.findOne({
+      confirmation_token: req.params.token,
+      // confirmation_token_expires_at: { $gt: new Date() },
+    });
+
+    if (!user) {
+      return res
+        .status(400)
+        .json({ error: "Invalid or expired confirmation token" });
+    }
+
+    user.isConfirmed = true;
+    user.confirmation_token = undefined;
+    // user.confirmation_token_expires_at = undefined;
+
+    await user.save();
+
+    res.json({ message: "Account confirmed successfully" });
+  } catch (error) {
+    res.status(500).json({ error: "Error confirming account" });
   }
 });
 
