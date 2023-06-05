@@ -13,7 +13,7 @@ let transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: process.env.EMAIL_USERNAME,
-    pass: proccess.env.EMAIL_PASSWORD,
+    pass: process.env.EMAIL_PASSWORD,
   },
 });
 
@@ -23,11 +23,12 @@ const sendConfirmationEmail = async (user, host, confirmationToken) => {
     from: process.env.EMAIL_USERNAME,
     to: user.email,
     subject: "Please confirm your account",
-    text: `Welcome to Grub Guru! \n\n Please confirm your account by clicking on the following link: \n\n http://${req.headers.host}/confirm/${confirmationToken} \n\n`,
+    text: `Welcome to Grub Guru! \n\n Please confirm your account by clicking on the following link: \n\n http://${host}/confirm/${confirmationToken} \n\n`,
   };
   try {
     await transporter.sendMail(mailOptions);
   } catch (error) {
+    console.error(error); // Log the detailed error to the console
     throw new Error("Error sending confirmation email");
   }
 };
@@ -62,7 +63,8 @@ router.post("/register", async (req, res) => {
       .status(201)
       .json({ message: "User created successfully, confirmation email sent" });
   } catch (error) {
-    res.status(500).json({ error: "Error registering new user" });
+    console.error(error); // Log the error to the console
+    res.status(500).json({ error: error.message }); // Send the error message in the response
   }
 });
 
@@ -100,17 +102,17 @@ router.post("/login", async (req, res) => {
     return res.status(400).json({ error: "User not found" });
   }
 
-  user.comparePassword(password, (err, isMatch) => {
-    if (err) {
-      return res.status(500).json({ error: "Error comparing passwords" });
-    }
+  try {
+    const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return res.status(400).json({ error: "Incorrect password" });
     }
 
     const token = jwt.sign({ id: user._id }, secret, { expiresIn: "1h" });
     res.json({ token, username: user.username });
-  });
+  } catch (err) {
+    return res.status(500).json({ error: "Error comparing passwords" });
+  }
 });
 
 router.get("/profile", verifyToken, async (req, res) => {
