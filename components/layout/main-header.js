@@ -9,18 +9,26 @@ function MainHeader() {
       <nav>
         <ul className="flex space-x-4">
           <li>
-            <Link href="/features" className="text-gray-700 hover:text-black">
+            <Link href="/features" className="text-gray-700 hover:text-black ">
               Features
             </Link>
           </li>
           <li>
-            <Link href="/articles" className="text-gray-700 hover:text-black">
+            <Link href="/articles" className="text-gray-700 hover:text-black ">
               Articles
             </Link>
           </li>
           <li>
-            <Link href="/login" className="text-gray-700 hover:text-black">
+            <Link href="/login" className="text-gray-700 hover:text-black ">
               Log In
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/authorization"
+              className="text-gray-700 hover:text-black  "
+            >
+              Sign up
             </Link>
           </li>
         </ul>

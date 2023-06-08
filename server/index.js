@@ -1,6 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const usersRoute = require("./routes/users");
+const cors = require("cors");
 
 async function connectToDb() {
   try {
@@ -17,6 +18,8 @@ async function connectToDb() {
 connectToDb();
 
 const app = express();
+
+app.use(cors());
 
 app.use(express.json());
 
