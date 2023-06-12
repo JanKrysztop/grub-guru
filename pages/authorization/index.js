@@ -1,5 +1,6 @@
 import SignUpForm from "@/components/forms/SignUpForm";
 
+//TODO: add more error messages, disable double email accounts, some message that email has been sent, maybe some loader until request has no response
 function AuthPage() {
   return (
     <div className="h-full">
