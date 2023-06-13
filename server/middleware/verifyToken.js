@@ -3,12 +3,11 @@ require("dotenv").config();
 const secret = process.env.SECRET_KEY;
 
 function verifyToken(req, res, next) {
-  const bearerHeader = req.headers["authorization"];
-  if (!bearerHeader) {
+  const token = req.cookies.token;
+
+  if (!token) {
     return res.status(403).json({ error: "No token provided" });
   }
-
-  const token = bearerHeader.split(" ")[1];
 
   jwt.verify(token, secret, (err, decoded) => {
     if (err) {

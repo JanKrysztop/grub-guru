@@ -109,6 +109,8 @@ router.post("/login", async (req, res) => {
     }
 
     const token = jwt.sign({ id: user._id }, secret, { expiresIn: "1h" });
+    // Set HttpOnly cookie
+    res.cookie("token", token, { httpOnly: true });
     res.json({ token, username: user.username });
   } catch (err) {
     return res.status(500).json({ error: "Error comparing passwords" });
@@ -122,6 +124,29 @@ router.get("/profile", verifyToken, async (req, res) => {
   }
   res.json(user);
 });
+// Maybe this one is better???
+// router.get("/me", async (req, res) => {
+//   try {
+//     const token = req.cookies.token;
+//     if (!token) {
+//       return res.status(401).json({ error: "Unauthorized" });
+//     }
+
+//     const decoded = jwt.verify(token, secret);
+//     const user = await User.findById(decoded.id);
+
+//     if (!user) {
+//       return res.status(400).json({ error: "User not found" });
+//     }
+
+//     // Destructure the user object to exclude sensitive data
+//     const { password, confirmation_token, ...userData } = user.toObject();
+
+//     res.json(userData);
+//   } catch (error) {
+//     res.status(500).json({ error: "Error fetching user data" });
+//   }
+// });
 
 router.get("/users", verifyToken, async (req, res) => {
   // optional: check if the user is an admin

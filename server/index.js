@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const usersRoute = require("./routes/users");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 async function connectToDb() {
   try {
@@ -19,9 +20,16 @@ connectToDb();
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:3000", // replace with your client URL
+    credentials: true,
+  })
+);
 
 app.use(express.json());
+
+app.use(cookieParser());
 
 app.use("/users", usersRoute);
 
