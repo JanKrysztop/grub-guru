@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+//TODO: modify header when the user is loggen in, logout option, profile data option, what more??
+
 function MainHeader() {
   return (
     <header className="flex justify-between p-5 bg-gray-200">

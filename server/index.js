@@ -1,8 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const usersRoute = require("./routes/users");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+
+const usersRoute = require("./routes/users");
+const foodSearchRoute = require("./routes/food-search");
 
 async function connectToDb() {
   try {
@@ -32,6 +34,8 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/users", usersRoute);
+
+app.use("/api", foodSearchRoute);
 
 app.listen(3001, () => {
   console.log("Server running on port 3001");

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-//TODO: change all functions to arrow functions for components,
+//TODO: change all functions to arrow functions for components, add password display, add option with password change with email??, add option to log in with email instead of username
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -13,10 +13,7 @@ const LoginForm = () => {
     try {
       const response = await axios.post(
         "http://localhost:3001/users/login",
-        {
-          username,
-          password,
-        },
+        { username, password },
         { withCredentials: true }
       );
       //dont use local storage cookies are safer
