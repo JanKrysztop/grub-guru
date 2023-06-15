@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
 
+//TODO: add middleware if user is not logged in
 const Dashboard = () => {
   const [user, setUser] = useState("");
 
