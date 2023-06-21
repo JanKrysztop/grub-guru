@@ -29,7 +29,13 @@ const Dashboard = () => {
         <h1 className="mb-4 text-2xl font-bold text-center text-gray-700">
           Welcome to the Dashboard, {user.username}!
         </h1>
-        <div className="text-center">
+        <div className="flex justify-around">
+          <Link
+            href="/dashboard/calculator"
+            className="inline-block px-5 py-3 rounded-lg shadow-lg bg-indigo-500 text-white text-lg font-semibold tracking-wide transform hover:scale-110 hover:bg-indigo-700"
+          >
+            Calculators
+          </Link>
           <Link
             href="/dashboard/calories-tracker"
             className="inline-block px-5 py-3 rounded-lg shadow-lg bg-indigo-500 text-white text-lg font-semibold tracking-wide transform hover:scale-110 hover:bg-indigo-700"
