@@ -1,4 +1,5 @@
 import BMI from "../features/BMI";
+import WHR from "../features/WHR";
 
 import { useState } from "react";
 
@@ -10,7 +11,7 @@ const Calculator = () => {
       case "BMI":
         return <BMI />;
       case "WHR":
-        return "WHR";
+        return <WHR />;
       case "CPM":
         return "CPM";
       case "BMR":

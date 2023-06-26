@@ -4,7 +4,7 @@ const bmiCalculator = () => {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [age, setAge] = useState("");
-  const [gender, setGender] = useState("male");
+  const [gender, setGender] = useState("female");
   const [bmi, setBmi] = useState(null);
   const [bmiCategory, setBmiCategory] = useState("");
 
