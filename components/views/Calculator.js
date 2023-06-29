@@ -1,6 +1,7 @@
 import BMI from "../features/BMI";
 import WHR from "../features/WHR";
 import BMR from "../features/BMR";
+import TDEE from "../features/TDEE";
 
 import { useState } from "react";
 
@@ -13,8 +14,8 @@ const Calculator = () => {
         return <BMI />;
       case "WHR":
         return <WHR />;
-      case "CPM":
-        return "CPM";
+      case "TDEE":
+        return <TDEE />;
       case "BMR":
         return <BMR />;
       default:
@@ -44,10 +45,10 @@ const Calculator = () => {
           BMR
         </button>
         <button
-          onClick={() => setCurrentCalculator("CPM")}
+          onClick={() => setCurrentCalculator("TDEE")}
           className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
         >
-          CPM
+          TDEE
         </button>
       </div>
       {renderCalculator()}
