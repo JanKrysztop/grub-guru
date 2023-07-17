@@ -32,15 +32,21 @@ const Dashboard = () => {
         <div className="flex justify-around">
           <Link
             href="/dashboard/calculator"
-            className="inline-block px-5 py-3 rounded-lg shadow-lg bg-indigo-500 text-white text-lg font-semibold tracking-wide transform hover:scale-110 hover:bg-indigo-700"
+            className="inline-block mx-4 px-5 py-3 rounded-lg shadow-lg bg-indigo-500 text-white text-lg font-semibold tracking-wide transform hover:scale-110 hover:bg-indigo-700"
           >
             Calculators
           </Link>
           <Link
             href="/dashboard/calories-tracker"
-            className="inline-block px-5 py-3 rounded-lg shadow-lg bg-indigo-500 text-white text-lg font-semibold tracking-wide transform hover:scale-110 hover:bg-indigo-700"
+            className="inline-block mx-4 px-5 py-3 rounded-lg shadow-lg bg-indigo-500 text-white text-lg font-semibold tracking-wide transform hover:scale-110 hover:bg-indigo-700"
           >
             Calories tracker
+          </Link>
+          <Link
+            href="/dashboard/journal"
+            className="inline-block mx-4 px-5 py-3 rounded-lg shadow-lg bg-indigo-500 text-white text-lg font-semibold tracking-wide transform hover:scale-110 hover:bg-indigo-700"
+          >
+            Bodyweight journal
           </Link>
         </div>
       </div>
