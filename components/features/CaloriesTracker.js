@@ -1,11 +1,12 @@
 import { useState } from "react";
 import axios from "axios";
-//TODO: use foodMeasures if servingSize is not available or create seconf step for each product to specify servingSize, add error if no item was found in search
+
 const CaloriesTracker = () => {
   const [food, setFood] = useState("");
   const [calories, setCalories] = useState(0);
   const [foodList, setFoodList] = useState([]);
-  const [consumedFoods, setConsumedFoods] = useState([]);
+  const [consumedFoods, setConsumedFoods] =
+    useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -14,27 +15,32 @@ const CaloriesTracker = () => {
         `http://localhost:3001/api/food-search?food=${food}`
       );
       console.log(response.data);
-      //TODO: add data from all pages??
 
-      const foodList = response.data.foods.map((item) => {
-        const energyNutrient = item.foodNutrients.find(
-          (nutrient) => nutrient.nutrientName === "Energy"
-        );
+      const foodList = response.data.hints.map(
+        (item) => {
+          const energyNutrient =
+            item.food.nutrients.ENERC_KCAL;
 
-        return {
-          ...item,
-          energyNutrient,
-        };
-      });
+          return {
+            ...item.food,
+            energyNutrient,
+          };
+        }
+      );
       setFoodList(foodList);
+      console.log(foodList);
     } catch (error) {
       console.error(error);
     }
   };
 
   const handleSelect = (item) => {
-    const calories = item.energyNutrient ? item.energyNutrient.value : 0;
-    setCalories((prevCalories) => prevCalories + calories);
+    const calories = item.energyNutrient
+      ? item.energyNutrient
+      : 0;
+    setCalories(
+      (prevCalories) => prevCalories + calories
+    );
     setConsumedFoods([...consumedFoods, item]);
     setFood("");
     setFoodList([]);
@@ -45,11 +51,16 @@ const CaloriesTracker = () => {
       <h1 className="mb-6 text-3xl font-bold text-gray-700">
         Calories Tracker
       </h1>
-      <form onSubmit={handleSubmit} className="flex flex-col items-center">
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col items-center"
+      >
         <input
           type="text"
           value={food}
-          onChange={(e) => setFood(e.target.value)}
+          onChange={(e) =>
+            setFood(e.target.value)
+          }
           placeholder="Enter food item"
           className="px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
         />
@@ -69,23 +80,23 @@ const CaloriesTracker = () => {
                 onClick={() => handleSelect(item)}
                 className="cursor-pointer hover:bg-gray-200 p-2 rounded"
               >
-                {item.description} -{" "}
-                {item.energyNutrient ? item.energyNutrient.value : "N/A"} kcal -
-                per {item.servingSize} {item.servingSizeUnit}
+                {item.label} -{" "}
+                {item.energyNutrient} kcal
               </li>
             ))}
           </ul>
         </div>
       ) : null}
-      <p className="mt-6 text-2xl text-gray-700">{calories} calories</p>
+      <p className="mt-6 text-2xl text-gray-700">
+        {calories} calories
+      </p>
       {consumedFoods.length > 0 ? (
         <div className="mt-4 border rounded shadow p-4  overflow-auto">
           <ul>
             {consumedFoods.map((item, index) => (
               <li key={index}>
-                {item.description} -{" "}
-                {item.energyNutrient ? item.energyNutrient.value : "N/A"} kcal -
-                per {item.servingSize} {item.servingSizeUnit}
+                {item.label} -{" "}
+                {item.energyNutrient} kcal
               </li>
             ))}
           </ul>
