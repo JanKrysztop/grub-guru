@@ -59,9 +59,9 @@ router.post("/register", async (req, res) => {
     // Save user
     await user.save();
 
-    res
-      .status(201)
-      .json({ message: "User created successfully, confirmation email sent" });
+    res.status(201).json({
+      message: "User created successfully, confirmation email sent",
+    });
   } catch (error) {
     console.error(error); // Log the error to the console
     res.status(500).json({ error: error.message }); // Send the error message in the response
@@ -76,9 +76,9 @@ router.get("/confirm/:token", async (req, res) => {
     });
 
     if (!user) {
-      return res
-        .status(400)
-        .json({ error: "Invalid or expired confirmation token" });
+      return res.status(400).json({
+        error: "Invalid or expired confirmation token",
+      });
     }
 
     user.isConfirmed = true;
@@ -87,9 +87,13 @@ router.get("/confirm/:token", async (req, res) => {
 
     await user.save();
 
-    res.json({ message: "Account confirmed successfully" });
+    res.json({
+      message: "Account confirmed successfully",
+    });
   } catch (error) {
-    res.status(500).json({ error: "Error confirming account" });
+    res.status(500).json({
+      error: "Error confirming account",
+    });
   }
 });
 
@@ -110,10 +114,14 @@ router.post("/login", async (req, res) => {
 
     const token = jwt.sign({ id: user._id }, secret, { expiresIn: "1h" });
     // Set HttpOnly cookie
-    res.cookie("token", token, { httpOnly: true });
+    res.cookie("token", token, {
+      httpOnly: true,
+    });
     res.json({ token, username: user.username });
   } catch (err) {
-    return res.status(500).json({ error: "Error comparing passwords" });
+    return res.status(500).json({
+      error: "Error comparing passwords",
+    });
   }
 });
 
@@ -125,28 +133,38 @@ router.get("/profile", verifyToken, async (req, res) => {
   res.json(user);
 });
 // Maybe this one is better???
-// router.get("/me", async (req, res) => {
-//   try {
-//     const token = req.cookies.token;
-//     if (!token) {
-//       return res.status(401).json({ error: "Unauthorized" });
-//     }
+router.get("/me", async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
 
-//     const decoded = jwt.verify(token, secret);
-//     const user = await User.findById(decoded.id);
+    let decoded;
+    try {
+      decoded = jwt.verify(token, secret);
+    } catch (err) {
+      return res.status(403).json({
+        error: "Invalid or expired token",
+      });
+    }
 
-//     if (!user) {
-//       return res.status(400).json({ error: "User not found" });
-//     }
+    const user = await User.findById(decoded.id);
 
-//     // Destructure the user object to exclude sensitive data
-//     const { password, confirmation_token, ...userData } = user.toObject();
+    if (!user) {
+      return res.status(400).json({ error: "User not found" });
+    }
 
-//     res.json(userData);
-//   } catch (error) {
-//     res.status(500).json({ error: "Error fetching user data" });
-//   }
-// });
+    // Destructure the user object to exclude sensitive data
+    const { password, confirmation_token, ...userData } = user.toObject();
+
+    res.json({ userId: userData._id }); // or res.json(userData) depending on what you need
+  } catch (error) {
+    res.status(500).json({
+      error: "Error fetching user data",
+    });
+  }
+});
 
 router.get("/users", verifyToken, async (req, res) => {
   // optional: check if the user is an admin

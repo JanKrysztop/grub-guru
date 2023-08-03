@@ -5,12 +5,15 @@ const cookieParser = require("cookie-parser");
 
 const usersRoute = require("./routes/users");
 const foodSearchRoute = require("./routes/food-search");
+const nutritionRoutes = require("./routes/nutrition-tracker"); // adjust the path accordingly
 
 async function connectToDb() {
   try {
     await mongoose.connect("mongodb://localhost:27017/test", {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      //Check what this does
+      // useFindAndModify: false,
     });
     console.log("Connected to MongoDB");
   } catch (error) {
@@ -36,6 +39,8 @@ app.use(cookieParser());
 app.use("/users", usersRoute);
 
 app.use("/api", foodSearchRoute);
+
+app.use("/nutrition", nutritionRoutes);
 
 app.listen(3001, () => {
   console.log("Server running on port 3001");
