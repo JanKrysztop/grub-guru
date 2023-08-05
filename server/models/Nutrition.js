@@ -1,20 +1,12 @@
 const mongoose = require("mongoose");
 
 const NutritionSchema = new mongoose.Schema({
-  userId: mongoose.Schema.Types.ObjectId,
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
   date: Date,
-  foods: [
-    {
-      label: String,
-      energyNutrient: Number,
-      nutrients: {
-        CHOCDF: Number,
-        PROCNT: Number,
-        FAT: Number,
-      },
-      servingSize: Number,
-    },
-  ],
+  foods: [],
 });
 
 module.exports = mongoose.model("Nutrition", NutritionSchema);

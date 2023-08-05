@@ -5,6 +5,7 @@ import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import FoodDetails from "./FoodDetails";
+import moment from "moment";
 //TODO: add API info to this component(watermark)
 //Rename to nutritionTracker???
 const CaloriesTracker = () => {
@@ -36,21 +37,42 @@ const CaloriesTracker = () => {
     getUserId();
   }, []);
 
-  const fetchConsumedFoods = async (selectedDate) => {
-    if (!userId) return; // Skip the request if userId is not yet defined
-
+  const fetchConsumedFoods = async () => {
+    if (!userId) return;
+    setConsumedFoods([]);
     try {
+      const formattedDate = moment(date).format("YYYY-MM-DD");
       const response = await axios.get(
-        `http://localhost:3001/nutrition/daily-nutrients?userId=${userId}&date=${selectedDate}`
+        `http://localhost:3001/nutrition/daily-nutrients?userId=${userId}&date=${formattedDate}`
       );
-      setConsumedFoods(response.data.foods || []);
+      const fetchedFoods = response.data.foods || [];
+      setConsumedFoods(fetchedFoods);
+
+      // Calculate total nutrients for the day
+      const totalNutrients = fetchedFoods.reduce(
+        (total, food) => {
+          return {
+            calories: Math.floor(total.calories + food.energyNutrient),
+            carbs: Math.floor(total.carbs + food.nutrients.CHOCDF),
+            protein: Math.floor(total.protein + food.nutrients.PROCNT),
+            fat: Math.floor(total.fat + food.nutrients.FAT),
+          };
+        },
+        {
+          calories: 0,
+          carbs: 0,
+          protein: 0,
+          fat: 0,
+        }
+      );
+      setDailyNutrients(totalNutrients);
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    fetchConsumedFoods(date);
+    fetchConsumedFoods();
   }, [date, userId]);
 
   const saveConsumedFoods = async () => {
@@ -107,7 +129,6 @@ const CaloriesTracker = () => {
     setFood("");
     setFoodList([]);
     setFoodDetails(null);
-    saveConsumedFoods();
   };
 
   const handleDateChange = (selectedDate) => {
@@ -122,6 +143,13 @@ const CaloriesTracker = () => {
         <h1 className="mb-6 text-3xl font-bold text-gray-700">
           Calories Tracker
         </h1>
+        <button
+          type="button"
+          onClick={saveConsumedFoods}
+          className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
+        >
+          Save
+        </button>
         <DatePicker onChange={handleDateChange} value={date} />
         {!foodDetails && (
           <form onSubmit={handleSubmit} className="flex flex-col items-center">
