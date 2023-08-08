@@ -59,7 +59,9 @@ router.get("/daily-nutrients", async (req, res) => {
       userId,
       date: { $gte: startOfDay, $lt: endOfDay }, // Use the same range of date as in your POST route
     });
-
+    if (!nutrition) {
+      return res.status(200).json({ foods: [] }); // Default response when no records are found
+    }
     res.status(200).json(nutrition);
   } catch (error) {
     res.status(500).json({
