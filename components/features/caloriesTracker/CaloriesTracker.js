@@ -6,6 +6,7 @@ import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import FoodDetails from "./FoodDetails";
 import moment from "moment";
+import Link from "next/link";
 //TODO: add API info to this component(watermark)
 //Rename to nutritionTracker???
 const CaloriesTracker = () => {
@@ -75,12 +76,12 @@ const CaloriesTracker = () => {
     fetchConsumedFoods();
   }, [date, userId]);
 
-  const saveConsumedFoods = async () => {
+  const saveConsumedFoods = async (foods) => {
     try {
       const payload = {
         userId: userId,
         date: date,
-        foods: consumedFoods,
+        foods: foods,
       };
       await axios.post(
         `http://localhost:3001/nutrition/track-nutrition`,
@@ -125,10 +126,12 @@ const CaloriesTracker = () => {
       protein: Math.floor(prevNutrients.protein + food.nutrients.PROCNT),
       fat: Math.floor(prevNutrients.fat + food.nutrients.FAT),
     }));
-    setConsumedFoods((prev) => [...prev, { ...food, servingSize }]);
+    const newConsumedFoods = [...consumedFoods, { ...food, servingSize }];
+    setConsumedFoods(newConsumedFoods);
     setFood("");
     setFoodList([]);
     setFoodDetails(null);
+    saveConsumedFoods(newConsumedFoods);
   };
 
   const handleDateChange = (selectedDate) => {
@@ -139,17 +142,25 @@ const CaloriesTracker = () => {
 
   return (
     <>
+      <div className="flex flex-col px-10 py-10 items-end justify-center bg-gray-100">
+        <Link
+          href="/dashboard/calories-tracker/custom-product"
+          className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
+        >
+          Add new product
+        </Link>
+      </div>
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
         <h1 className="mb-6 text-3xl font-bold text-gray-700">
           Calories Tracker
         </h1>
-        <button
+        {/* <button
           type="button"
           onClick={saveConsumedFoods}
           className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
         >
           Save
-        </button>
+        </button> */}
         <DatePicker onChange={handleDateChange} value={date} />
         {!foodDetails && (
           <form onSubmit={handleSubmit} className="flex flex-col items-center">

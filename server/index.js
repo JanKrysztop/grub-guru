@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -5,11 +6,12 @@ const cookieParser = require("cookie-parser");
 
 const usersRoute = require("./routes/users");
 const foodSearchRoute = require("./routes/food-search");
-const nutritionRoutes = require("./routes/nutrition-tracker"); // adjust the path accordingly
+const nutritionRoutes = require("./routes/nutrition-tracker");
+const customFoodRoutes = require("./routes/custom-food");
 
 async function connectToDb() {
   try {
-    await mongoose.connect("mongodb://localhost:27017/test", {
+    await mongoose.connect(process.env.DB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       //Check what this does
@@ -41,6 +43,8 @@ app.use("/users", usersRoute);
 app.use("/api", foodSearchRoute);
 
 app.use("/nutrition", nutritionRoutes);
+
+app.use("/custom-food", customFoodRoutes);
 
 app.listen(3001, () => {
   console.log("Server running on port 3001");
