@@ -35,4 +35,17 @@ router.get("/:userId", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  try {
+    const result = await CustomFood.findByIdAndRemove(req.params.id);
+    if (!result) {
+      return res.status(404).json({ error: "Food not found" });
+    }
+
+    res.status(200).json({ message: "Food succesfully deleted" });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete the food" });
+  }
+});
+
 module.exports = router;

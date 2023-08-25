@@ -98,18 +98,36 @@ const CaloriesTracker = () => {
       const response = await axios.get(
         `http://localhost:3001/api/food-search?food=${food}`
       );
-      console.log(response.data);
 
-      const foodList = response.data.hints.map((item) => {
+      // Map and transform the general food search results.
+      const generalFoodList = response.data.hints.map((item) => {
         const energyNutrient = item.food.nutrients.ENERC_KCAL;
-
         return {
           ...item.food,
           energyNutrient,
+          isCustom: false,
         };
       });
-      setFoodList(foodList);
-      console.log(foodList);
+
+      const customFoodResponse = await axios.get(
+        `http://localhost:3001/custom-food/${userId}`
+      );
+      console.log(customFoodResponse);
+
+      // Filter custom foods based on the search term.
+      const matchingCustomFoods = customFoodResponse.data
+        .filter((customItem) =>
+          customItem.label.toLowerCase().includes(food.toLowerCase())
+        )
+        .map((item) => ({
+          ...item,
+          isCustom: true, // add the isCustom flag for custom items
+        }));
+
+      // Combine and prioritize the custom foods.
+      const combinedList = [...matchingCustomFoods, ...generalFoodList];
+      console.log(combinedList);
+      setFoodList(combinedList);
     } catch (error) {
       console.error(error);
     }
