@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 //TODO: consider using this not as route but as modal????
-const CustomProductForm = ({ onAddCustomFood }) => {
+const CustomProductForm = ({ onClose }) => {
   const [formData, setFormData] = useState({
     label: "",
     ENERC_KCAL: "",
@@ -63,6 +63,7 @@ const CustomProductForm = ({ onAddCustomFood }) => {
         FAT: "",
         servingSize: "",
       });
+      onClose();
     } catch (error) {
       console.log(error);
     }
@@ -186,6 +187,12 @@ const CustomProductForm = ({ onAddCustomFood }) => {
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           >
             Add Custom Food
+          </button>
+          <button
+            className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 focus:outline-none"
+            onClick={onClose}
+          >
+            Cancel
           </button>
         </div>
       </form>

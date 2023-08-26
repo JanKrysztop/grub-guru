@@ -7,6 +7,7 @@ import "react-calendar/dist/Calendar.css";
 import FoodDetails from "./FoodDetails";
 import moment from "moment";
 import Link from "next/link";
+import NewProductModal from "../../ui/NewProductModal";
 //TODO: add API info to this component(watermark)
 //Rename to nutritionTracker???
 const CaloriesTracker = () => {
@@ -22,6 +23,7 @@ const CaloriesTracker = () => {
   const [consumedFoods, setConsumedFoods] = useState([]);
   const [date, setDate] = useState(new Date());
   const [userId, setUserId] = useState(null);
+  const [isNewProductModalOpen, setIsNewProductModalOpen] = useState(false);
 
   useEffect(() => {
     const getUserId = async () => {
@@ -158,15 +160,25 @@ const CaloriesTracker = () => {
     // code to update dailyNutrients based on the selected date
   };
 
+  const showNewProductModal = () => {
+    setIsNewProductModalOpen(true);
+  };
+  const closeNewProductModal = () => {
+    setIsNewProductModalOpen(false);
+  };
   return (
     <>
       <div className="flex flex-col px-10 py-10 items-end justify-center bg-gray-100">
-        <Link
-          href="/dashboard/calories-tracker/custom-product"
+        <button
+          onClick={showNewProductModal}
           className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
         >
           Add new product
-        </Link>
+        </button>
+        <NewProductModal
+          isOpen={isNewProductModalOpen}
+          onClose={closeNewProductModal}
+        />
       </div>
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
         <h1 className="mb-6 text-3xl font-bold text-gray-700">
@@ -198,7 +210,13 @@ const CaloriesTracker = () => {
           </form>
         )}
         {foodDetails ? (
-          <FoodDetails food={foodDetails} onAdd={handleAdd} />
+          <FoodDetails
+            food={foodDetails}
+            foodList={foodList}
+            setFoodDetails={setFoodDetails}
+            setFoodList={setFoodList}
+            onAdd={handleAdd}
+          />
         ) : (
           foodList.length > 0 && (
             <div className="mt-4 border rounded shadow p-4 h-96 overflow-auto">
@@ -207,7 +225,11 @@ const CaloriesTracker = () => {
                   <li
                     key={index}
                     onClick={() => handleSelect(item)}
-                    className="cursor-pointer hover:bg-gray-200 p-2 rounded"
+                    className={
+                      item.isCustom
+                        ? "cursor-pointer bg-green-200 p-2 rounded"
+                        : "cursor-pointer hover:bg-gray-200 p-2 rounded"
+                    }
                   >
                     {item.label}
                   </li>

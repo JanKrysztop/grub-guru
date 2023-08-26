@@ -1,7 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
 import DeleteModal from "../../ui/DeleteModal";
-const FoodDetails = ({ food, onAdd }) => {
+const FoodDetails = ({
+  food,
+  onAdd,
+  setFoodDetails,
+  setFoodList,
+  foodList,
+}) => {
   const [selectedServingSize, setSelectedServingSize] = useState(
     food?.servingSizes?.[0]
   );
@@ -30,8 +36,14 @@ const FoodDetails = ({ food, onAdd }) => {
       const response = await axios.delete(
         `http://localhost:3001/custom-food/${id}`
       );
+      if (response.status === 200) {
+        const updatedFoods = foodList.filter((foodItem) => foodItem._id !== id);
+        setFoodDetails(null);
+        setFoodList(updatedFoods);
+      }
       closeDeleteModal();
       //TODO: add a reset to food list after this action
+      food;
     } catch (error) {
       console.log(error);
     }
