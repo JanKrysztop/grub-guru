@@ -8,6 +8,7 @@ const usersRoute = require("./routes/users");
 const foodSearchRoute = require("./routes/food-search");
 const nutritionRoutes = require("./routes/nutrition-tracker");
 const customFoodRoutes = require("./routes/custom-food");
+const journalRoutes = require("./routes/journal");
 
 async function connectToDb() {
   try {
@@ -45,6 +46,8 @@ app.use("/api", foodSearchRoute);
 app.use("/nutrition", nutritionRoutes);
 
 app.use("/custom-food", customFoodRoutes);
+
+app.use("/journal", journalRoutes);
 
 app.listen(3001, () => {
   console.log("Server running on port 3001");

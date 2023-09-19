@@ -1,12 +1,24 @@
 import { useState } from "react";
 import WebcamComponent from "./Camera";
+import DatePicker from "react-date-picker";
+import "react-date-picker/dist/DatePicker.css";
+import "react-calendar/dist/Calendar.css";
+import moment from "moment";
+
 const Journal = () => {
   const [weight, setWeight] = useState("");
   const [showCamera, setShowCamera] = useState(false);
   const [photos, setPhotos] = useState([]);
+  const [date, setDate] = useState(new Date());
 
   const handleWeightChange = (e) => {
     setWeight(e.target.value);
+  };
+
+  const handleDateChange = (selectedDate) => {
+    setDate(selectedDate);
+    // fetchConsumedFoods(selectedDate);
+    // code to update dailyNutrients based on the selected date
   };
 
   return (
@@ -14,6 +26,7 @@ const Journal = () => {
       <h1 className="mb-6 text-3xl font-bold text-gray-700">
         Bodyweight Journal
       </h1>
+      <DatePicker onChange={handleDateChange} value={date} />
       <form className="flex flex-col items-center w-full max-w-md">
         <input
           type="number"
