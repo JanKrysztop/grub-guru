@@ -3,7 +3,7 @@ const JournalEntry = require("../models/JournalEntry"); // Adjust the path to yo
 const router = express.Router();
 const moment = require("moment");
 
-router.post("/journal", async (req, res) => {
+router.post("/create", async (req, res) => {
   const { userId, date, weight, photos } = req.body;
 
   try {
@@ -45,7 +45,7 @@ router.post("/journal", async (req, res) => {
   }
 });
 
-router.get("/journal", async (req, res) => {
+router.get("/entry", async (req, res) => {
   const { userId, date } = req.query;
 
   // Parse the date string using moment.js
@@ -71,7 +71,7 @@ router.get("/journal", async (req, res) => {
   }
 });
 
-router.put("/journal", async (req, res) => {
+router.put("/update", async (req, res) => {
   const { userId, date, weight, photos } = req.body;
 
   try {

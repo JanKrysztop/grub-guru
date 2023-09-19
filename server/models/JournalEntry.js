@@ -10,10 +10,10 @@ const journalEntrySchema = new mongoose.Schema({
   weight: {
     type: Number,
     required: true,
-    validate: {
-      validator: Number.isPositive,
-      message: "Weight must be a positive number",
-    },
+    // validate: {
+    //   validator: Number.isPositive,
+    //   message: "Weight must be a positive number",
+    // },
   },
   photos: [String], // Array of photo URLs
 });

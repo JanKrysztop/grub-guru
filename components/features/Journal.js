@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import WebcamComponent from "./Camera";
 import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
@@ -10,6 +11,7 @@ const Journal = () => {
   const [showCamera, setShowCamera] = useState(false);
   const [photos, setPhotos] = useState([]);
   const [date, setDate] = useState(new Date());
+  const [userId, setUserId] = useState(null);
 
   const handleWeightChange = (e) => {
     setWeight(e.target.value);
@@ -19,6 +21,58 @@ const Journal = () => {
     setDate(selectedDate);
     // fetchConsumedFoods(selectedDate);
     // code to update dailyNutrients based on the selected date
+  };
+  //TODO: create this function in one place in application there are duplicates
+  useEffect(() => {
+    const getUserId = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/users/me`, {
+          withCredentials: true,
+        });
+        console.log("User ID:", response.data); // Adjust depending on how the data is structured in the response
+        setUserId(response.data.userId);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getUserId();
+  }, []);
+
+  const fetchUserEntry = async () => {
+    if (!userId) return;
+    setWeight("");
+    setPhotos([]);
+    try {
+      const formattedDate = moment(date).format("YYYY-MM-DD");
+      const response = await axios.get(
+        `http://localhost:3001/journal/entry?userId=${userId}&date=${formattedDate}`
+      );
+      console.log(response.data);
+      setWeight(response.data.weight);
+      setPhotos(response.data.photos);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    fetchUserEntry();
+  }, [date, userId]);
+  const handleCreateEntry = async () => {
+    try {
+      const payload = {
+        userId: userId,
+        date: date,
+        weight: weight,
+        photos: photos,
+      };
+      const response = await axios.post(
+        `http://localhost:3001/journal/create`,
+        payload
+      );
+      console.log("Entry created:", response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -65,6 +119,12 @@ const Journal = () => {
           />
         ))}
       </div>
+      <button
+        onClick={handleCreateEntry}
+        className="mt-4 px-4 py-2 text-white bg-red-500 rounded hover:bg-red-700"
+      >
+        Save entry
+      </button>
     </div>
   );
 };
