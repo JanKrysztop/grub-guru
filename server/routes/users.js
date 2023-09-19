@@ -98,6 +98,7 @@ router.get("/confirm/:token", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
+  //TODO: add isConfirmed if statement
   const { username, password } = req.body;
 
   const user = await User.findOne({ username });
