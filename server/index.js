@@ -32,7 +32,7 @@ const app = express();
 app.use(
   cors({
     // origin: "http://localhost:3000", // replace with your client UR L
-    origin: "https://grub-guru.vercel.app/", // replace with your Vercel deployment URL
+    origin: "https://grub-guru.vercel.app", // replace with your Vercel deployment URL
     credentials: true,
   })
 );
