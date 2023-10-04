@@ -12,7 +12,7 @@ const LoginForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:3001/users/login",
+        "https://rttfivhc26.execute-api.eu-north-1.amazonaws.com/dev/users/login",
         { username, password },
         { withCredentials: true }
       );

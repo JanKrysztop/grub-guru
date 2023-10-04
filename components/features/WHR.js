@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const whrCalculator = () => {
+const WhrCalculator = () => {
   const [gender, setGender] = useState("female");
   const [waist, setWaist] = useState("");
   const [hip, setHip] = useState("");
@@ -87,4 +87,4 @@ const whrCalculator = () => {
   );
 };
 
-export default whrCalculator;
+export default WhrCalculator;

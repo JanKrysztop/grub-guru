@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const bmiCalculator = () => {
+const BmiCalculator = () => {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [age, setAge] = useState("");
@@ -90,4 +90,4 @@ const bmiCalculator = () => {
   );
 };
 
-export default bmiCalculator;
+export default BmiCalculator;

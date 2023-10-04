@@ -10,7 +10,7 @@ const Dashboard = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3001/users/profile",
+          "https://rttfivhc26.execute-api.eu-north-1.amazonaws.com/dev/users/profile",
           { withCredentials: true }
         );
         console.log(response.data);

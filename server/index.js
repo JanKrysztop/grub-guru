@@ -1,4 +1,5 @@
 require("dotenv").config();
+const serverless = require("serverless-http");
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -30,7 +31,8 @@ const app = express();
 
 app.use(
   cors({
-    origin: "http://localhost:3000", // replace with your client URL
+    // origin: "http://localhost:3000", // replace with your client UR L
+    origin: "https://grub-guru.vercel.app/", // replace with your Vercel deployment URL
     credentials: true,
   })
 );
@@ -49,6 +51,9 @@ app.use("/custom-food", customFoodRoutes);
 
 app.use("/journal", journalRoutes);
 
-app.listen(3001, () => {
-  console.log("Server running on port 3001");
-});
+module.exports.handler = serverless(app);
+
+//This is needed only for local development
+// app.listen(3001, () => {
+//   console.log("Server running on port 3001");
+// });

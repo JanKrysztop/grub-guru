@@ -38,7 +38,7 @@ const activityLevels = [
   },
 ];
 
-const tdeeCalculator = () => {
+const TdeeCalculator = () => {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [age, setAge] = useState("");
@@ -172,4 +172,4 @@ const tdeeCalculator = () => {
   );
 };
 
-export default tdeeCalculator;
+export default TdeeCalculator;

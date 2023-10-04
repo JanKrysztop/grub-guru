@@ -23,7 +23,7 @@ const sendConfirmationEmail = async (user, host, confirmationToken) => {
     from: process.env.EMAIL_USERNAME,
     to: user.email,
     subject: "Please confirm your account",
-    text: `Welcome to Grub Guru! \n\n Please confirm your account by clicking on the following link: \n\n http://localhost:3000/confirm/${confirmationToken} \n\n`,
+    text: `Welcome to Grub Guru! \n\n Please confirm your account by clicking on the following link: \n\n https://rttfivhc26.execute-api.eu-north-1.amazonaws.com/dev/confirm/${confirmationToken} \n\n`,
   };
   try {
     await transporter.sendMail(mailOptions);

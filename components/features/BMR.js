@@ -14,7 +14,7 @@ const bmrFormulas = {
   },
 };
 
-const bmrCalculator = () => {
+const BmrCalculator = () => {
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [age, setAge] = useState("");
@@ -136,4 +136,4 @@ const bmrCalculator = () => {
   );
 };
 
-export default bmrCalculator;
+export default BmrCalculator;

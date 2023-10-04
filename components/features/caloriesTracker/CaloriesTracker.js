@@ -28,9 +28,12 @@ const CaloriesTracker = () => {
   useEffect(() => {
     const getUserId = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/users/me`, {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `https://rttfivhc26.execute-api.eu-north-1.amazonaws.com/dev/users/me`,
+          {
+            withCredentials: true,
+          }
+        );
         console.log("User ID:", response.data); // Adjust depending on how the data is structured in the response
         setUserId(response.data.userId);
       } catch (error) {
@@ -46,7 +49,7 @@ const CaloriesTracker = () => {
     try {
       const formattedDate = moment(date).format("YYYY-MM-DD");
       const response = await axios.get(
-        `http://localhost:3001/nutrition/daily-nutrients?userId=${userId}&date=${formattedDate}`
+        `https://rttfivhc26.execute-api.eu-north-1.amazonaws.com/dev/nutrition/daily-nutrients?userId=${userId}&date=${formattedDate}`
       );
       const fetchedFoods = response.data.foods || [];
       setConsumedFoods(fetchedFoods);
@@ -86,7 +89,7 @@ const CaloriesTracker = () => {
         foods: foods,
       };
       await axios.post(
-        `http://localhost:3001/nutrition/track-nutrition`,
+        `https://rttfivhc26.execute-api.eu-north-1.amazonaws.com/dev/nutrition/track-nutrition`,
         payload
       );
     } catch (error) {
@@ -98,7 +101,7 @@ const CaloriesTracker = () => {
     e.preventDefault();
     try {
       const response = await axios.get(
-        `http://localhost:3001/api/food-search?food=${food}`
+        `https://rttfivhc26.execute-api.eu-north-1.amazonaws.com/dev/api/food-search?food=${food}`
       );
 
       // Map and transform the general food search results.
@@ -112,7 +115,7 @@ const CaloriesTracker = () => {
       });
 
       const customFoodResponse = await axios.get(
-        `http://localhost:3001/custom-food/${userId}`
+        `https://rttfivhc26.execute-api.eu-north-1.amazonaws.com/dev/custom-food/${userId}`
       );
       console.log(customFoodResponse);
 

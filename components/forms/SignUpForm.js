@@ -32,7 +32,7 @@ function SignUpForm() {
     // Handle form submission here
     try {
       const response = await axios.post(
-        "http://localhost:3001/users/register",
+        "https://rttfivhc26.execute-api.eu-north-1.amazonaws.com/dev/users/register",
         formState
       );
 
