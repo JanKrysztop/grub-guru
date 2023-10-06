@@ -34,7 +34,7 @@ const FoodDetails = ({
   const handleDelete = (id) => async () => {
     try {
       const response = await axios.delete(
-        `https://rttfivhc26.execute-api.eu-north-1.amazonaws.com/dev/custom-food/${id}`
+        `https://7foiszp0t0.execute-api.eu-north-1.amazonaws.com/dev/custom-food/${id}`
       );
       if (response.status === 200) {
         const updatedFoods = foodList.filter((foodItem) => foodItem._id !== id);

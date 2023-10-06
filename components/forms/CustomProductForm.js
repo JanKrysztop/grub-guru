@@ -15,7 +15,7 @@ const CustomProductForm = ({ onClose }) => {
     const getUserId = async () => {
       try {
         const response = await axios.get(
-          `https://rttfivhc26.execute-api.eu-north-1.amazonaws.com/dev/users/me`,
+          `https://7foiszp0t0.execute-api.eu-north-1.amazonaws.com/dev/users/me`,
           {
             withCredentials: true,
           }
@@ -52,7 +52,7 @@ const CustomProductForm = ({ onClose }) => {
       };
 
       const response = await axios.post(
-        `https://rttfivhc26.execute-api.eu-north-1.amazonaws.com/dev/custom-food/add`,
+        `https://7foiszp0t0.execute-api.eu-north-1.amazonaws.com/dev/custom-food/add`,
         customFood
       );
 

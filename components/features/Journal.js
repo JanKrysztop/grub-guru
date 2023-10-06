@@ -27,7 +27,7 @@ const Journal = () => {
     const getUserId = async () => {
       try {
         const response = await axios.get(
-          `https://rttfivhc26.execute-api.eu-north-1.amazonaws.com/dev/users/me`,
+          `https://7foiszp0t0.execute-api.eu-north-1.amazonaws.com/dev/users/me`,
           {
             withCredentials: true,
           }
@@ -48,7 +48,7 @@ const Journal = () => {
     try {
       const formattedDate = moment(date).format("YYYY-MM-DD");
       const response = await axios.get(
-        `https://rttfivhc26.execute-api.eu-north-1.amazonaws.com/dev/journal/entry?userId=${userId}&date=${formattedDate}`
+        `https://7foiszp0t0.execute-api.eu-north-1.amazonaws.com/dev/journal/entry?userId=${userId}&date=${formattedDate}`
       );
       console.log(response.data);
       setWeight(response.data.weight);
@@ -69,7 +69,7 @@ const Journal = () => {
         photos: photos,
       };
       const response = await axios.post(
-        `https://rttfivhc26.execute-api.eu-north-1.amazonaws.com/dev/journal/create`,
+        `https://7foiszp0t0.execute-api.eu-north-1.amazonaws.com/dev/journal/create`,
         payload
       );
       console.log("Entry created:", response.data);

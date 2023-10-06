@@ -12,7 +12,7 @@ const LoginForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "https://rttfivhc26.execute-api.eu-north-1.amazonaws.com/dev/users/login",
+        "https://7foiszp0t0.execute-api.eu-north-1.amazonaws.com/dev/users/login",
         { username, password },
         { withCredentials: true }
       );

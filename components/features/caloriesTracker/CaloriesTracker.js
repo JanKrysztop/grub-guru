@@ -29,7 +29,7 @@ const CaloriesTracker = () => {
     const getUserId = async () => {
       try {
         const response = await axios.get(
-          `https://rttfivhc26.execute-api.eu-north-1.amazonaws.com/dev/users/me`,
+          `https://7foiszp0t0.execute-api.eu-north-1.amazonaws.com/dev/users/me`,
           {
             withCredentials: true,
           }
@@ -49,7 +49,7 @@ const CaloriesTracker = () => {
     try {
       const formattedDate = moment(date).format("YYYY-MM-DD");
       const response = await axios.get(
-        `https://rttfivhc26.execute-api.eu-north-1.amazonaws.com/dev/nutrition/daily-nutrients?userId=${userId}&date=${formattedDate}`
+        `https://7foiszp0t0.execute-api.eu-north-1.amazonaws.com/dev/nutrition/daily-nutrients?userId=${userId}&date=${formattedDate}`
       );
       const fetchedFoods = response.data.foods || [];
       setConsumedFoods(fetchedFoods);
@@ -89,7 +89,7 @@ const CaloriesTracker = () => {
         foods: foods,
       };
       await axios.post(
-        `https://rttfivhc26.execute-api.eu-north-1.amazonaws.com/dev/nutrition/track-nutrition`,
+        `https://7foiszp0t0.execute-api.eu-north-1.amazonaws.com/dev/nutrition/track-nutrition`,
         payload
       );
     } catch (error) {
@@ -101,7 +101,7 @@ const CaloriesTracker = () => {
     e.preventDefault();
     try {
       const response = await axios.get(
-        `https://rttfivhc26.execute-api.eu-north-1.amazonaws.com/dev/api/food-search?food=${food}`
+        `https://7foiszp0t0.execute-api.eu-north-1.amazonaws.com/dev/api/food-search?food=${food}`
       );
 
       // Map and transform the general food search results.
@@ -115,7 +115,7 @@ const CaloriesTracker = () => {
       });
 
       const customFoodResponse = await axios.get(
-        `https://rttfivhc26.execute-api.eu-north-1.amazonaws.com/dev/custom-food/${userId}`
+        `https://7foiszp0t0.execute-api.eu-north-1.amazonaws.com/dev/custom-food/${userId}`
       );
       console.log(customFoodResponse);
 
