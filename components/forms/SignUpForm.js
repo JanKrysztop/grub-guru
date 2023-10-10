@@ -32,7 +32,7 @@ function SignUpForm() {
     // Handle form submission here
     try {
       const response = await axios.post(
-        "https://7foiszp0t0.execute-api.eu-north-1.amazonaws.com/dev/users/register",
+        "${process.env.MAIN_URL}/users/register",
         formState
       );
 

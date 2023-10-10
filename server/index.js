@@ -1,4 +1,9 @@
-require("dotenv").config();
+if (process.env.NODE_ENV === "development") {
+  require("dotenv").config({ path: __dirname + "/../.env.development" });
+} else {
+  require("dotenv").config({ path: __dirname + "/../.env.production" });
+}
+
 const serverless = require("serverless-http");
 const express = require("express");
 const mongoose = require("mongoose");
@@ -24,15 +29,14 @@ async function connectToDb() {
     console.error("Could not connect to MongoDB", error);
   }
 }
-
+console.log("ENV", process.env.DB_URL, process.env.MAIN_URL);
 connectToDb();
 
 const app = express();
 
 app.use(
   cors({
-    // origin: "http://localhost:3000", // replace with your client UR L
-    origin: "https://grub-guru.vercel.app", // replace with your Vercel deployment URL
+    origin: process.env.MAIN_URL,
     credentials: true,
   })
 );
@@ -54,6 +58,8 @@ app.use("/journal", journalRoutes);
 module.exports.handler = serverless(app);
 
 //This is needed only for local development
-// app.listen(3001, () => {
-//   console.log("Server running on port 3001");
-// });
+if (process.env.NODE_ENV === "development") {
+  app.listen(3001, () => {
+    console.log("Server running on port 3001");
+  });
+}

@@ -28,12 +28,9 @@ const CaloriesTracker = () => {
   useEffect(() => {
     const getUserId = async () => {
       try {
-        const response = await axios.get(
-          `https://7foiszp0t0.execute-api.eu-north-1.amazonaws.com/dev/users/me`,
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await axios.get(`${process.env.MAIN_URL}/users/me`, {
+          withCredentials: true,
+        });
         console.log("User ID:", response.data); // Adjust depending on how the data is structured in the response
         setUserId(response.data.userId);
       } catch (error) {
@@ -49,7 +46,7 @@ const CaloriesTracker = () => {
     try {
       const formattedDate = moment(date).format("YYYY-MM-DD");
       const response = await axios.get(
-        `https://7foiszp0t0.execute-api.eu-north-1.amazonaws.com/dev/nutrition/daily-nutrients?userId=${userId}&date=${formattedDate}`
+        `${process.env.MAIN_URL}/nutrition/daily-nutrients?userId=${userId}&date=${formattedDate}`
       );
       const fetchedFoods = response.data.foods || [];
       setConsumedFoods(fetchedFoods);
@@ -89,7 +86,7 @@ const CaloriesTracker = () => {
         foods: foods,
       };
       await axios.post(
-        `https://7foiszp0t0.execute-api.eu-north-1.amazonaws.com/dev/nutrition/track-nutrition`,
+        `${process.env.MAIN_URL}/nutrition/track-nutrition`,
         payload
       );
     } catch (error) {
@@ -101,7 +98,7 @@ const CaloriesTracker = () => {
     e.preventDefault();
     try {
       const response = await axios.get(
-        `https://7foiszp0t0.execute-api.eu-north-1.amazonaws.com/dev/api/food-search?food=${food}`
+        `${process.env.MAIN_URL}/api/food-search?food=${food}`
       );
 
       // Map and transform the general food search results.
@@ -115,7 +112,7 @@ const CaloriesTracker = () => {
       });
 
       const customFoodResponse = await axios.get(
-        `https://7foiszp0t0.execute-api.eu-north-1.amazonaws.com/dev/custom-food/${userId}`
+        `${process.env.MAIN_URL}/custom-food/${userId}`
       );
       console.log(customFoodResponse);
 

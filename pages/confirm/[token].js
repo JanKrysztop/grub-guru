@@ -15,7 +15,7 @@ function Confirm() {
     const confirmAccount = async () => {
       try {
         const response = await axios.get(
-          `https://7foiszp0t0.execute-api.eu-north-1.amazonaws.com/dev/users/confirm/${token}`
+          `${process.env.MAIN_URL}/users/confirm/${token}`
         );
         console.log(response.data);
         setConfirmed(true);
