@@ -10,7 +10,7 @@ const Dashboard = () => {
     const fetchUser = async () => {
       try {
         const response = await axios.get(
-          "${process.env.MAIN_URL}/users/profile",
+          `${process.env.NEXT_PUBLIC_MAIN_URL}/users/profile`,
           { withCredentials: true }
         );
         console.log(response.data);

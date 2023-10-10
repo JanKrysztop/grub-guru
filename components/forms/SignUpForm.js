@@ -32,7 +32,7 @@ function SignUpForm() {
     // Handle form submission here
     try {
       const response = await axios.post(
-        "${process.env.MAIN_URL}/users/register",
+        `${process.env.NEXT_PUBLIC_MAIN_URL}/users/register`,
         formState
       );
 

@@ -15,7 +15,7 @@ function Confirm() {
     const confirmAccount = async () => {
       try {
         const response = await axios.get(
-          `${process.env.MAIN_URL}/users/confirm/${token}`
+          `${process.env.NEXT_PUBLIC_MAIN_URL}/users/confirm/${token}`
         );
         console.log(response.data);
         setConfirmed(true);

@@ -14,9 +14,12 @@ const CustomProductForm = ({ onClose }) => {
   useEffect(() => {
     const getUserId = async () => {
       try {
-        const response = await axios.get(`${process.env.MAIN_URL}/users/me`, {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_MAIN_URL}/users/me`,
+          {
+            withCredentials: true,
+          }
+        );
         console.log("User ID:", response.data); // Adjust depending on how the data is structured in the response
         setUserId(response.data.userId);
       } catch (error) {
@@ -49,7 +52,7 @@ const CustomProductForm = ({ onClose }) => {
       };
 
       const response = await axios.post(
-        `${process.env.MAIN_URL}/custom-food/add`,
+        `${process.env.NEXT_PUBLIC_MAIN_URL}/custom-food/add`,
         customFood
       );
 

@@ -34,7 +34,7 @@ const FoodDetails = ({
   const handleDelete = (id) => async () => {
     try {
       const response = await axios.delete(
-        `${process.env.MAIN_URL}/custom-food/${id}`
+        `${process.env.NEXT_PUBLIC_MAIN_URL}/custom-food/${id}`
       );
       if (response.status === 200) {
         const updatedFoods = foodList.filter((foodItem) => foodItem._id !== id);

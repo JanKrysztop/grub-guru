@@ -26,9 +26,12 @@ const Journal = () => {
   useEffect(() => {
     const getUserId = async () => {
       try {
-        const response = await axios.get(`${process.env.MAIN_URL}/users/me`, {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_MAIN_URL}/users/me`,
+          {
+            withCredentials: true,
+          }
+        );
         console.log("User ID:", response.data); // Adjust depending on how the data is structured in the response
         setUserId(response.data.userId);
       } catch (error) {
@@ -45,7 +48,7 @@ const Journal = () => {
     try {
       const formattedDate = moment(date).format("YYYY-MM-DD");
       const response = await axios.get(
-        `${process.env.MAIN_URL}/journal/entry?userId=${userId}&date=${formattedDate}`
+        `${process.env.NEXT_PUBLIC_MAIN_URL}/journal/entry?userId=${userId}&date=${formattedDate}`
       );
       console.log(response.data);
       setWeight(response.data.weight);
@@ -66,7 +69,7 @@ const Journal = () => {
         photos: photos,
       };
       const response = await axios.post(
-        `${process.env.MAIN_URL}/journal/create`,
+        `${process.env.NEXT_PUBLIC_MAIN_URL}/journal/create`,
         payload
       );
       console.log("Entry created:", response.data);

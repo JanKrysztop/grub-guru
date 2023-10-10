@@ -28,9 +28,12 @@ const CaloriesTracker = () => {
   useEffect(() => {
     const getUserId = async () => {
       try {
-        const response = await axios.get(`${process.env.MAIN_URL}/users/me`, {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          `${process.env.NEXT_PUBLIC_MAIN_URL}/users/me`,
+          {
+            withCredentials: true,
+          }
+        );
         console.log("User ID:", response.data); // Adjust depending on how the data is structured in the response
         setUserId(response.data.userId);
       } catch (error) {
@@ -46,7 +49,7 @@ const CaloriesTracker = () => {
     try {
       const formattedDate = moment(date).format("YYYY-MM-DD");
       const response = await axios.get(
-        `${process.env.MAIN_URL}/nutrition/daily-nutrients?userId=${userId}&date=${formattedDate}`
+        `${process.env.NEXT_PUBLIC_MAIN_URL}/nutrition/daily-nutrients?userId=${userId}&date=${formattedDate}`
       );
       const fetchedFoods = response.data.foods || [];
       setConsumedFoods(fetchedFoods);
@@ -86,7 +89,7 @@ const CaloriesTracker = () => {
         foods: foods,
       };
       await axios.post(
-        `${process.env.MAIN_URL}/nutrition/track-nutrition`,
+        `${process.env.NEXT_PUBLIC_MAIN_URL}/nutrition/track-nutrition`,
         payload
       );
     } catch (error) {
@@ -98,7 +101,7 @@ const CaloriesTracker = () => {
     e.preventDefault();
     try {
       const response = await axios.get(
-        `${process.env.MAIN_URL}/api/food-search?food=${food}`
+        `${process.env.NEXT_PUBLIC_MAIN_URL}/api/food-search?food=${food}`
       );
 
       // Map and transform the general food search results.
@@ -112,7 +115,7 @@ const CaloriesTracker = () => {
       });
 
       const customFoodResponse = await axios.get(
-        `${process.env.MAIN_URL}/custom-food/${userId}`
+        `${process.env.NEXT_PUBLIC_MAIN_URL}/custom-food/${userId}`
       );
       console.log(customFoodResponse);
 

@@ -1,7 +1,7 @@
 if (process.env.NODE_ENV === "development") {
-  require("dotenv").config({ path: __dirname + "/../.env.development" });
+  require("dotenv").config({ path: ".env.development" });
 } else {
-  require("dotenv").config({ path: __dirname + "/../.env.production" });
+  require("dotenv").config({ path: ".env.production" });
 }
 
 const serverless = require("serverless-http");
@@ -29,14 +29,14 @@ async function connectToDb() {
     console.error("Could not connect to MongoDB", error);
   }
 }
-console.log("ENV", process.env.DB_URL, process.env.MAIN_URL);
+
 connectToDb();
 
 const app = express();
 
 app.use(
   cors({
-    origin: process.env.MAIN_URL,
+    origin: process.env.CORS_URL,
     credentials: true,
   })
 );

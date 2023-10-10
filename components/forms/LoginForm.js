@@ -12,7 +12,7 @@ const LoginForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "${process.env.MAIN_URL}/users/login",
+        `${process.env.NEXT_PUBLIC_MAIN_URL}/users/login`,
         { username, password },
         { withCredentials: true }
       );
