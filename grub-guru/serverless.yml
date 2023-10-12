@@ -8,7 +8,7 @@ provider:
 
 functions:
   app:
-    handler: ../server/index.handler
+    handler: server/index.handler
     events:
       - http:
           method: ANY
@@ -18,6 +18,9 @@ functions:
           method: ANY
           path: "{proxy+}"
           cors: true
+# package:
+#   patterns:
+#     - server/**
 # plugins:
 #   - serverless-http
 
