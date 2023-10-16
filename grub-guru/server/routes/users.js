@@ -23,7 +23,7 @@ const sendConfirmationEmail = async (user, host, confirmationToken) => {
     from: process.env.EMAIL_USERNAME,
     to: user.email,
     subject: "Please confirm your account",
-    text: `Welcome to Grub Guru! \n\n Please confirm your account by clicking on the following link: \n\n ${process.env.NEXT_PUBLIC_MAIN_URL}/confirm/${confirmationToken} \n\n`,
+    text: `Welcome to Grub Guru! \n\n Please confirm your account by clicking on the following link: \n\n ${process.env.APP_URL}/confirm/${confirmationToken} \n\n`,
   };
   try {
     await transporter.sendMail(mailOptions);
@@ -35,7 +35,7 @@ const sendConfirmationEmail = async (user, host, confirmationToken) => {
 
 router.post("/register", async (req, res) => {
   const { username, password, email, age, height, weight, gender } = req.body;
-
+  //TODO: add info about user/email already being used
   try {
     //Generate confirmation token
     const confirmationToken = crypto.randomBytes(20).toString("hex");
