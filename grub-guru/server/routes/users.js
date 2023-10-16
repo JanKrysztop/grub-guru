@@ -117,7 +117,10 @@ router.post("/login", async (req, res) => {
     // Set HttpOnly cookie
     res.cookie("token", token, {
       httpOnly: true,
+      secure: process.env.NODE_ENV === "production", // set to true in production
+      sameSite: "none", // set to "none" in production if your frontend and backend are on different domains
     });
+
     res.json({ token, username: user.username });
   } catch (err) {
     return res.status(500).json({

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development concurrently \"next dev\" \"nodemon server/index.js\"",
+    "dev": "cross-env NODE_ENV=development concurrently \"next dev\" \"nodemon grub-guru/server/index.js\"",
     "build": "next build",
     "lint": "next lint",
     "start": "cross-env NODE_ENV=production next start",
