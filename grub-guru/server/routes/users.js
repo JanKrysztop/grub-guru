@@ -18,6 +18,7 @@ let transporter = nodemailer.createTransport({
 });
 
 const sendConfirmationEmail = async (user, host, confirmationToken) => {
+  //TODO: prevent sendind mutliple emails !
   //Send confirmation email
   const mailOptions = {
     from: process.env.EMAIL_USERNAME,
@@ -115,10 +116,12 @@ router.post("/login", async (req, res) => {
 
     const token = jwt.sign({ id: user._id }, secret, { expiresIn: "1h" });
     // Set HttpOnly cookie
+    const isProduction = process.env.NODE_ENV === "production";
+
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // set to true in production
-      sameSite: "none", // set to "none" in production if your frontend and backend are on different domains
+      secure: isProduction,
+      sameSite: isProduction ? "none" : "lax",
     });
 
     res.json({ token, username: user.username });
