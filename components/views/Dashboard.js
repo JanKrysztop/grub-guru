@@ -1,33 +1,18 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
+import { useContext } from "react";
+import UserContext from "@/contexts/userContext";
 
 //TODO: add middleware if user is not logged in
 const Dashboard = () => {
-  const [user, setUser] = useState("");
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_MAIN_URL}/users/profile`,
-          { withCredentials: true }
-        );
-        console.log(response.data);
-        setUser(response.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchUser();
-  }, []);
+  const { userName } = useContext(UserContext);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="p-8 m-4 bg-white rounded shadow-md justify-items-center">
         <h1 className="mb-4 text-2xl font-bold text-center text-gray-700">
-          Welcome to the Dashboard, {user.username}!
+          Welcome to the Dashboard, {userName}!
         </h1>
         <div className="flex justify-around">
           <Link

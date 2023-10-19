@@ -1,11 +1,31 @@
+import axios from "axios";
 import { useContext } from "react";
 import UserContext from "@/contexts/userContext";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 //TODO: modify header when the user is loggen in, logout option, profile data option, what more??
-
+//TODO: create custom 404 page
 function MainHeader() {
-  const { isLoggedIn, userData } = useContext(UserContext);
+  const { isLoggedIn, userData, setIsLoggedIn, setUserData } =
+    useContext(UserContext);
+  const router = useRouter();
+  console.log("Is logged in:", isLoggedIn);
+  console.log("User data:", userData);
+
+  const handleLogout = async () => {
+    try {
+      await axios.get(`${process.env.NEXT_PUBLIC_MAIN_URL}/users/logout`, {
+        withCredentials: true,
+      });
+      // Reset the context values
+      setIsLoggedIn(false);
+      setUserData(null);
+      router.push("/");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
 
   return (
     <header className="flex justify-between p-5 bg-gray-200">
@@ -14,21 +34,11 @@ function MainHeader() {
       </Link>
       <nav>
         <ul className="flex space-x-4">
-          <li>
-            <Link href="/features" className="text-gray-700 hover:text-black ">
-              Features
-            </Link>
-          </li>
-          <li>
-            <Link href="/articles" className="text-gray-700 hover:text-black ">
-              Articles
-            </Link>
-          </li>
-          {userData ? (
+          {isLoggedIn ? (
             <>
               <li>
                 <Link
-                  href="/profile"
+                  href="dashboard/profile"
                   className="text-gray-700 hover:text-black "
                 >
                   Profile
@@ -36,7 +46,7 @@ function MainHeader() {
               </li>
               <li>
                 {/* You can add a logout function to the context and call it here */}
-                <button onClick={() => setUser(null)}>Logout</button>
+                <button onClick={handleLogout}>Logout</button>
               </li>
             </>
           ) : (

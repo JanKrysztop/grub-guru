@@ -132,6 +132,11 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/logout", (req, res) => {
+  res.clearCookie("token");
+  res.json({ message: "Logged out successfully" });
+});
+
 router.get("/profile", verifyToken, async (req, res) => {
   const user = await User.findById(req.userId).select("-password");
   if (!user) {

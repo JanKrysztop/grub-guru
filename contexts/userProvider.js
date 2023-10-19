@@ -5,6 +5,7 @@ import axios from "axios";
 const UserProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userData, setUserData] = useState(null);
+  const [userName, setUserName] = useState(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -28,7 +29,16 @@ const UserProvider = ({ children }) => {
   }, []);
 
   return (
-    <UserContext.Provider value={{ isLoggedIn, userData }}>
+    <UserContext.Provider
+      value={{
+        isLoggedIn,
+        userData,
+        userName,
+        setIsLoggedIn,
+        setUserData,
+        setUserName,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

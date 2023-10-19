@@ -1,12 +1,17 @@
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { useContext } from "react";
+import UserContext from "@/contexts/userContext";
+
 //TODO: change all functions to arrow functions for components, add password display, add option with password change with email??, add option to log in with email instead of username
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const router = useRouter();
+
+  const { setIsLoggedIn, setUserName } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,8 +21,9 @@ const LoginForm = () => {
         { username, password },
         { withCredentials: true }
       );
-      //dont use local storage cookies are safer
-      //   localStorage.setItem("token", response.data.token);
+      setIsLoggedIn(true);
+      setUserName(response.data.username);
+
       router.push("/dashboard");
     } catch (error) {
       console.log(error);
