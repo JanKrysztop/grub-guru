@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Link from "next/link";
-import { useContext } from "react";
-import UserContext from "@/contexts/userContext";
+import { useSelector } from "react-redux";
+import { selectUserName } from "@/redux/userSlice";
 
 //TODO: add middleware if user is not logged in
 const Dashboard = () => {
-  const { userName } = useContext(UserContext);
-
+  const userName = useSelector(selectUserName);
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="p-8 m-4 bg-white rounded shadow-md justify-items-center">

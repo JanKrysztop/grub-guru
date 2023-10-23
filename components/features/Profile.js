@@ -1,16 +1,10 @@
-import React, { useContext, useState } from "react";
-import UserContext from "@/contexts/userContext";
-
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { selectUserData } from "@/redux/userSlice";
 const Profile = () => {
-  const { userData, setUserData } = useContext(UserContext);
   const [isEditing, setIsEditing] = useState(false);
-  const [updatedData, setUpdatedData] = useState({
-    username: userData?.username || "",
-    email: userData?.email || "",
-    age: userData?.age || "",
-    weight: userData?.weight || "",
-    // ... any other user data fields
-  });
+
+  const userData = useSelector(selectUserData);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -24,7 +18,7 @@ const Profile = () => {
   const handleSave = () => {
     // Call API to save updated data
     // Then update the context with the new data
-    setUserData(updatedData);
+    // setUserData(updatedData);
     setIsEditing(false);
   };
 

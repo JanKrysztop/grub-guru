@@ -1,13 +1,19 @@
 import "@/styles/globals.css";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "@/redux/store";
 import Layout from "@/components/layout/layout";
-import UserProvider from "@/contexts/userProvider";
 
-export default function App({ Component, pageProps }) {
+function App({ Component, pageProps }) {
   return (
-    <UserProvider>
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </UserProvider>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </PersistGate>
+    </Provider>
   );
 }
+
+export default App;

@@ -1,17 +1,19 @@
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useContext } from "react";
-import UserContext from "@/contexts/userContext";
+
+import { useDispatch } from "react-redux";
+import { setLoginStatus, setUserName, setUserData } from "@/redux/userSlice";
 
 //TODO: change all functions to arrow functions for components, add password display, add option with password change with email??, add option to log in with email instead of username
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const router = useRouter();
 
-  const { setIsLoggedIn, setUserName } = useContext(UserContext);
+  const dispatch = useDispatch();
+
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,8 +23,21 @@ const LoginForm = () => {
         { username, password },
         { withCredentials: true }
       );
-      setIsLoggedIn(true);
-      setUserName(response.data.username);
+      dispatch(setLoginStatus(true));
+      dispatch(setUserName(response.data.username));
+
+      // Fetch user data after successful login
+      try {
+        const profileResponse = await axios.get(
+          `${process.env.NEXT_PUBLIC_MAIN_URL}/users/profile`,
+          {
+            withCredentials: true,
+          }
+        );
+        dispatch(setUserData(profileResponse.data));
+      } catch (profileError) {
+        console.error("Error fetching user profile:", profileError);
+      }
 
       router.push("/dashboard");
     } catch (error) {

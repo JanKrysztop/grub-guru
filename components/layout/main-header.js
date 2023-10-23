@@ -1,26 +1,32 @@
 import axios from "axios";
-import { useContext } from "react";
-import UserContext from "@/contexts/userContext";
+
 import Link from "next/link";
 import { useRouter } from "next/router";
+
+import { useSelector } from "react-redux";
+import { selectIsLoggedIn } from "@/redux/userSlice";
+import { persistor } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import { setLoginStatus, setUserData, setUserName } from "@/redux/userSlice";
 
 //TODO: modify header when the user is loggen in, logout option, profile data option, what more??
 //TODO: create custom 404 page
 function MainHeader() {
-  const { isLoggedIn, userData, setIsLoggedIn, setUserData } =
-    useContext(UserContext);
   const router = useRouter();
-  console.log("Is logged in:", isLoggedIn);
-  console.log("User data:", userData);
+
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const dispatch = useDispatch();
 
   const handleLogout = async () => {
     try {
       await axios.get(`${process.env.NEXT_PUBLIC_MAIN_URL}/users/logout`, {
         withCredentials: true,
       });
-      // Reset the context values
-      setIsLoggedIn(false);
-      setUserData(null);
+      // Reset Redux values
+      dispatch(setLoginStatus(false));
+      dispatch(setUserData(null));
+      dispatch(setUserName(null));
+      persistor.purge(); // Clear the persisted state
       router.push("/");
     } catch (error) {
       console.error("Error logging out:", error);
