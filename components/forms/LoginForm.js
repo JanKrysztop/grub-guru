@@ -34,6 +34,7 @@ const LoginForm = () => {
             withCredentials: true,
           }
         );
+        console.log("Profile", profileResponse.data);
         dispatch(setUserData(profileResponse.data));
       } catch (profileError) {
         console.error("Error fetching user profile:", profileError);

@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const secret = process.env.SECRET_KEY;
-
+//TODO: change this to arrow function
 function verifyToken(req, res, next) {
   const token = req.cookies.token;
   console.log("Token from cookies:", token);

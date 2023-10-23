@@ -1,10 +1,35 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { selectUserData } from "@/redux/userSlice";
-const Profile = () => {
-  const [isEditing, setIsEditing] = useState(false);
+import { useSelector, useDispatch } from "react-redux";
+import { selectUserData, setUserData } from "@/redux/userSlice";
+import axios from "axios";
 
+const Profile = () => {
+  const dispatch = useDispatch();
   const userData = useSelector(selectUserData);
+  const [isEditing, setIsEditing] = useState(false);
+  const [updatedData, setUpdatedData] = useState({
+    username: userData?.username || "",
+    email: userData?.email || "",
+    age: userData?.age || "",
+    weight: userData?.weight || "",
+    // ... any other user data fields
+  });
+
+  const updateProfile = async (payload) => {
+    try {
+      const response = await axios.put(
+        `${process.env.NEXT_PUBLIC_MAIN_URL}/users/update-profile`,
+        payload,
+        { withCredentials: true }
+      );
+      console.log(response.data);
+
+      // Update the Redux store with the new user data
+      dispatch(setUserData(response.data.user));
+    } catch (error) {
+      console.error("Error upadting profile", error);
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -16,9 +41,13 @@ const Profile = () => {
   };
 
   const handleSave = () => {
-    // Call API to save updated data
-    // Then update the context with the new data
-    // setUserData(updatedData);
+    const payload = {
+      userId: userData._id,
+      username: updatedData.username,
+      age: updatedData.age,
+      weight: updatedData.weight,
+    };
+    updateProfile(payload);
     setIsEditing(false);
   };
 
@@ -31,22 +60,63 @@ const Profile = () => {
 
         {isEditing ? (
           <>
+            <label
+              className="block mb-2 text-sm font-bold text-gray-700"
+              htmlFor="username"
+            >
+              Username
+            </label>
             <input
               type="text"
+              id="username"
               name="username"
               value={updatedData.username}
               onChange={handleInputChange}
               className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
               placeholder="Username"
             />
+
+            <label
+              className="block mb-2 text-sm font-bold text-gray-700"
+              htmlFor="age"
+            >
+              Age
+            </label>
             <input
+              type="text"
+              id="age"
+              name="age"
+              value={updatedData.age}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              placeholder="Age"
+            />
+
+            <label
+              className="block mb-2 text-sm font-bold text-gray-700"
+              htmlFor="weight"
+            >
+              Weight
+            </label>
+            <input
+              type="text"
+              id="weight"
+              name="weight"
+              value={updatedData.weight}
+              onChange={handleInputChange}
+              className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              placeholder="Weight"
+            />
+
+            {/* <input
               type="email"
               name="email"
               value={updatedData.email}
               onChange={handleInputChange}
               className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
               placeholder="Email"
-            />
+            /> */}
+
             {/* Add other input fields as needed */}
             <button
               onClick={handleSave}

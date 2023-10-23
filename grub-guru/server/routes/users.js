@@ -8,6 +8,7 @@ const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 
 const verifyToken = require("../middleware/verifyToken");
+const hasAuthorization = require("../middleware/authorization");
 
 let transporter = nodemailer.createTransport({
   service: "gmail",
@@ -191,4 +192,29 @@ router.get("/users", verifyToken, async (req, res) => {
   res.json(users);
 });
 
+router.put(
+  "/update-profile",
+  verifyToken,
+  hasAuthorization,
+  async (req, res) => {
+    const { userId, username, age, weight } = req.body;
+
+    try {
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      user.username = username;
+      user.age = age;
+      user.weight = weight;
+
+      await user.save();
+
+      res.status(200).json({ message: "Profile updated successfully", user });
+    } catch (error) {
+      res.status(500).json({ error: "Server error" });
+    }
+  }
+);
 module.exports = router;
