@@ -237,7 +237,13 @@ router.put("/change-password", verifyToken, async (req, res) => {
     // Update the password
     user.password = newPassword;
     await user.save();
-
+    //Send email
+    await transporter.sendMail({
+      from: process.env.EMAIL_USERNAME,
+      to: user.email,
+      subject: "Your password has been changed",
+      text: "Your password has been successfully changed. If you did not make this change, please contact support immediately.",
+    });
     res.status(200).json({ message: "Password updated successfully" });
   } catch (error) {
     console.error(error);
