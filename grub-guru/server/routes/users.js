@@ -217,4 +217,32 @@ router.put(
     }
   }
 );
+
+router.put("/change-password", verifyToken, async (req, res) => {
+  const { currentPassword, newPassword } = req.body;
+
+  try {
+    // Find the user by their ID (from the JWT token)
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Verify the current password
+    const isMatch = await user.comparePassword(currentPassword);
+    if (!isMatch) {
+      return res.status(400).json({ error: "Current password is incorrect" });
+    }
+
+    // Update the password
+    user.password = newPassword;
+    await user.save();
+
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 module.exports = router;

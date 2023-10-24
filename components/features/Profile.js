@@ -12,8 +12,10 @@ const Profile = () => {
     email: userData?.email || "",
     age: userData?.age || "",
     weight: userData?.weight || "",
-    // ... any other user data fields
   });
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
 
   const updateProfile = async (payload) => {
     try {
@@ -28,6 +30,24 @@ const Profile = () => {
       dispatch(setUserData(response.data.user));
     } catch (error) {
       console.error("Error upadting profile", error);
+    }
+  };
+
+  const handleChangePassword = async () => {
+    try {
+      const response = await axios.put(
+        `${process.env.NEXT_PUBLIC_MAIN_URL}/users/change-password`,
+        {
+          currentPassword,
+          newPassword,
+        },
+        { withCredentials: true }
+      );
+      console.log(response.data);
+      // Reset the form or show a success message
+    } catch (error) {
+      console.error("Error changing password", error);
+      // Handle the error, e.g., show an error message to the user
     }
   };
 
@@ -126,28 +146,81 @@ const Profile = () => {
             </button>
           </>
         ) : (
+          !isChangingPassword && (
+            <>
+              <p>
+                <strong>Username:</strong> {userData?.username}
+              </p>
+              <p>
+                <strong>Email:</strong> {userData?.email}
+              </p>
+              <p>
+                <strong>Age:</strong> {userData?.age}
+              </p>
+              <p>
+                <strong>Weight:</strong> {userData?.weight}
+              </p>
+              <button
+                onClick={handleEdit}
+                className="w-full px-3 py-2 text-white bg-blue-500 rounded hover:bg-blue-700 mt-4"
+              >
+                Edit Profile
+              </button>
+            </>
+          )
+        )}
+        {isChangingPassword ? (
           <>
-            <p>
-              <strong>Username:</strong> {userData?.username}
-            </p>
-            <p>
-              <strong>Email:</strong> {userData?.email}
-            </p>
-            <p>
-              <strong>Age:</strong> {userData?.age}
-            </p>
-            <p>
-              <strong>Weight:</strong> {userData?.weight}
-            </p>
-
-            {/* Display other user data as needed */}
-            <button
-              onClick={handleEdit}
-              className="w-full px-3 py-2 text-white bg-blue-500 rounded hover:bg-blue-700 mt-4"
+            <label
+              className="block mb-2 text-sm font-bold text-gray-700"
+              htmlFor="currentPassword"
             >
-              Edit Profile
+              Current Password
+            </label>
+            <input
+              type="password"
+              id="currentPassword"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              placeholder="Current Password"
+            />
+
+            <label
+              className="block mb-2 text-sm font-bold text-gray-700"
+              htmlFor="newPassword"
+            >
+              New Password
+            </label>
+            <input
+              type="password"
+              id="newPassword"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+              placeholder="New Password"
+            />
+
+            <button
+              onClick={handleChangePassword}
+              className="w-full px-3 py-2 text-white bg-green-500 rounded hover:bg-green-700"
+            >
+              Change Password
+            </button>
+            <button
+              onClick={() => setIsChangingPassword(false)}
+              className="w-full px-3 py-2 text-white bg-gray-500 rounded hover:bg-gray-700 mt-4"
+            >
+              Cancel
             </button>
           </>
+        ) : (
+          <button
+            onClick={() => setIsChangingPassword(true)}
+            className="w-full px-3 py-2 text-white bg-red-500 rounded hover:bg-red-700 mt-4"
+          >
+            Change Password
+          </button>
         )}
       </div>
     </div>
