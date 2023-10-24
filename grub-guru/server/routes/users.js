@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const secret = process.env.SECRET_KEY;
 const crypto = require("crypto");
+const bcrypt = require("bcryptjs");
 const nodemailer = require("nodemailer");
 
 const verifyToken = require("../middleware/verifyToken");
@@ -108,7 +109,9 @@ router.post("/login", async (req, res) => {
   if (!user) {
     return res.status(400).json({ error: "User not found" });
   }
-
+  // Log the hashed password and plaintext password
+  console.log("Hashed password from DB:", user.password);
+  console.log("Plaintext password from user:", password);
   try {
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
@@ -248,6 +251,78 @@ router.put("/change-password", verifyToken, async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Server error" });
+  }
+});
+
+router.post("/forgot-password", async (req, res) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    // Generate token and set expiration
+    const token = crypto.randomBytes(20).toString("hex");
+    user.resetPasswordToken = token;
+
+    const timezoneOffset = req.body.timezoneOffset;
+
+    // Create a new Date object for the expiration time
+    const resetPasswordExpires = new Date();
+    resetPasswordExpires.setMinutes(
+      resetPasswordExpires.getMinutes() - timezoneOffset + 60
+    );
+    user.resetPasswordExpires = resetPasswordExpires;
+
+    await user.save();
+
+    // Send email with reset link (you can use your existing email logic)
+    const mailOptions = {
+      from: process.env.EMAIL_USERNAME,
+      to: user.email,
+      subject: "Password Reset",
+      text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\nPlease click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n${process.env.APP_URL}/login/reset-password/${token}\n\nIf you did not request this, please ignore this email and your password will remain unchanged.\n`,
+    };
+
+    await transporter.sendMail(mailOptions);
+
+    res.status(200).json({ message: "Reset instructions sent to email" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Error processing request" });
+  }
+});
+
+router.post("/reset-password", async (req, res) => {
+  const { token, password } = req.body;
+
+  if (!token || !password) {
+    return res.status(400).json({ error: "Token and password are required." });
+  }
+
+  try {
+    // Find the user by the reset token
+    const user = await User.findOne({ resetPasswordToken: token });
+
+    if (!user) {
+      return res.status(400).json({ error: "Invalid token." });
+    }
+
+    // Hash the new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    // Update the user's password and clear the reset token
+    user.password = hashedPassword;
+    user.confirmation_token = undefined;
+    await user.save();
+
+    res.status(200).json({ message: "Password reset successfully." });
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while resetting the password." });
   }
 });
 
