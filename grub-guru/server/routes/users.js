@@ -110,6 +110,7 @@ router.post("/login", async (req, res) => {
     return res.status(400).json({ error: "User not found" });
   }
   // Log the hashed password and plaintext password
+  console.log("user", user);
   console.log("Hashed password from DB:", user.password);
   console.log("Plaintext password from user:", password);
   try {
@@ -294,6 +295,7 @@ router.post("/forgot-password", async (req, res) => {
 });
 
 router.post("/reset-password", async (req, res) => {
+  //TODO: add info if old password is the same as new one?
   const { token, password } = req.body;
 
   if (!token || !password) {
@@ -304,17 +306,14 @@ router.post("/reset-password", async (req, res) => {
     // Find the user by the reset token
     const user = await User.findOne({ resetPasswordToken: token });
 
-    if (!user) {
-      return res.status(400).json({ error: "Invalid token." });
+    if (!user || Date.now() > user.resetPasswordExpires) {
+      return res.status(400).json({ error: "Invalid or expired token." });
     }
 
-    // Hash the new password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
     // Update the user's password and clear the reset token
-    user.password = hashedPassword;
-    user.confirmation_token = undefined;
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
     await user.save();
 
     res.status(200).json({ message: "Password reset successfully." });
