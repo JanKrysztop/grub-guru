@@ -18,6 +18,7 @@ let transporter = nodemailer.createTransport({
     pass: process.env.EMAIL_PASSWORD,
   },
 });
+//TODO: logout user when redirecting to main page or closing the tab
 
 const sendConfirmationEmail = async (user, host, confirmationToken) => {
   //TODO: prevent sendind mutliple emails !
