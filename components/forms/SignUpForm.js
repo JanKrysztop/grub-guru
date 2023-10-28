@@ -279,18 +279,21 @@ function SignUpForm() {
 
   const steps = [
     <StepOne
+      key="step1"
       onNext={() => setCurrentStep((s) => s + 1)}
       formState={formState}
       handleInputChange={handleInputChange}
       handleGenderChange={handleGenderChange}
     />,
     <StepTwo
+      key="step2"
       onNext={() => setCurrentStep((s) => s + 1)}
       onPrev={() => setCurrentStep((s) => s - 1)}
       goal={goal}
       setGoal={setGoal}
     />,
     <StepThree
+      key="step3"
       onSubmit={handleSubmit}
       onPrev={() => setCurrentStep((s) => s - 1)}
       weightGoal={weightGoal}
