@@ -8,14 +8,15 @@ const BmiCalculator = () => {
   const [bmi, setBmi] = useState(null);
   const [bmiCategory, setBmiCategory] = useState("");
 
+  //TODO: add to redux?
   const calculateBMI = () => {
     if (weight && height) {
       const heightInMeters = height / 100;
-      const calcucatedBmi = (
+      const calculatedBmi = (
         weight /
         (heightInMeters * heightInMeters)
       ).toFixed(2);
-      setBmi(calcucatedBmi);
+      setBmi(calculatedBmi);
     }
 
     if (bmi < 18.5) {

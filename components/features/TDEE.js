@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+//TODO: put this into redux?
 const bmrFormulas = {
   Harris: {
     male: (weight, height, age) =>

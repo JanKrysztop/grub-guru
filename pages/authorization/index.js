@@ -1,4 +1,4 @@
-import SignUpForm from "@/components/forms/SignUpForm";
+import SignUpForm from "@/components/forms/signUp/SignUpForm";
 
 //TODO: add more error messages, disable double email accounts, some message that email has been sent, maybe some loader until request has no response
 function AuthPage() {
