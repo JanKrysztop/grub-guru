@@ -71,7 +71,7 @@ const SignUpForm = () => {
         weight /
         (heightInMeters * heightInMeters)
       ).toFixed(2);
-      const newFormula = calculatedBmi > 30 ? "Mifflin" : "Harris";
+      const newFormula = calculatedBmi >= 30 ? "Mifflin" : "Harris";
       setFormula(newFormula);
     }
   }, [formState.weight, formState.height]);
@@ -94,7 +94,8 @@ const SignUpForm = () => {
       console.log("GOAL", goalCalories);
       let finalCalories;
       if (goal === "lose") {
-        finalCalories = calculatedTdee - goalCalories;
+        finalCalories = Math.ceil(calculatedTdee - goalCalories / 7);
+        console.log("Final calories", finalCalories);
         if (finalCalories < calculatedBmr) {
           setError("Calories below BMR. Adjust your goal.");
         } else {
