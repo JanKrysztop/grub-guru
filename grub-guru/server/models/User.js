@@ -13,6 +13,7 @@ const UserSchema = new mongoose.Schema({
   height: { type: Number, required: true },
   weight: { type: Number, required: true },
   gender: { type: String, required: true },
+  recommendedCalories: { type: Number, required: true },
   resetPasswordToken: String,
   resetPasswordExpires: Date,
 });

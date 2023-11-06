@@ -38,7 +38,16 @@ const sendConfirmationEmail = async (user, host, confirmationToken) => {
 };
 
 router.post("/register", async (req, res) => {
-  const { username, password, email, age, height, weight, gender } = req.body;
+  const {
+    username,
+    password,
+    email,
+    age,
+    height,
+    weight,
+    gender,
+    recommendedCalories,
+  } = req.body;
   //TODO: add info about user/email already being used
   try {
     //Generate confirmation token
@@ -54,6 +63,7 @@ router.post("/register", async (req, res) => {
       height,
       weight,
       gender,
+      recommendedCalories,
       confirmation_token: confirmationToken,
       //confirmation_token_expires_at: confirmationTokenExpiresAt,
     });

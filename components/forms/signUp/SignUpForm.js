@@ -120,6 +120,10 @@ const SignUpForm = () => {
     }
   };
 
+  useEffect(() => {
+    calculateUserCalories();
+  }, [activity, weightGoal]);
+
   const handleInputChange = (event) => {
     setFormState({
       ...formState,
@@ -140,12 +144,12 @@ const SignUpForm = () => {
     try {
       calculateUserCalories();
       console.log(formState);
-      // const response = await axios.post(
-      //   `${process.env.NEXT_PUBLIC_MAIN_URL}/users/register`,
-      //   formState
-      // );
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_MAIN_URL}/users/register`,
+        formState
+      );
 
-      // console.log(response.data);
+      console.log(response.data);
     } catch (error) {
       console.error("Error:", error);
     }
