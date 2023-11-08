@@ -212,7 +212,7 @@ router.put(
   verifyToken,
   hasAuthorization,
   async (req, res) => {
-    const { userId, username, age, weight } = req.body;
+    const { userId, username, age, weight, recommendedCalories } = req.body;
 
     try {
       const user = await User.findById(userId);
@@ -223,6 +223,7 @@ router.put(
       user.username = username;
       user.age = age;
       user.weight = weight;
+      user.recommendedCalories = recommendedCalories;
 
       await user.save();
 

@@ -12,6 +12,7 @@ const Profile = () => {
     email: userData?.email || "",
     age: userData?.age || "",
     weight: userData?.weight || "",
+    recommendedCalories: userData?.recommendedCalories || "",
   });
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -66,6 +67,7 @@ const Profile = () => {
       username: updatedData.username,
       age: updatedData.age,
       weight: updatedData.weight,
+      recommendedCalories: updatedData.recommendedCalories,
     };
     updateProfile(payload);
     setIsEditing(false);
@@ -127,22 +129,32 @@ const Profile = () => {
               className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
               placeholder="Weight"
             />
-
-            {/* <input
-              type="email"
-              name="email"
-              value={updatedData.email}
+            <label
+              className="block mb-2 text-sm font-bold text-gray-700"
+              htmlFor="recommendedCalories"
+            >
+              Daily calories
+            </label>
+            <input
+              type="text"
+              id="recommendedCalories"
+              name="recommendedCalories"
+              value={updatedData.recommendedCalories}
               onChange={handleInputChange}
               className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              placeholder="Email"
-            /> */}
-
-            {/* Add other input fields as needed */}
+              placeholder="Calories"
+            />
             <button
               onClick={handleSave}
               className="w-full px-3 py-2 text-white bg-green-500 rounded hover:bg-green-700"
             >
               Save
+            </button>
+            <button
+              onClick={() => setIsEditing(false)}
+              className="w-full px-3 py-2 text-white bg-gray-500 rounded hover:bg-gray-700 mt-4"
+            >
+              Cancel
             </button>
           </>
         ) : (
@@ -159,6 +171,9 @@ const Profile = () => {
               </p>
               <p>
                 <strong>Weight:</strong> {userData?.weight}
+              </p>
+              <p>
+                <strong>Daily calories:</strong> {userData?.recommendedCalories}
               </p>
               <button
                 onClick={handleEdit}
@@ -215,12 +230,14 @@ const Profile = () => {
             </button>
           </>
         ) : (
-          <button
-            onClick={() => setIsChangingPassword(true)}
-            className="w-full px-3 py-2 text-white bg-red-500 rounded hover:bg-red-700 mt-4"
-          >
-            Change Password
-          </button>
+          !isEditing && (
+            <button
+              onClick={() => setIsChangingPassword(true)}
+              className="w-full px-3 py-2 text-white bg-red-500 rounded hover:bg-red-700 mt-4"
+            >
+              Change Password
+            </button>
+          )
         )}
       </div>
     </div>

@@ -3,7 +3,7 @@ import axios from "axios";
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
-
+//TODO: add confirmation for sent email
 //TODO: move activity levels to redux?
 const activityLevels = [
   { id: 1, label: "Sedentary (little or no exercise)", value: 1.2 },
@@ -122,7 +122,7 @@ const SignUpForm = () => {
 
   useEffect(() => {
     calculateUserCalories();
-  }, [activity, weightGoal]);
+  }, [activity, weightGoal, formula]);
 
   const handleInputChange = (event) => {
     setFormState({
