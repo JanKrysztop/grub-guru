@@ -7,6 +7,7 @@ const NutritionSchema = new mongoose.Schema({
   },
   date: Date,
   foods: [],
+  waterIntake: { Number },
 });
 
 module.exports = mongoose.model("Nutrition", NutritionSchema);

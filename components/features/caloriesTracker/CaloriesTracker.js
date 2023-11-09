@@ -24,6 +24,8 @@ const CaloriesTracker = () => {
   const [date, setDate] = useState(new Date());
   const [userId, setUserId] = useState(null);
   const [isNewProductModalOpen, setIsNewProductModalOpen] = useState(false);
+  const [waterIntake, setWaterIntake] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     const getUserId = async () => {
@@ -52,8 +54,10 @@ const CaloriesTracker = () => {
         `${process.env.NEXT_PUBLIC_MAIN_URL}/nutrition/daily-nutrients?userId=${userId}&date=${formattedDate}`
       );
       const fetchedFoods = response.data.foods || [];
+      const fetchedWaterIntake = response.data.waterIntake || 0;
       setConsumedFoods(fetchedFoods);
-
+      setWaterIntake(fetchedWaterIntake);
+      setActiveIndex(Math.floor(fetchedWaterIntake / 200));
       // Calculate total nutrients for the day
       const totalNutrients = fetchedFoods.reduce(
         (total, food) => {
@@ -87,6 +91,7 @@ const CaloriesTracker = () => {
         userId: userId,
         date: date,
         foods: foods,
+        waterIntake: waterIntake,
       };
       await axios.post(
         `${process.env.NEXT_PUBLIC_MAIN_URL}/nutrition/track-nutrition`,
@@ -96,6 +101,11 @@ const CaloriesTracker = () => {
       console.log(error);
     }
   };
+
+  //TODO: is this the best way to do this???
+  useEffect(() => {
+    saveConsumedFoods();
+  }, [waterIntake]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -168,6 +178,17 @@ const CaloriesTracker = () => {
   };
   const closeNewProductModal = () => {
     setIsNewProductModalOpen(false);
+  };
+
+  const handleIconClick = (index) => {
+    console.log(waterIntake, activeIndex);
+    if (index === activeIndex) {
+      setWaterIntake(waterIntake + 200);
+      setActiveIndex(index + 1);
+    } else if (index === activeIndex - 1) {
+      setWaterIntake(waterIntake - 200);
+      setActiveIndex(index);
+    }
   };
   return (
     <>
@@ -266,6 +287,35 @@ const CaloriesTracker = () => {
             </ul>
           </div>
         )}
+        <div className="mt-6 text-2xl text-gray-700">{waterIntake}/2800 ml</div>
+        <div className="grid gap-2 grid-cols-7 grid-rows-2 mt-4">
+          {Array.from({ length: 14 }).map((_, index) => (
+            <button
+              type="button"
+              key={index}
+              className="relative"
+              onClick={() => handleIconClick(index)}
+            >
+              <img
+                className={`w-14 ${
+                  index < activeIndex ? "opacity-100" : "opacity-25"
+                }`}
+                src={`/water.svg`}
+                alt="Water Icon"
+              />
+              {index === activeIndex && (
+                <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center">
+                  <span className="text-white text-xl">+</span>
+                </div>
+              )}
+              {index === activeIndex - 1 && (
+                <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center">
+                  <span className="text-white text-xl">-</span>
+                </div>
+              )}
+            </button>
+          ))}
+        </div>
       </div>
     </>
   );

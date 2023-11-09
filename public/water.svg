@@ -1,0 +1,38 @@
+      <svg height="200px" width="200px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <polygon style="fill:#F2F2F4;" points="416,512 96,512 48,0 464,0 "></polygon> <polygon style="fill:#DFDFE1;" points="254.4,0 254.4,512 416,512 464,0 "></polygon> <polygon style="fill:#98C8ED;" points="63,160 96,512 416,512 449,160 "></polygon> <polygon style="fill:#7AB9E8;" points="256,160 256,512 416,512 449,160 "></polygon> </g></svg>
+      <!-- <svg
+        height="200px"
+        width="200px"
+        version="1.1"
+        id="Layer_1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        viewBox="0 0 512 512"
+        xmlSpace="preserve"
+        fill="#000000"
+      >
+        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+        <g
+          id="SVGRepo_tracerCarrier"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        ></g>
+        <g id="SVGRepo_iconCarrier">
+          {" "}
+          <polygon
+            style={{ fill: "#F2F2F4" }}
+            points="416,512 96,512 48,0 464,0 "
+          ></polygon>{" "}
+          <polygon
+            style={{ fill: "#DFDFE1" }}
+            points="254.4,0 254.4,512 416,512 464,0 "
+          ></polygon>{" "}
+          <polygon
+            style={{ fill: "#98C8ED" }}
+            points="63,160 96,512 416,512 449,160 "
+          ></polygon>{" "}
+          <polygon
+            style={{ fill: "#7AB9E8" }}
+            points="256,160 256,512 416,512 449,160 "
+          ></polygon>{" "}
+        </g>
+      </svg> -->
