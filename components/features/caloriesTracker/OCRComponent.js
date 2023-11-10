@@ -61,7 +61,12 @@ const OCRComponent = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" />
+      <Webcam
+        audio={false}
+        ref={webcamRef}
+        screenshotFormat="image/jpeg"
+        videoConstraints={{ facingMode: "environment" }}
+      />
       <button
         onClick={capture}
         className={`mt-4 px-4 my-4 py-2 rounded w-64 ${
