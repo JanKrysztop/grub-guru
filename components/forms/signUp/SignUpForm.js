@@ -3,47 +3,16 @@ import axios from "axios";
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
+
+import { useSelector } from "react-redux";
+import { selectBmrFormulas } from "@/redux/bmrSlice";
+import { selectActivityLevels } from "@/redux/activitySlice";
 //TODO: add confirmation for sent email
-//TODO: move activity levels to redux?
-const activityLevels = [
-  { id: 1, label: "Sedentary (little or no exercise)", value: 1.2 },
-  {
-    id: 2,
-    label: "Lightly active (light exercise/sports 1-3 days/week)",
-    value: 1.375,
-  },
-  {
-    id: 3,
-    label: "Moderately active (moderate exercise/sports 3-5 days/week)",
-    value: 1.55,
-  },
-  {
-    id: 4,
-    label: "Very active (hard exercise/sports 6-7 days a week)",
-    value: 1.725,
-  },
-  {
-    id: 5,
-    label: "Extra active (very hard exercise/physical job & exercise)",
-    value: 1.9,
-  },
-];
-//TODO: put this into redux?
-const bmrFormulas = {
-  Harris: {
-    male: (weight, height, age) =>
-      13.397 * weight + 4.799 * height - 5.677 * age + 88.362,
-    female: (weight, height, age) =>
-      9.247 * weight + 3.098 * height - 4.33 * age + 447.593,
-  },
-  Mifflin: {
-    male: (weight, height, age) => 10 * weight + 6.25 * height - 5 * age + 5,
-    female: (weight, height, age) =>
-      10 * weight + 6.25 * height - 5 * age - 161,
-  },
-};
 
 const SignUpForm = () => {
+  const bmrFormulas = useSelector(selectBmrFormulas);
+  const activityLevels = useSelector(selectActivityLevels);
+
   const [formState, setFormState] = useState({
     username: "",
     password: "",

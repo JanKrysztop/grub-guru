@@ -1,48 +1,16 @@
 import { useState, useEffect } from "react";
-
-const bmrFormulas = {
-  Harris: {
-    male: (weight, height, age) =>
-      13.397 * weight + 4.799 * height - 5.677 * age + 88.362,
-    female: (weight, height, age) =>
-      9.247 * weight + 3.098 * height - 4.33 * age + 447.593,
-  },
-  Mifflin: {
-    male: (weight, height, age) => 10 * weight + 6.25 * height - 5 * age + 5,
-    female: (weight, height, age) =>
-      10 * weight + 6.25 * height - 5 * age - 161,
-  },
-};
+import { useSelector } from "react-redux";
+import { selectBmrFormulas } from "@/redux/bmrSlice";
 
 const BmrCalculator = () => {
+  const bmrFormulas = useSelector(selectBmrFormulas);
+
   const [weight, setWeight] = useState("");
   const [height, setHeight] = useState("");
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("female");
   const [bmr, setBmr] = useState(null);
   const [formula, setFormula] = useState("Harris");
-  const [bmiCategory, setBmiCategory] = useState("");
-
-  const calculateBMR = () => {
-    let calculatedBmr = 0;
-    if (formula === "Harris") {
-      if (gender === "male") {
-        calculatedBmr = 13.397 * weight + 4.799 * height - 6.677 * age + 88.362;
-        setBmr(calculatedBmr.toFixed(2));
-      } else {
-        calculatedBmr = 9.247 * weight + 3.098 * height - 4.33 * age + 447.593;
-        setBmr(calculatedBmr.toFixed(2));
-      }
-    } else {
-      if (gender === "male") {
-        calculatedBmr = 10 * weight + 6.25 * height - 5 * age + 5;
-        setBmr(calculatedBmr.toFixed(2));
-      } else {
-        calculatedBmr = 10 * weight + 6.25 * height - 5 * age - 161;
-        setBmr(calculatedBmr.toFixed(2));
-      }
-    }
-  };
 
   useEffect(() => {
     if (weight && height && age && bmrFormulas[formula][gender]) {
