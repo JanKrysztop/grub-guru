@@ -1,7 +1,11 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { selectUserData } from "@/redux/userSlice";
 //TODO: consider using this not as route but as modal????
 const CustomProductForm = ({ onClose }) => {
+  const userData = useSelector(selectUserData);
+
   const [formData, setFormData] = useState({
     label: "",
     ENERC_KCAL: "",
@@ -10,24 +14,7 @@ const CustomProductForm = ({ onClose }) => {
     FAT: "",
     servingSize: "",
   });
-  const [userId, setUserId] = useState(null);
-  useEffect(() => {
-    const getUserId = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_MAIN_URL}/users/me`,
-          {
-            withCredentials: true,
-          }
-        );
-        console.log("User ID:", response.data); // Adjust depending on how the data is structured in the response
-        setUserId(response.data.userId);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getUserId();
-  }, []);
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
@@ -48,7 +35,7 @@ const CustomProductForm = ({ onClose }) => {
           PROCNT: parseFloat(formData.PROCNT),
           FAT: parseFloat(formData.FAT),
         },
-        userId: userId,
+        userId: userData._id,
       };
 
       const response = await axios.post(

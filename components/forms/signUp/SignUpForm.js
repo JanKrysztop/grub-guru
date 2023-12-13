@@ -23,7 +23,7 @@ const SignUpForm = () => {
     gender: "",
     recommendedCalories: "",
   });
-  //TODO: move those into formState
+
   const [weightGoal, setWeightGoal] = useState("0.00");
   const [goal, setGoal] = useState("");
   const [activity, setActivity] = useState(activityLevels[0].value);

@@ -8,9 +8,13 @@ import FoodDetails from "./FoodDetails";
 import moment from "moment";
 import Link from "next/link";
 import NewProductModal from "../../ui/NewProductModal";
+import { useSelector } from "react-redux";
+import { selectUserData } from "@/redux/userSlice";
 //TODO: add API info to this component(watermark)
 //Rename to nutritionTracker???
 const CaloriesTracker = () => {
+  const userData = useSelector(selectUserData);
+
   const [food, setFood] = useState("");
   const [dailyNutrients, setDailyNutrients] = useState({
     calories: 0,
@@ -22,36 +26,17 @@ const CaloriesTracker = () => {
   const [foodDetails, setFoodDetails] = useState(null);
   const [consumedFoods, setConsumedFoods] = useState([]);
   const [date, setDate] = useState(new Date());
-  const [userId, setUserId] = useState(null);
   const [isNewProductModalOpen, setIsNewProductModalOpen] = useState(false);
   const [waterIntake, setWaterIntake] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  useEffect(() => {
-    const getUserId = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_MAIN_URL}/users/me`,
-          {
-            withCredentials: true,
-          }
-        );
-        console.log("User ID:", response.data); // Adjust depending on how the data is structured in the response
-        setUserId(response.data.userId);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    getUserId();
-  }, []);
-
   const fetchConsumedFoods = async () => {
-    if (!userId) return;
+    if (!userData._id) return;
     setConsumedFoods([]);
     try {
       const formattedDate = moment(date).format("YYYY-MM-DD");
       const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_MAIN_URL}/nutrition/daily-nutrients?userId=${userId}&date=${formattedDate}`
+        `${process.env.NEXT_PUBLIC_MAIN_URL}/nutrition/daily-nutrients?userId=${userData._id}&date=${formattedDate}`
       );
       const fetchedFoods = response.data.foods || [];
       const fetchedWaterIntake = response.data.waterIntake || 0;
@@ -83,12 +68,12 @@ const CaloriesTracker = () => {
 
   useEffect(() => {
     fetchConsumedFoods();
-  }, [date, userId]);
+  }, [date, userData._id]);
 
   const saveConsumedFoods = async (foods) => {
     try {
       const payload = {
-        userId: userId,
+        userId: userData._id,
         date: date,
         foods: foods,
         waterIntake: waterIntake,
@@ -125,7 +110,7 @@ const CaloriesTracker = () => {
       });
 
       const customFoodResponse = await axios.get(
-        `${process.env.NEXT_PUBLIC_MAIN_URL}/custom-food/${userId}`
+        `${process.env.NEXT_PUBLIC_MAIN_URL}/custom-food/${userData._id}`
       );
       console.log(customFoodResponse);
 
