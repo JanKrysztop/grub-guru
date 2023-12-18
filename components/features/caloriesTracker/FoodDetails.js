@@ -106,6 +106,7 @@ const FoodDetails = ({
       >
         Add to Consumed Foods
       </button>
+      {!food.isCustom && <img src={`/edamam-badge.svg`} alt="Badge Icon" />}
     </div>
   );
 };

@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectUserData } from "@/redux/userSlice";
-//TODO: consider using this not as route but as modal????
+
 const CustomProductForm = ({ onClose }) => {
   const userData = useSelector(selectUserData);
 
