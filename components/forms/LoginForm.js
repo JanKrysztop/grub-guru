@@ -5,9 +5,8 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { setLoginStatus, setUserName, setUserData } from "@/redux/userSlice";
 
-//TODO:  add password display, add option with password change with email??, add option to log in with email instead of username
 const LoginForm = () => {
-  const [username, setUsername] = useState("");
+  const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
@@ -21,7 +20,7 @@ const LoginForm = () => {
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_MAIN_URL}/users/login`,
-        { username, password },
+        { login, password },
         { withCredentials: true }
       );
       dispatch(setLoginStatus(true));
@@ -64,9 +63,9 @@ const LoginForm = () => {
         {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
         <input
           type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Username or email"
+          value={login}
+          onChange={(e) => setLogin(e.target.value)}
           className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
         />
         <input

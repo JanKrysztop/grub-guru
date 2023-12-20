@@ -113,9 +113,11 @@ router.get("/confirm/:token", async (req, res) => {
 
 router.post("/login", async (req, res) => {
   //TODO: add isConfirmed if statement
-  const { username, password } = req.body;
+  const { login, password } = req.body;
 
-  const user = await User.findOne({ username });
+  const user = await User.findOne({
+    $or: [{ username: login }, { email: login }],
+  });
 
   if (!user) {
     return res.status(400).json({ error: "User not found" });
