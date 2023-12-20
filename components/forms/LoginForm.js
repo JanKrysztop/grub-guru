@@ -5,11 +5,12 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { setLoginStatus, setUserName, setUserData } from "@/redux/userSlice";
 
-//TODO: change all functions to arrow functions for components, add password display, add option with password change with email??, add option to log in with email instead of username
+//TODO:  add password display, add option with password change with email??, add option to log in with email instead of username
 const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -69,12 +70,21 @@ const LoginForm = () => {
           className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
         />
         <input
-          type="password"
+          type={showPassword ? "text" : "password"}
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
         />
+        <div className="flex items-center mb-4">
+          <input
+            type="checkbox"
+            checked={showPassword}
+            onChange={() => setShowPassword(!showPassword)}
+            className="mr-2"
+          />
+          <label>Show Password</label>
+        </div>
         <button
           type="submit"
           className="w-full px-3 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
