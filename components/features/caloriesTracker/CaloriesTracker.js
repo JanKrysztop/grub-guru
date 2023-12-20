@@ -10,7 +10,6 @@ import Link from "next/link";
 import NewProductModal from "../../ui/NewProductModal";
 import { useSelector } from "react-redux";
 import { selectUserData } from "@/redux/userSlice";
-//TODO: add API info to this component(watermark)
 //Rename to nutritionTracker???
 const CaloriesTracker = () => {
   const userData = useSelector(selectUserData);
@@ -87,7 +86,6 @@ const CaloriesTracker = () => {
     }
   };
 
-  //TODO: is this the best way to do this???
   useEffect(() => {
     saveConsumedFoods();
   }, [waterIntake]);

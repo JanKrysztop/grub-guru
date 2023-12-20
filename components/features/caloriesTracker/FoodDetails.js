@@ -42,7 +42,7 @@ const FoodDetails = ({
         setFoodList(updatedFoods);
       }
       closeDeleteModal();
-      //TODO: add a reset to food list after this action
+
       food;
     } catch (error) {
       console.log(error);
@@ -52,12 +52,13 @@ const FoodDetails = ({
     <div className="flex flex-col items-center justify-center bg-white p-6 rounded shadow-lg">
       {food.isCustom && (
         <div>
-          <img
-            src={`/trash.svg`}
-            alt="Trash Icon"
+          <button
+            type="button"
             className="self-end mt-auto"
             onClick={showDeleteModal}
-          />
+          >
+            <img src={`/trash.svg`} alt="Trash Icon" />
+          </button>
           <DeleteModal
             isOpen={isDeleteModalOpen}
             onClose={closeDeleteModal}

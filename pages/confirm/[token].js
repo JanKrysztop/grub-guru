@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 
 // TODO: automatic login if the account has been verified
-function Confirm() {
+const Confirm = () => {
   const router = useRouter();
   const { token } = router.query;
 
@@ -56,6 +56,6 @@ function Confirm() {
       )}
     </div>
   );
-}
+};
 
 export default Confirm;
