@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import axios from "axios";
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
@@ -31,6 +32,11 @@ const SignUpForm = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formula, setFormula] = useState("");
   const [error, setError] = useState("");
+
+  const [confirmation, setConfirmation] = useState({
+    show: true,
+    type: "success",
+  });
 
   useEffect(() => {
     const { weight, height } = formState;
@@ -117,10 +123,11 @@ const SignUpForm = () => {
         `${process.env.NEXT_PUBLIC_MAIN_URL}/users/register`,
         formState
       );
-
+      setConfirmation({ show: true, type: "success" });
       console.log(response.data);
     } catch (error) {
       console.error("Error:", error);
+      setConfirmation({ show: true, type: "error" });
     }
   };
 
@@ -153,8 +160,38 @@ const SignUpForm = () => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      {error && <p className="error-message">{error}</p>}
-      {steps[currentStep]}
+      {!confirmation.show ? (
+        <>
+          {error && <p className="error-message">{error}</p>}
+          {steps[currentStep]}
+        </>
+      ) : (
+        <div className="p-4 max-w-md mx-auto">
+          {confirmation.type === "success" ? (
+            <div
+              className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4"
+              role="alert"
+            >
+              <p className="font-bold">Success</p>
+              <p className="mb-4">Registration successful! Welcome aboard.</p>
+              <Link
+                href="/login"
+                className="px-4 py-2 font-semibold text-white bg-green-500 rounded hover:bg-green-700"
+              >
+                Log in to your account
+              </Link>
+            </div>
+          ) : (
+            <div
+              className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4"
+              role="alert"
+            >
+              <p className="font-bold">Error</p>
+              <p>Registration failed. Please try again later.</p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };
