@@ -8,7 +8,6 @@ import StepThree from "./StepThree";
 import { useSelector } from "react-redux";
 import { selectBmrFormulas } from "@/redux/bmrSlice";
 import { selectActivityLevels } from "@/redux/activitySlice";
-//TODO: add confirmation for sent email
 
 const SignUpForm = () => {
   const bmrFormulas = useSelector(selectBmrFormulas);
@@ -34,8 +33,8 @@ const SignUpForm = () => {
   const [error, setError] = useState("");
 
   const [confirmation, setConfirmation] = useState({
-    show: true,
-    type: "success",
+    show: false,
+    type: "",
   });
 
   useEffect(() => {
@@ -155,6 +154,7 @@ const SignUpForm = () => {
       activity={activity}
       setActivity={setActivity}
       activityLevels={activityLevels}
+      goal={goal}
     />,
   ];
 

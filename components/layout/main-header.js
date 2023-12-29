@@ -9,7 +9,6 @@ import { persistor } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { setLoginStatus, setUserData, setUserName } from "@/redux/userSlice";
 
-//TODO: modify header when the user is loggen in, logout option, profile data option, what more??
 //TODO: create custom 404 page
 const MainHeader = () => {
   const router = useRouter();

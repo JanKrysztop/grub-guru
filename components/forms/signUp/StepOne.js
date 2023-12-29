@@ -1,5 +1,3 @@
-//TODO: add validation messages
-
 const StepOne = ({
   onNext,
   formState,
