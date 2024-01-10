@@ -1,5 +1,10 @@
 import Profile from "@/components/features/Profile";
-//TODO: Logout user if token is expired,
+import withAuth from "@/utils/withAuth";
+
+export const getServerSideProps = withAuth(async (ctx) => {
+  return { props: {} };
+});
+
 const ProfilePage = () => {
   return <Profile />;
 };

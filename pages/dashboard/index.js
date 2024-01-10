@@ -1,5 +1,10 @@
 import Dashboard from "@/components/views/Dashboard";
-//TODO: Logout user if token is expired,
+import withAuth from "@/utils/withAuth";
+
+export const getServerSideProps = withAuth(async (ctx) => {
+  return { props: {} };
+});
+
 const DashboardPage = () => {
   return <Dashboard />;
 };
