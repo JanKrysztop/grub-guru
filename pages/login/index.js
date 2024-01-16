@@ -1,6 +1,5 @@
 import LoginForm from "@/components/forms/LoginForm";
 
-//TODO:
 const LoginPage = () => {
   return (
     <div className="h-full">

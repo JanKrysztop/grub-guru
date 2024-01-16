@@ -5,7 +5,7 @@ export const getServerSideProps = withAuth(async (ctx) => {
   // Your page's server-side logic here
   return { props: {} };
 });
-//TODO: Logout user if token is expired,
+
 const CaloriesTrackerPage = () => {
   return <CaloriesTracker />;
 };

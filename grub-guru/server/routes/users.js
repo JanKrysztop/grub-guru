@@ -20,7 +20,6 @@ let transporter = nodemailer.createTransport({
 });
 
 const sendConfirmationEmail = async (user, host, confirmationToken) => {
-  //TODO: prevent sendind mutliple emails !
   //Send confirmation email
   const mailOptions = {
     from: process.env.EMAIL_USERNAME,
@@ -67,10 +66,10 @@ router.post("/register", async (req, res) => {
       //confirmation_token_expires_at: confirmationTokenExpiresAt,
     });
 
-    await sendConfirmationEmail(user, req.headers.host, confirmationToken);
-
     // Save user
     await user.save();
+    //Send email
+    await sendConfirmationEmail(user, req.headers.host, confirmationToken);
 
     res.status(201).json({
       message: "User created successfully, confirmation email sent",
@@ -111,7 +110,6 @@ router.get("/confirm/:token", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-  //TODO: add isConfirmed if statement
   const { login, password } = req.body;
 
   const user = await User.findOne({
@@ -121,10 +119,13 @@ router.post("/login", async (req, res) => {
   if (!user) {
     return res.status(400).json({ error: "User not found" });
   }
-  // Log the hashed password and plaintext password
-  console.log("user", user);
-  console.log("Hashed password from DB:", user.password);
-  console.log("Plaintext password from user:", password);
+  // Check if user's email is confirmed
+  if (!user.isConfirmed) {
+    return res.status(403).json({
+      error:
+        "Email not confirmed. Please check your email to confirm your account.",
+    });
+  }
   try {
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
@@ -308,7 +309,6 @@ router.post("/forgot-password", async (req, res) => {
 });
 
 router.post("/reset-password", async (req, res) => {
-  //TODO: add info if old password is the same as new one?
   const { token, password } = req.body;
 
   if (!token || !password) {

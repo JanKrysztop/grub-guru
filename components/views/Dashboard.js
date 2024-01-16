@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { selectUserName } from "@/redux/userSlice";
 
-//TODO: redirect thorug logo to dashboard if user is logged in
 const Dashboard = () => {
   const userName = useSelector(selectUserName);
   return (

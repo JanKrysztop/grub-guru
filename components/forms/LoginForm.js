@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 
@@ -14,6 +14,13 @@ const LoginForm = () => {
   const dispatch = useDispatch();
 
   const router = useRouter();
+
+  useEffect(() => {
+    localStorage.clear();
+    dispatch(setLoginStatus(false));
+    dispatch(setUserData(null));
+    dispatch(setUserName(null));
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

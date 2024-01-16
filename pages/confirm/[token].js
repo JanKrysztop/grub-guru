@@ -3,7 +3,7 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import Link from "next/link";
 
-// TODO: automatic login if the account has been verified
+// maybeTODO: automatic login if the account has been verified
 const Confirm = () => {
   const router = useRouter();
   const { token } = router.query;
