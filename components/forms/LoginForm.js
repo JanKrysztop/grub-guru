@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { setLoginStatus, setUserName, setUserData } from "@/redux/userSlice";
 
+import Input from "@mui/joy/Input";
+
 const LoginForm = () => {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
@@ -81,6 +83,21 @@ const LoginForm = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+        />
+        <Input
+          placeholder="asdasd"
+          size="lg"
+          sx={{
+            "--Input-focusedInset": "var(--any, )",
+            "--Input-focusedThickness": "0.25rem",
+            "--Input-focusedHighlight": "#549801",
+            "&::before": {
+              transition: "box-shadow .15s ease-in-out",
+            },
+            "&:focus-within": {
+              borderColor: "#549801",
+            },
+          }}
         />
         <div className="flex items-center mb-4">
           <input

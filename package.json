@@ -10,6 +10,10 @@
     "deploy": "cross-env NODE_ENV=production serverless deploy"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@fontsource/inter": "^5.0.16",
+    "@mui/joy": "^5.0.0-beta.23",
     "@reduxjs/toolkit": "^1.9.7",
     "autoprefixer": "10.4.14",
     "axios": "^1.4.0",
