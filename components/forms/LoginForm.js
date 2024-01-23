@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { setLoginStatus, setUserName, setUserData } from "@/redux/userSlice";
 
-import Input from "@mui/joy/Input";
+import CustomInput from "@/components/ui/CustomInput";
 
 const LoginForm = () => {
   const [login, setLogin] = useState("");
@@ -66,6 +66,12 @@ const LoginForm = () => {
         onSubmit={handleSubmit}
         className="w-full max-w-sm p-8 m-4 bg-white rounded shadow-md"
       >
+        <CustomInput
+          placeholder="User Name"
+          type="text"
+          value={login}
+          onChange={(e) => setLogin(e.target.value)}
+        />
         <h1 className="mb-4 text-2xl font-bold text-center text-gray-700">
           Log in
         </h1>
@@ -84,21 +90,7 @@ const LoginForm = () => {
           onChange={(e) => setPassword(e.target.value)}
           className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
         />
-        <Input
-          placeholder="asdasd"
-          size="lg"
-          sx={{
-            "--Input-focusedInset": "var(--any, )",
-            "--Input-focusedThickness": "0.25rem",
-            "--Input-focusedHighlight": "#549801",
-            "&::before": {
-              transition: "box-shadow .15s ease-in-out",
-            },
-            "&:focus-within": {
-              borderColor: "#549801",
-            },
-          }}
-        />
+
         <div className="flex items-center mb-4">
           <input
             type="checkbox"
