@@ -9,12 +9,19 @@ import { persistor } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { setLoginStatus, setUserData, setUserName } from "@/redux/userSlice";
 
+import { useColorScheme } from "@mui/joy/styles";
+import Switch from "@mui/joy/Switch";
+import DarkMode from "@mui/icons-material/DarkMode";
+import LightMode from "@mui/icons-material/LightMode";
+
 //TODO: create custom 404 page
 const MainHeader = () => {
   const router = useRouter();
 
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const dispatch = useDispatch();
+
+  const { mode, setMode } = useColorScheme();
 
   const handleLogout = async () => {
     try {
@@ -34,6 +41,21 @@ const MainHeader = () => {
 
   return (
     <header className="flex justify-between p-5 bg-gray-200">
+      <button onClick={() => setMode(mode === "dark" ? "light" : "dark")}>
+        Toggle Theme
+      </button>
+
+      <Switch
+        size="lg"
+        slotProps={{
+          input: { "aria-label": "Dark mode" },
+          thumb: {
+            children: mode === "dark" ? <DarkMode /> : <LightMode />,
+          },
+        }}
+        onChange={() => setMode(mode === "dark" ? "light" : "dark")}
+        sx={{ color: mode === "dark" ? "text.tertiary" : "" }}
+      />
       <Link href="/" className="text-2xl font-bold">
         Your Logo
       </Link>
