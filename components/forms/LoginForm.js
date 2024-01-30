@@ -5,8 +5,16 @@ import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { setLoginStatus, setUserName, setUserData } from "@/redux/userSlice";
 
+import Box from "@mui/joy/Box";
+import Button from "@mui/joy/Button";
+import Checkbox from "@mui/joy/Checkbox";
+import Link from "@mui/joy/Link";
+import Typography from "@mui/joy/Typography";
 import CustomInput from "@/components/ui/CustomInput";
-
+import DarkMode from "@mui/icons-material/DarkMode";
+import LightMode from "@mui/icons-material/LightMode";
+import IconButton from "@mui/joy/IconButton";
+import { useColorScheme } from "@mui/joy/styles";
 const LoginForm = () => {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
@@ -16,7 +24,7 @@ const LoginForm = () => {
   const dispatch = useDispatch();
 
   const router = useRouter();
-
+  const { mode, setMode } = useColorScheme();
   useEffect(() => {
     localStorage.clear();
     dispatch(setLoginStatus(false));
@@ -61,61 +69,172 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <form
-        onSubmit={handleSubmit}
-        className="w-full max-w-sm p-8 m-4 bg-white rounded shadow-md"
-      >
-        <CustomInput
-          placeholder="User Name"
-          type="text"
-          value={login}
-          onChange={(e) => setLogin(e.target.value)}
-        />
-        <h1 className="mb-4 text-2xl font-bold text-center text-gray-700">
-          Log in
-        </h1>
-        {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
-        <input
-          type="text"
-          placeholder="Username or email"
-          value={login}
-          onChange={(e) => setLogin(e.target.value)}
-          className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-        />
-        <input
-          type={showPassword ? "text" : "password"}
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-        />
+    <>
+      <IconButton
+        variant="soft"
+        size="lg"
+        sx={{
+          margin: "1rem",
 
-        <div className="flex items-center mb-4">
-          <input
-            type="checkbox"
-            checked={showPassword}
-            onChange={() => setShowPassword(!showPassword)}
-            className="mr-2"
-          />
-          <label>Show Password</label>
-        </div>
-        <button
-          type="submit"
-          className="w-full px-3 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
+          borderRadius: "40px",
+          backgroundColor: mode === "dark" ? "#292b29" : "#fafafa", // Replace '#yourLightModeColor' with the desired color for light mode
+          transition: "transform 0.3s ease-in-out", // Smooth transition for the hover effect
+          "&:hover": {
+            transform: "scale(1.1)", // Slightly increase the size on hover
+            backgroundColor:
+              mode === "dark" ? "#hoverColorDarkMode" : "#hoverColorLightMode", // Optionally change the background color on hover for each mode
+          },
+        }}
+        onClick={() => setMode(mode === "dark" ? "light" : "dark")}
+      >
+        {mode === "dark" ? <DarkMode /> : <LightMode />}
+      </IconButton>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          // justifyContent: "center",
+          minHeight: "100vh",
+          bgcolor: "background.default",
+        }}
+      >
+        <img src="/big-logo.svg" className="my-16" />
+
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{
+            width: "100%",
+            maxWidth: "sm",
+            p: 3,
+            m: 2,
+            bgcolor: "background.paper",
+            borderRadius: "md",
+            boxShadow: "md",
+          }}
         >
-          Log in
-        </button>
-        <div className="text-end mt-2">
-          <a
-            href="login/forgot-password"
-            className="text-m t-3 text-blue-500 hover:underline"
+          <Typography
+            variant="h5"
+            component="h1"
+            sx={{
+              mb: 4,
+              fontWeight: "bold",
+              textAlign: "center",
+              color: "text.primary",
+            }}
           >
-            Forgot Password?
-          </a>
-        </div>
-      </form>
-    </div>
+            Log in
+          </Typography>
+
+          {error && (
+            <Typography sx={{ mb: 4, color: "danger.main" }}>
+              {error}
+            </Typography>
+          )}
+
+          <CustomInput
+            id="username"
+            value={login}
+            onChange={(e) => setLogin(e.target.value)}
+            placeholder="Username or email"
+            // Add any other props you need for CustomInput
+          />
+
+          <CustomInput
+            id="password"
+            type={showPassword ? "text" : "password"}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            // Add any other props you need for CustomInput
+          />
+
+          <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
+            <Checkbox
+              checked={showPassword}
+              onChange={() => setShowPassword(!showPassword)}
+              id="show-password-checkbox"
+            />
+            <label
+              htmlFor="show-password-checkbox"
+              style={{ marginLeft: "8px" }}
+            >
+              Show Password
+            </label>
+          </Box>
+
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{ width: "100%", mt: 2 }}
+          >
+            Log in
+          </Button>
+
+          <Box sx={{ textAlign: "right", mt: 2 }}>
+            <Link href="login/forgot-password" underline="hover">
+              Forgot Password?
+            </Link>
+          </Box>
+        </Box>
+      </Box>
+    </>
+    // <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    //   <form
+    //     onSubmit={handleSubmit}
+    //     className="w-full max-w-sm p-8 m-4 bg-white rounded shadow-md"
+    //   >
+    //     <CustomInput
+    //       placeholder="User Name"
+    //       type="text"
+    //       value={login}
+    //       onChange={(e) => setLogin(e.target.value)}
+    //     />
+    //     <h1 className="mb-4 text-2xl font-bold text-center text-gray-700">
+    //       Log in
+    //     </h1>
+    //     {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
+    //     <input
+    //       type="text"
+    //       placeholder="Username or email"
+    //       value={login}
+    //       onChange={(e) => setLogin(e.target.value)}
+    //       className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+    //     />
+    //     <input
+    //       type={showPassword ? "text" : "password"}
+    //       placeholder="Password"
+    //       value={password}
+    //       onChange={(e) => setPassword(e.target.value)}
+    //       className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+    //     />
+
+    //     <div className="flex items-center mb-4">
+    //       <input
+    //         type="checkbox"
+    //         checked={showPassword}
+    //         onChange={() => setShowPassword(!showPassword)}
+    //         className="mr-2"
+    //       />
+    //       <label>Show Password</label>
+    //     </div>
+    //     <button
+    //       type="submit"
+    //       className="w-full px-3 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
+    //     >
+    //       Log in
+    //     </button>
+    //     <div className="text-end mt-2">
+    //       <a
+    //         href="login/forgot-password"
+    //         className="text-m t-3 text-blue-500 hover:underline"
+    //       >
+    //         Forgot Password?
+    //       </a>
+    //     </div>
+    //   </form>
+    // </div>
   );
 };
 

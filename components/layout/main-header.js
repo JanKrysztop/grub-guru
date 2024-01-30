@@ -13,6 +13,7 @@ import { useColorScheme } from "@mui/joy/styles";
 import Switch from "@mui/joy/Switch";
 import DarkMode from "@mui/icons-material/DarkMode";
 import LightMode from "@mui/icons-material/LightMode";
+import IconButton from "@mui/joy/IconButton";
 
 //TODO: create custom 404 page
 const MainHeader = () => {
@@ -41,21 +42,22 @@ const MainHeader = () => {
 
   return (
     <header className="flex justify-between p-5 bg-gray-200">
-      <button onClick={() => setMode(mode === "dark" ? "light" : "dark")}>
-        Toggle Theme
-      </button>
-
-      <Switch
-        size="lg"
-        slotProps={{
-          input: { "aria-label": "Dark mode" },
-          thumb: {
-            children: mode === "dark" ? <DarkMode /> : <LightMode />,
+      <IconButton
+        variant="soft"
+        sx={{
+          borderRadius: "40px",
+          backgroundColor: mode === "dark" ? "#292b29" : "#fafafa", // Replace '#yourLightModeColor' with the desired color for light mode
+          transition: "transform 0.3s ease-in-out", // Smooth transition for the hover effect
+          "&:hover": {
+            transform: "scale(1.1)", // Slightly increase the size on hover
+            backgroundColor:
+              mode === "dark" ? "#hoverColorDarkMode" : "#hoverColorLightMode", // Optionally change the background color on hover for each mode
           },
         }}
-        onChange={() => setMode(mode === "dark" ? "light" : "dark")}
-        sx={{ color: mode === "dark" ? "text.tertiary" : "" }}
-      />
+        onClick={() => setMode(mode === "dark" ? "light" : "dark")}
+      >
+        {mode === "dark" ? <DarkMode /> : <LightMode />}
+      </IconButton>
       <Link href="/" className="text-2xl font-bold">
         Your Logo
       </Link>

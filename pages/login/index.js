@@ -1,13 +1,11 @@
 import LoginForm from "@/components/forms/LoginForm";
+import { Box } from "@mui/joy";
 
 const LoginPage = () => {
   return (
-    <div className="h-full">
-      <h1 className="text-center text-2xl font-bold text-gray-900 mb-4">
-        Login page
-      </h1>
-      <LoginForm />
-    </div>
+    <Box>
+      <LoginForm />;
+    </Box>
   );
 };
 
