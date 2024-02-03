@@ -81,7 +81,7 @@ const MainHeader = () => {
           ) : (
             <>
               <li>
-                <Link href="/login" className="text-gray-700 hover:text-black ">
+                <Link href="/" className="text-gray-700 hover:text-black ">
                   Log In
                 </Link>
               </li>

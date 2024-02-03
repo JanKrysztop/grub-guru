@@ -10,7 +10,7 @@ const withAuth = (gssp) => async (ctx) => {
   if (!token) {
     return {
       redirect: {
-        destination: "/login",
+        destination: "/",
         permanent: false,
       },
       props: { tokenExpired: true },
@@ -35,7 +35,7 @@ const withAuth = (gssp) => async (ctx) => {
   if (tokenExpired) {
     return {
       redirect: {
-        destination: "/login",
+        destination: "/",
         permanent: false,
       },
       props: { tokenExpired },

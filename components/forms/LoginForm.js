@@ -10,11 +10,13 @@ import Button from "@mui/joy/Button";
 import Checkbox from "@mui/joy/Checkbox";
 import Link from "@mui/joy/Link";
 import Typography from "@mui/joy/Typography";
+import IconButton from "@mui/joy/IconButton";
 import CustomInput from "@/components/ui/CustomInput";
 import DarkMode from "@mui/icons-material/DarkMode";
 import LightMode from "@mui/icons-material/LightMode";
-import IconButton from "@mui/joy/IconButton";
+import Visibility from "@mui/icons-material/Visibility";
 import { useColorScheme } from "@mui/joy/styles";
+import { VisibilityOff } from "@mui/icons-material";
 const LoginForm = () => {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
@@ -67,6 +69,9 @@ const LoginForm = () => {
       }
     }
   };
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
 
   return (
     <>
@@ -99,7 +104,7 @@ const LoginForm = () => {
           bgcolor: "background.default",
         }}
       >
-        <img src="/big-logo.svg" className="my-16" />
+        <img src="/big-logo.svg" className="mb-16 md:mt-16" />
 
         <Box
           component="form"
@@ -109,24 +114,8 @@ const LoginForm = () => {
             maxWidth: "sm",
             p: 3,
             m: 2,
-            bgcolor: "background.paper",
-            borderRadius: "md",
-            boxShadow: "md",
           }}
         >
-          <Typography
-            variant="h5"
-            component="h1"
-            sx={{
-              mb: 4,
-              fontWeight: "bold",
-              textAlign: "center",
-              color: "text.primary",
-            }}
-          >
-            Log in
-          </Typography>
-
           {error && (
             <Typography sx={{ mb: 4, color: "danger.main" }}>
               {error}
@@ -138,7 +127,7 @@ const LoginForm = () => {
             value={login}
             onChange={(e) => setLogin(e.target.value)}
             placeholder="Username or email"
-            // Add any other props you need for CustomInput
+            className="mb-7"
           />
 
           <CustomInput
@@ -147,22 +136,14 @@ const LoginForm = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
-            // Add any other props you need for CustomInput
+            endDecorator={
+              !showPassword ? (
+                <Visibility onClick={togglePasswordVisibility} />
+              ) : (
+                <VisibilityOff onClick={togglePasswordVisibility} />
+              )
+            }
           />
-
-          <Box sx={{ display: "flex", alignItems: "center", mb: 2 }}>
-            <Checkbox
-              checked={showPassword}
-              onChange={() => setShowPassword(!showPassword)}
-              id="show-password-checkbox"
-            />
-            <label
-              htmlFor="show-password-checkbox"
-              style={{ marginLeft: "8px" }}
-            >
-              Show Password
-            </label>
-          </Box>
 
           <Button
             type="submit"
@@ -173,7 +154,7 @@ const LoginForm = () => {
           </Button>
 
           <Box sx={{ textAlign: "right", mt: 2 }}>
-            <Link href="login/forgot-password" underline="hover">
+            <Link href="/forgot-password" underline="hover">
               Forgot Password?
             </Link>
           </Box>

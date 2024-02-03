@@ -175,7 +175,7 @@ const SignUpForm = () => {
               <p className="font-bold">Success</p>
               <p className="mb-4">Registration successful! Welcome aboard.</p>
               <Link
-                href="/login"
+                href="/"
                 className="px-4 py-2 font-semibold text-white bg-green-500 rounded hover:bg-green-700"
               >
                 Log in to your account
