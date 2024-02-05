@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 import { useDispatch } from "react-redux";
 import { setLoginStatus, setUserName, setUserData } from "@/redux/userSlice";
@@ -35,7 +36,7 @@ const LoginForm = () => {
     dispatch(setLoginStatus(false));
     dispatch(setUserData(null));
     dispatch(setUserName(null));
-  }, []);
+  }, [dispatch]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -105,8 +106,10 @@ const LoginForm = () => {
           justifyContent: "space-between",
         }}
       >
-        <img src="/big-logo.svg" className="py-16 md:mt-16" />
-
+        <img src="/big-logo.svg" alt="Big Logo" className="py-16 md:mt-16" />
+        {/* <Box className="relative w-96 md:w-full h-24 md:h-36 py-16 md:mt-16">
+          <Image src="/big-logo.svg" alt="Big Logo" />
+        </Box> */}
         <Box
           component="form"
           onSubmit={handleSubmit}
@@ -163,7 +166,7 @@ const LoginForm = () => {
           }}
         >
           <Typography>
-            Don't have an account?{" "}
+            {"Don't have an account? "}
             <Link
               href="/forgot-password"
               underline="hover"
