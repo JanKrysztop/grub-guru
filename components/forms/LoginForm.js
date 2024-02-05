@@ -9,12 +9,15 @@ import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
 import Checkbox from "@mui/joy/Checkbox";
 import Link from "@mui/joy/Link";
+import Snackbar from "@mui/joy/Snackbar";
 import Typography from "@mui/joy/Typography";
 import IconButton from "@mui/joy/IconButton";
 import CustomInput from "@/components/ui/CustomInput";
+import CustomButton from "@/components/ui/CustomButton";
 import DarkMode from "@mui/icons-material/DarkMode";
 import LightMode from "@mui/icons-material/LightMode";
 import Visibility from "@mui/icons-material/Visibility";
+import InfoIcon from "@mui/icons-material/Info";
 import { useColorScheme } from "@mui/joy/styles";
 import { VisibilityOff } from "@mui/icons-material";
 const LoginForm = () => {
@@ -99,29 +102,23 @@ const LoginForm = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          // justifyContent: "center",
-          minHeight: "100vh",
-          bgcolor: "background.default",
+          justifyContent: "space-between",
         }}
       >
-        <img src="/big-logo.svg" className="mb-16 md:mt-16" />
+        <img src="/big-logo.svg" className="py-16 md:mt-16" />
 
         <Box
           component="form"
           onSubmit={handleSubmit}
           sx={{
+            textAlign: "center",
             width: "100%",
+            height: "50vh",
             maxWidth: "sm",
             p: 3,
             m: 2,
           }}
         >
-          {error && (
-            <Typography sx={{ mb: 4, color: "danger.main" }}>
-              {error}
-            </Typography>
-          )}
-
           <CustomInput
             id="username"
             value={login}
@@ -136,6 +133,7 @@ const LoginForm = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
+            className="mb-7"
             endDecorator={
               !showPassword ? (
                 <Visibility onClick={togglePasswordVisibility} />
@@ -145,77 +143,55 @@ const LoginForm = () => {
             }
           />
 
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{ width: "100%", mt: 2 }}
+          <CustomButton type="submit">Log in</CustomButton>
+          <Link
+            href="/forgot-password"
+            underline="hover"
+            sx={{
+              textAlign: "center",
+              color: "#E78B01",
+              fontWeight: "100",
+              mt: 5,
+            }}
           >
-            Log in
-          </Button>
-
-          <Box sx={{ textAlign: "right", mt: 2 }}>
-            <Link href="/forgot-password" underline="hover">
-              Forgot Password?
-            </Link>
-          </Box>
+            Forgot Password?
+          </Link>
         </Box>
+        <Box
+          sx={{
+            height: "100%",
+          }}
+        >
+          <Typography>
+            Don't have an account?{" "}
+            <Link
+              href="/forgot-password"
+              underline="hover"
+              sx={{ color: "#E78B01" }}
+            >
+              Sign up
+            </Link>
+          </Typography>
+        </Box>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          autoHideDuration={4000}
+          open={error}
+          variant="solid"
+          color="danger"
+          size="lg"
+          onClose={() => {
+            setError(null);
+          }}
+        >
+          <InfoIcon />
+          {error}
+        </Snackbar>
       </Box>
     </>
-    // <div className="flex items-center justify-center min-h-screen bg-gray-100">
-    //   <form
-    //     onSubmit={handleSubmit}
-    //     className="w-full max-w-sm p-8 m-4 bg-white rounded shadow-md"
-    //   >
-    //     <CustomInput
-    //       placeholder="User Name"
-    //       type="text"
-    //       value={login}
-    //       onChange={(e) => setLogin(e.target.value)}
-    //     />
-    //     <h1 className="mb-4 text-2xl font-bold text-center text-gray-700">
-    //       Log in
-    //     </h1>
-    //     {error && <p className="mb-4 text-sm text-red-500">{error}</p>}
-    //     <input
-    //       type="text"
-    //       placeholder="Username or email"
-    //       value={login}
-    //       onChange={(e) => setLogin(e.target.value)}
-    //       className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-    //     />
-    //     <input
-    //       type={showPassword ? "text" : "password"}
-    //       placeholder="Password"
-    //       value={password}
-    //       onChange={(e) => setPassword(e.target.value)}
-    //       className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-    //     />
-
-    //     <div className="flex items-center mb-4">
-    //       <input
-    //         type="checkbox"
-    //         checked={showPassword}
-    //         onChange={() => setShowPassword(!showPassword)}
-    //         className="mr-2"
-    //       />
-    //       <label>Show Password</label>
-    //     </div>
-    //     <button
-    //       type="submit"
-    //       className="w-full px-3 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
-    //     >
-    //       Log in
-    //     </button>
-    //     <div className="text-end mt-2">
-    //       <a
-    //         href="login/forgot-password"
-    //         className="text-m t-3 text-blue-500 hover:underline"
-    //       >
-    //         Forgot Password?
-    //       </a>
-    //     </div>
-    //   </form>
-    // </div>
   );
 };
 
