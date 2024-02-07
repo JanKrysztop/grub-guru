@@ -79,7 +79,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <IconButton
+      {/* <IconButton
         variant="soft"
         size="lg"
         sx={{
@@ -97,7 +97,7 @@ const LoginForm = () => {
         onClick={() => setMode(mode === "dark" ? "light" : "dark")}
       >
         {mode === "dark" ? <DarkMode /> : <LightMode />}
-      </IconButton>
+      </IconButton> */}
       <Box
         sx={{
           display: "flex",
