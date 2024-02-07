@@ -1,13 +1,11 @@
 import SignUpForm from "@/components/forms/signUp/SignUpForm";
+import Box from "@mui/joy/Box";
 
 const AuthPage = () => {
   return (
-    <div className="h-full">
-      <h1 className="text-center text-2xl font-bold text-gray-900 mb-4">
-        Authorization page
-      </h1>
+    <Box>
       <SignUpForm />
-    </div>
+    </Box>
   );
 };
 

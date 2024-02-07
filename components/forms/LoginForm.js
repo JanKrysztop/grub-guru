@@ -168,7 +168,7 @@ const LoginForm = () => {
           <Typography>
             {"Don't have an account? "}
             <Link
-              href="/forgot-password"
+              href="/authorization"
               underline="hover"
               sx={{ color: "#E78B01" }}
             >

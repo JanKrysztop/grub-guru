@@ -5,6 +5,16 @@ import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
 
+import Box from "@mui/joy/Box";
+import Card from "@mui/joy/Card";
+import CardContent from "@mui/joy/CardContent";
+import CustomInput from "@/components/ui/CustomInput";
+import CustomButton from "@/components/ui/CustomButton";
+import InfoIcon from "@mui/icons-material/Info";
+import { CheckCircle } from "@mui/icons-material";
+import Snackbar from "@mui/joy/Snackbar";
+import { useRouter } from "next/router";
+
 import { useSelector } from "react-redux";
 import { selectBmrFormulas } from "@/redux/bmrSlice";
 import { selectActivityLevels } from "@/redux/activitySlice";
@@ -159,7 +169,15 @@ const SignUpForm = () => {
   ];
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "90vh",
+      }}
+    >
       {!confirmation.show ? (
         <>
           {error && <p className="error-message">{error}</p>}
@@ -192,7 +210,41 @@ const SignUpForm = () => {
           )}
         </div>
       )}
-    </div>
+    </Box>
+    // <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    //   {!confirmation.show ? (
+    //     <>
+    //       {error && <p className="error-message">{error}</p>}
+    //       {steps[currentStep]}
+    //     </>
+    //   ) : (
+    //     <div className="p-4 max-w-md mx-auto">
+    //       {confirmation.type === "success" ? (
+    //         <div
+    //           className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4"
+    //           role="alert"
+    //         >
+    //           <p className="font-bold">Success</p>
+    //           <p className="mb-4">Registration successful! Welcome aboard.</p>
+    //           <Link
+    //             href="/"
+    //             className="px-4 py-2 font-semibold text-white bg-green-500 rounded hover:bg-green-700"
+    //           >
+    //             Log in to your account
+    //           </Link>
+    //         </div>
+    //       ) : (
+    //         <div
+    //           className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4"
+    //           role="alert"
+    //         >
+    //           <p className="font-bold">Error</p>
+    //           <p>Registration failed. Please try again later.</p>
+    //         </div>
+    //       )}
+    //     </div>
+    //   )}
+    // </div>
   );
 };
 

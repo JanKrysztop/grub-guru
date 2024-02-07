@@ -43,71 +43,67 @@ const ForgotPassword = () => {
   };
 
   return (
-    <>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          minHeight: "90vh",
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "90vh",
+      }}
+    >
+      <Card sx={{ width: 420, py: 5 }}>
+        <CardContent>
+          <form onSubmit={handleSubmit}>
+            <CustomInput
+              id="email"
+              type={"email"}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Type in your email"
+              className="mb-7"
+            />
+            <CustomButton type="submit" loading={loading}>
+              Send Reset Instructions
+            </CustomButton>
+          </form>
+        </CardContent>
+      </Card>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        autoHideDuration={4000}
+        open={error}
+        variant="solid"
+        color="danger"
+        size="lg"
+        onClose={() => {
+          setError(null);
         }}
       >
-        <Card sx={{ width: 420, py: 5 }}>
-          <CardContent>
-            <CardContent>
-              <form onSubmit={handleSubmit}>
-                <CustomInput
-                  id="email"
-                  type={"email"}
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Type in your email"
-                  className="mb-7"
-                />
-                <CustomButton type="submit" loading={loading}>
-                  Send Reset Instructions
-                </CustomButton>
-              </form>
-            </CardContent>
-          </CardContent>
-        </Card>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center",
-          }}
-          autoHideDuration={4000}
-          open={error}
-          variant="solid"
-          color="danger"
-          size="lg"
-          onClose={() => {
-            setError(null);
-          }}
-        >
-          <InfoIcon />
-          {error}
-        </Snackbar>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center",
-          }}
-          autoHideDuration={4000}
-          open={message}
-          variant="solid"
-          color="success"
-          size="lg"
-          onClose={() => {
-            setMessage(null);
-          }}
-        >
-          <CheckCircle />
-          {message}
-        </Snackbar>
-      </Box>
-    </>
+        <InfoIcon />
+        {error}
+      </Snackbar>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        autoHideDuration={4000}
+        open={message}
+        variant="solid"
+        color="success"
+        size="lg"
+        onClose={() => {
+          setMessage(null);
+        }}
+      >
+        <CheckCircle />
+        {message}
+      </Snackbar>
+    </Box>
   );
 };
 
