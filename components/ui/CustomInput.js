@@ -3,6 +3,7 @@ import { forwardRef } from "react";
 const customInputStyles = {
   height: "40px",
   borderRadius: "16px",
+  width: "100%",
   "&.MuiInput-root.Mui-focused, &.MuiInput-root.Mui-focused::before": {
     boxShadow: `inset 0 0 0 2px #549801`,
   },

@@ -209,6 +209,32 @@ router.get("/users", verifyToken, async (req, res) => {
   res.json(users);
 });
 
+router.post("/check-unique", async (req, res) => {
+  const { username, email } = req.body;
+
+  try {
+    const userByUsername = await User.findOne({ username });
+    const userByEmail = await User.findOne({ email });
+    if (userByUsername && userByEmail) {
+      return res
+        .status(409)
+        .json({ error: "Both username and email are already taken." });
+    }
+
+    if (userByUsername) {
+      return res.status(409).json({ error: "Username is already taken." });
+    }
+
+    if (userByEmail) {
+      return res.status(409).json({ error: "Email is already registered." });
+    }
+
+    res.status(200).json({ message: "Username and email are unique." });
+  } catch (error) {
+    res.status(500).json({ error: "Server error while checking uniqueness." });
+  }
+});
+
 router.put(
   "/update-profile",
   verifyToken,
