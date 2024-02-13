@@ -1,3 +1,11 @@
+import Box from "@mui/joy/Box";
+import Typography from "@mui/joy/Typography";
+import CustomButton from "@/components/ui/CustomButton";
+import Select from "@mui/joy/Select";
+import Option from "@mui/joy/Option";
+import { useEffect } from "react";
+import Slider from "@mui/joy/Slider";
+
 const StepThree = ({
   onPrev,
   onSubmit,
@@ -8,22 +16,90 @@ const StepThree = ({
   activityLevels,
   goal,
 }) => {
+  const handleChange = (eventOrValue) => {
+    console.log(eventOrValue); // Log the first argument to see what's being passed.
+    // Then determine how to correctly set the activity based on what's logged.
+  };
+  useEffect(() => {
+    console.log(activity);
+  }, [activity]);
+  console.log("Current activity state:", activity);
   return (
-    <div className="p-6 bg-white rounded shadow-lg max-w-md mx-auto">
-      <h2 className="text-lg font-bold mb-4">Select your activity</h2>
-      <select value={activity} onChange={(e) => setActivity(e.target.value)}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
+        width: "100%",
+        maxWidth: "sm",
+        p: 3,
+        m: 2,
+      }}
+    >
+      <Typography
+        sx={{
+          fontSize: "24px",
+          fontWeight: "bold",
+          mb: 3,
+        }}
+      >
+        Select your activity
+      </Typography>
+      <Select
+        value={activity}
+        onChange={(e, newValue) => setActivity(newValue)}
+        sx={{ width: "100%", mb: 3 }}
+      >
         {activityLevels.map((level) => (
-          <option key={level.id} value={level.value}>
+          <Option key={level.id} value={level.value}>
             {level.label}
-          </option>
+          </Option>
         ))}
-      </select>
+      </Select>
       {goal !== "maintain" && (
         <>
-          <h2 className="text-lg font-bold mb-4">Set Your Goal</h2>
+          <Typography
+            sx={{
+              fontSize: "24px",
+              fontWeight: "bold",
+              mb: 5,
+            }}
+          >
+            Set your goal
+          </Typography>
           <label htmlFor="weightGoal" className="block mb-2">
             Kilos per week:
           </label>
+          <Slider
+            defaultValue={0}
+            step={0.1}
+            marks
+            min={0}
+            max={1}
+            valueLabelDisplay="on"
+            sx={{
+              "--Slider-thumbBackground": "#549801",
+              "--Slider-thumbColor": "#549801",
+              "--Slider-trackBackground": "#549801",
+              "&:hover": {
+                "--Slider-thumbBackground": "#0D5E33",
+                "--Slider-trackBackground": "#0D5E33",
+                "--Slider-thumbColor": "#0D5E33",
+              },
+              ".MuiSlider-thumb": {
+                "&:hover, &.Mui-focusVisible, &.Mui-active": {
+                  "--Slider-thumbBackground": "#0D5E33", // Change thumb color when active/hovered
+                },
+              },
+              ".MuiSlider-track": {
+                "&:hover, &.Mui-focusVisible, &.Mui-active": {
+                  "--Slider-trackBackground": "#0D5E33", // Change track color when active/hovered
+                },
+              },
+            }}
+          />
           <div className="flex items-center mb-4">
             <button
               type="button"
@@ -68,7 +144,7 @@ const StepThree = ({
       >
         Submit
       </button>
-    </div>
+    </Box>
   );
 };
 

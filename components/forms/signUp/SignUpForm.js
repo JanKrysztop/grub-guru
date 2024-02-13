@@ -6,6 +6,11 @@ import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
 
 import Box from "@mui/joy/Box";
+import Stepper from "@mui/joy/Stepper";
+import Step from "@mui/joy/Step";
+import StepButton from "@mui/joy/StepButton";
+import StepIndicator from "@mui/joy/StepIndicator";
+import Check from "@mui/icons-material/Check";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import CustomInput from "@/components/ui/CustomInput";
@@ -46,7 +51,8 @@ const SignUpForm = () => {
     show: false,
     type: "",
   });
-
+  const [activeStep, setActiveStep] = useState(1);
+  const stepsNames = ["Order placed", "In review", "Approved"];
   useEffect(() => {
     const { weight, height } = formState;
     if (weight && height) {
@@ -178,6 +184,45 @@ const SignUpForm = () => {
         minHeight: "90vh",
       }}
     >
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          width: "100%",
+          maxWidth: "sm",
+          p: 3,
+          m: 2,
+        }}
+      >
+        <Stepper sx={{ width: "100%" }}>
+          {stepsNames.map((stepName, index) => (
+            <Step
+              key={stepName}
+              indicator={
+                <StepIndicator
+                  variant={activeStep <= index ? "soft" : "solid"}
+                  color={activeStep < index ? "neutral" : "primary"}
+                >
+                  {activeStep <= index ? index + 1 : <Check />}
+                </StepIndicator>
+              }
+              sx={{
+                "&::after": {
+                  ...(activeStep > index &&
+                    index !== 2 && { bgcolor: "primary.solidBg" }),
+                },
+              }}
+            >
+              <StepButton onClick={() => setActiveStep(index)}>
+                {stepName}
+              </StepButton>
+            </Step>
+          ))}
+        </Stepper>
+      </Box>
       {!confirmation.show ? (
         <>
           {error && <p className="error-message">{error}</p>}
