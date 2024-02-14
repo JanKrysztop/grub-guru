@@ -45,14 +45,13 @@ const SignUpForm = () => {
 
   const [currentStep, setCurrentStep] = useState(0);
   const [formula, setFormula] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
 
   const [confirmation, setConfirmation] = useState({
     show: false,
     type: "",
   });
-  const [activeStep, setActiveStep] = useState(1);
-  const stepsNames = ["Order placed", "In review", "Approved"];
+
   useEffect(() => {
     const { weight, height } = formState;
     if (weight && height) {
@@ -93,7 +92,7 @@ const SignUpForm = () => {
             ...prevState,
             recommendedCalories: finalCalories,
           }));
-          setError("");
+          setError(null);
         }
       } else if (goal === "gain") {
         finalCalories = calculatedTdee + goalCalories;
@@ -148,21 +147,21 @@ const SignUpForm = () => {
 
   const steps = [
     <StepOne
-      key="step1"
+      key="Basics"
       onNext={() => setCurrentStep((s) => s + 1)}
       formState={formState}
       handleInputChange={handleInputChange}
       handleGenderChange={handleGenderChange}
     />,
     <StepTwo
-      key="step2"
+      key="Goal"
       onNext={() => setCurrentStep((s) => s + 1)}
       onPrev={() => setCurrentStep((s) => s - 1)}
       goal={goal}
       setGoal={setGoal}
     />,
     <StepThree
-      key="step3"
+      key="Plan"
       onSubmit={handleSubmit}
       onPrev={() => setCurrentStep((s) => s - 1)}
       weightGoal={weightGoal}
@@ -171,6 +170,7 @@ const SignUpForm = () => {
       setActivity={setActivity}
       activityLevels={activityLevels}
       goal={goal}
+      error={error}
     />,
   ];
 
@@ -198,36 +198,41 @@ const SignUpForm = () => {
         }}
       >
         <Stepper sx={{ width: "100%" }}>
-          {stepsNames.map((stepName, index) => (
+          {steps.map((step, index) => (
             <Step
-              key={stepName}
+              key={step.key}
               indicator={
                 <StepIndicator
-                  variant={activeStep <= index ? "soft" : "solid"}
-                  color={activeStep < index ? "neutral" : "primary"}
+                  variant={currentStep <= index ? "soft" : "solid"}
+                  color={currentStep < index ? "neutral" : "success"}
+                  sx={{
+                    // ...(currentStep < index && {
+                    //   bgcolor: "#549801",
+                    // }),
+                    ...(currentStep === index && {
+                      bgcolor: "#549801",
+                    }),
+                  }}
                 >
-                  {activeStep <= index ? index + 1 : <Check />}
+                  {currentStep <= index ? index + 1 : <Check />}
                 </StepIndicator>
               }
               sx={{
                 "&::after": {
-                  ...(activeStep > index &&
-                    index !== 2 && { bgcolor: "primary.solidBg" }),
+                  ...(currentStep > index &&
+                    index !== steps.length - 1 && { bgcolor: "#549801" }),
                 },
               }}
             >
-              <StepButton onClick={() => setActiveStep(index)}>
-                {stepName}
+              <StepButton onClick={() => setCurrentStep(index)}>
+                {step.key}
               </StepButton>
             </Step>
           ))}
         </Stepper>
       </Box>
       {!confirmation.show ? (
-        <>
-          {error && <p className="error-message">{error}</p>}
-          {steps[currentStep]}
-        </>
+        <>{steps[currentStep]}</>
       ) : (
         <div className="p-4 max-w-md mx-auto">
           {confirmation.type === "success" ? (
@@ -255,41 +260,20 @@ const SignUpForm = () => {
           )}
         </div>
       )}
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        open={error}
+        variant="solid"
+        color="danger"
+        size="lg"
+      >
+        <InfoIcon />
+        {error}
+      </Snackbar>
     </Box>
-    // <div className="flex items-center justify-center min-h-screen bg-gray-100">
-    //   {!confirmation.show ? (
-    //     <>
-    //       {error && <p className="error-message">{error}</p>}
-    //       {steps[currentStep]}
-    //     </>
-    //   ) : (
-    //     <div className="p-4 max-w-md mx-auto">
-    //       {confirmation.type === "success" ? (
-    //         <div
-    //           className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4"
-    //           role="alert"
-    //         >
-    //           <p className="font-bold">Success</p>
-    //           <p className="mb-4">Registration successful! Welcome aboard.</p>
-    //           <Link
-    //             href="/"
-    //             className="px-4 py-2 font-semibold text-white bg-green-500 rounded hover:bg-green-700"
-    //           >
-    //             Log in to your account
-    //           </Link>
-    //         </div>
-    //       ) : (
-    //         <div
-    //           className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4"
-    //           role="alert"
-    //         >
-    //           <p className="font-bold">Error</p>
-    //           <p>Registration failed. Please try again later.</p>
-    //         </div>
-    //       )}
-    //     </div>
-    //   )}
-    // </div>
   );
 };
 

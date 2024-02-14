@@ -66,7 +66,7 @@ const StepTwo = ({ onPrev, onNext, goal, setGoal }) => {
           sx={{
             width: "100% ",
             height: "40px ",
-            borderRadius: "16px",
+            borderRadius: "16px !important",
             // backgroundColor: "#292B29",
             ...(goal === "maintain" && {
               backgroundColor: "#F7D9BB!important",
