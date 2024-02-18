@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
+
 import axios from "axios";
 import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
@@ -13,9 +14,13 @@ import StepIndicator from "@mui/joy/StepIndicator";
 import Check from "@mui/icons-material/Check";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
+import CardOverflow from "@mui/joy/CardOverflow";
+import AspectRatio from "@mui/joy/AspectRatio";
 import CustomInput from "@/components/ui/CustomInput";
 import CustomButton from "@/components/ui/CustomButton";
+import CardActions from "@mui/joy/CardActions";
 import InfoIcon from "@mui/icons-material/Info";
+import Typography from "@mui/joy/Typography";
 import { CheckCircle } from "@mui/icons-material";
 import Snackbar from "@mui/joy/Snackbar";
 import { useRouter } from "next/router";
@@ -44,6 +49,7 @@ const SignUpForm = () => {
   const [activity, setActivity] = useState(activityLevels[0].value);
 
   const [currentStep, setCurrentStep] = useState(0);
+  const [completedSteps, setCompletedSteps] = useState(["Basics"]);
   const [formula, setFormula] = useState("");
   const [error, setError] = useState(null);
 
@@ -51,7 +57,7 @@ const SignUpForm = () => {
     show: false,
     type: "",
   });
-
+  const router = useRouter();
   useEffect(() => {
     const { weight, height } = formState;
     if (weight && height) {
@@ -144,18 +150,29 @@ const SignUpForm = () => {
       setConfirmation({ show: true, type: "error" });
     }
   };
+  const handleNext = (upcomingStepIndex) => {
+    const stepKey = steps[upcomingStepIndex].key; // Get the current step's key
+
+    setCompletedSteps((prevCompletedSteps) => {
+      // Ensure we're not duplicating keys in the array
+      const newCompletedSteps = new Set([...prevCompletedSteps, stepKey]);
+      return [...newCompletedSteps];
+    });
+
+    setCurrentStep((s) => s + 1); // Move to the next step
+  };
 
   const steps = [
     <StepOne
       key="Basics"
-      onNext={() => setCurrentStep((s) => s + 1)}
+      onNext={() => handleNext(1)}
       formState={formState}
       handleInputChange={handleInputChange}
       handleGenderChange={handleGenderChange}
     />,
     <StepTwo
       key="Goal"
-      onNext={() => setCurrentStep((s) => s + 1)}
+      onNext={() => handleNext(2)}
       onPrev={() => setCurrentStep((s) => s - 1)}
       goal={goal}
       setGoal={setGoal}
@@ -180,7 +197,7 @@ const SignUpForm = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
+        justifyContent: "flex-start",
         minHeight: "90vh",
       }}
     >
@@ -224,55 +241,187 @@ const SignUpForm = () => {
                 },
               }}
             >
-              <StepButton onClick={() => setCurrentStep(index)}>
+              <StepButton
+                onClick={() => {
+                  const stepKey = steps[index].key;
+                  if (completedSteps.includes(stepKey)) {
+                    setCurrentStep(index);
+                  }
+                }}
+              >
                 {step.key}
               </StepButton>
             </Step>
           ))}
         </Stepper>
       </Box>
-      {!confirmation.show ? (
-        <>{steps[currentStep]}</>
-      ) : (
-        <div className="p-4 max-w-md mx-auto">
-          {confirmation.type === "success" ? (
-            <div
-              className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4"
-              role="alert"
-            >
-              <p className="font-bold">Success</p>
-              <p className="mb-4">Registration successful! Welcome aboard.</p>
-              <Link
-                href="/"
-                className="px-4 py-2 font-semibold text-white bg-green-500 rounded hover:bg-green-700"
-              >
-                Log in to your account
-              </Link>
-            </div>
-          ) : (
-            <div
-              className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4"
-              role="alert"
-            >
-              <p className="font-bold">Error</p>
-              <p>Registration failed. Please try again later.</p>
-            </div>
-          )}
-        </div>
-      )}
-      <Snackbar
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+          flexGrow: 1, // Allows this box to grow and fill the space, pushing the stepper up
+          maxWidth: "sm",
         }}
-        open={error}
-        variant="solid"
-        color="danger"
-        size="lg"
       >
-        <InfoIcon />
-        {error}
-      </Snackbar>
+        {!confirmation.show ? (
+          <>{steps[currentStep]}</>
+        ) : (
+          <>
+            {confirmation.type === "success" ? (
+              // <Card
+              //   sx={{
+              //     textAlign: "center",
+              //     alignItems: "center",
+              //     width: "100%", // Ensures card takes full width
+              //   }}
+              // >
+              //   <CardOverflow
+              //     variant="solid"
+              //     sx={{
+              //       backgroundColor: "#549801",
+              //       display: "flex",
+              //       justifyContent: "center",
+              //       alignItems: "center",
+              //       position: "relative", // Ensure CardOverflow is positioned relatively to contain the Box
+              //       paddingTop: "100px",
+              //       marginBottom: "60px",
+              //     }}
+              //   >
+              //     <Box
+              //       sx={{
+              //         width: "120px",
+              //         height: "120px",
+              //         bgcolor: "background.surface",
+              //         borderRadius: "60px",
+              //         border: "2px solid #549801", // Border color set to #549801
+              //         display: "flex",
+              //         justifyContent: "center", // Centers img horizontally
+              //         alignItems: "center", // Centers img vertically
+              //         position: "absolute",
+              //       }}
+              //     >
+              //       <img
+              //         src="/carrot.svg" // Ensure this path is correct
+              //         alt="Carrot Logo"
+              //         style={{
+              //           width: "100px", // Set a fixed size or use percentage
+              //           height: "100px", // Set a fixed size or use percentage
+              //         }}
+              //       />
+              //     </Box>
+              //   </CardOverflow>
+              //   <Typography
+              //     level="title-lg"
+              //     sx={{ mt: "calc(var(--icon-size) / 2)" }}
+              //   >
+              //     🎊 Success 🎊
+              //   </Typography>
+              //   <CardContent sx={{ maxWidth: "40ch" }}>
+              //     Registration successful! Welcome aboard.
+              //   </CardContent>
+              //   <CardActions orientation="vertical" buttonFlex={1}>
+              //     <CustomButton>Log in to your account</CustomButton>
+              //   </CardActions>
+              // </Card>
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "top",
+                  textAlign: "center",
+                  flexGrow: 1, //
+                  width: "100%",
+                  p: 3,
+                  m: 2,
+                }}
+              >
+                <Box
+                  sx={{
+                    width: "120px",
+                    height: "120px",
+                    bgcolor: "background.surface",
+                    borderRadius: "60px",
+                    border: "2px solid #549801", // Border color set to #549801
+                    display: "flex",
+                    justifyContent: "center", // Centers img horizontally
+                    alignItems: "center", // Centers img vertically
+                    mb: 8,
+                  }}
+                >
+                  <img
+                    src="/carrot.svg" // Ensure this path is correct
+                    alt="Carrot Logo"
+                    style={{
+                      width: "100px", // Set a fixed size or use percentage
+                      height: "100px", // Set a fixed size or use percentage
+                    }}
+                  />
+                </Box>
+
+                <Typography
+                  sx={{
+                    fontSize: "24px",
+                    fontWeight: "bold",
+                    mb: 2,
+                  }}
+                >
+                  Registration completed! Welcome aboard.
+                </Typography>
+                <Typography
+                  sx={{
+                    fontSize: "16px",
+                    fontWeight: "bold",
+                    mb: 5,
+                  }}
+                >
+                  Confirmation link has been sent to your email.
+                </Typography>
+                <CustomButton onClick={() => router.push("/")}>
+                  Log in to your account
+                </CustomButton>
+              </Box>
+            ) : (
+              // <div
+              //   className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4"
+              //   role="alert"
+              // >
+              //   <p className="font-bold">Success</p>
+              //   <p className="mb-4">Registration successful! Welcome aboard.</p>
+              //   <Link
+              //     href="/"
+              //     className="px-4 py-2 font-semibold text-white bg-green-500 rounded hover:bg-green-700"
+              //   >
+              //     Log in to your account
+              //   </Link>
+              // </div>
+              <div
+                className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4"
+                role="alert"
+              >
+                <p className="font-bold">Error</p>
+                <p>Registration failed. Please try again later.</p>
+              </div>
+            )}
+          </>
+        )}
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          open={error}
+          variant="solid"
+          color="danger"
+          size="lg"
+        >
+          <InfoIcon />
+          {error}
+        </Snackbar>
+      </Box>
     </Box>
   );
 };
