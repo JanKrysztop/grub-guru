@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Link from "next/link";
 
 import axios from "axios";
 import StepOne from "./StepOne";
@@ -12,16 +11,9 @@ import Step from "@mui/joy/Step";
 import StepButton from "@mui/joy/StepButton";
 import StepIndicator from "@mui/joy/StepIndicator";
 import Check from "@mui/icons-material/Check";
-import Card from "@mui/joy/Card";
-import CardContent from "@mui/joy/CardContent";
-import CardOverflow from "@mui/joy/CardOverflow";
-import AspectRatio from "@mui/joy/AspectRatio";
-import CustomInput from "@/components/ui/CustomInput";
 import CustomButton from "@/components/ui/CustomButton";
-import CardActions from "@mui/joy/CardActions";
 import InfoIcon from "@mui/icons-material/Info";
 import Typography from "@mui/joy/Typography";
-import { CheckCircle } from "@mui/icons-material";
 import Snackbar from "@mui/joy/Snackbar";
 import { useRouter } from "next/router";
 
@@ -57,6 +49,8 @@ const SignUpForm = () => {
     show: false,
     type: "",
   });
+  const successMessage = "Registration completed! Welcome aboard.";
+  const errorMessage = "Ooops... Something went wrong";
   const router = useRouter();
   useEffect(() => {
     const { weight, height } = formState;
@@ -270,107 +264,52 @@ const SignUpForm = () => {
           <>{steps[currentStep]}</>
         ) : (
           <>
-            {confirmation.type === "success" ? (
-              // <Card
-              //   sx={{
-              //     textAlign: "center",
-              //     alignItems: "center",
-              //     width: "100%", // Ensures card takes full width
-              //   }}
-              // >
-              //   <CardOverflow
-              //     variant="solid"
-              //     sx={{
-              //       backgroundColor: "#549801",
-              //       display: "flex",
-              //       justifyContent: "center",
-              //       alignItems: "center",
-              //       position: "relative", // Ensure CardOverflow is positioned relatively to contain the Box
-              //       paddingTop: "100px",
-              //       marginBottom: "60px",
-              //     }}
-              //   >
-              //     <Box
-              //       sx={{
-              //         width: "120px",
-              //         height: "120px",
-              //         bgcolor: "background.surface",
-              //         borderRadius: "60px",
-              //         border: "2px solid #549801", // Border color set to #549801
-              //         display: "flex",
-              //         justifyContent: "center", // Centers img horizontally
-              //         alignItems: "center", // Centers img vertically
-              //         position: "absolute",
-              //       }}
-              //     >
-              //       <img
-              //         src="/carrot.svg" // Ensure this path is correct
-              //         alt="Carrot Logo"
-              //         style={{
-              //           width: "100px", // Set a fixed size or use percentage
-              //           height: "100px", // Set a fixed size or use percentage
-              //         }}
-              //       />
-              //     </Box>
-              //   </CardOverflow>
-              //   <Typography
-              //     level="title-lg"
-              //     sx={{ mt: "calc(var(--icon-size) / 2)" }}
-              //   >
-              //     🎊 Success 🎊
-              //   </Typography>
-              //   <CardContent sx={{ maxWidth: "40ch" }}>
-              //     Registration successful! Welcome aboard.
-              //   </CardContent>
-              //   <CardActions orientation="vertical" buttonFlex={1}>
-              //     <CustomButton>Log in to your account</CustomButton>
-              //   </CardActions>
-              // </Card>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "top",
+                textAlign: "center",
+                flexGrow: 1,
+                width: "100%",
+                p: 3,
+                m: 2,
+              }}
+            >
               <Box
                 sx={{
+                  width: "120px",
+                  height: "120px",
+                  bgcolor: "background.surface",
+                  borderRadius: "60px",
                   display: "flex",
-                  flexDirection: "column",
+                  justifyContent: "center",
                   alignItems: "center",
-                  justifyContent: "top",
-                  textAlign: "center",
-                  flexGrow: 1, //
-                  width: "100%",
-                  p: 3,
-                  m: 2,
+                  mb: 8,
+                  border: `2px solid ${
+                    confirmation.type === "success" ? "#549801" : "#c41c1c"
+                  }`,
                 }}
               >
-                <Box
-                  sx={{
-                    width: "120px",
-                    height: "120px",
-                    bgcolor: "background.surface",
-                    borderRadius: "60px",
-                    border: "2px solid #549801", // Border color set to #549801
-                    display: "flex",
-                    justifyContent: "center", // Centers img horizontally
-                    alignItems: "center", // Centers img vertically
-                    mb: 8,
-                  }}
-                >
-                  <img
-                    src="/carrot.svg" // Ensure this path is correct
-                    alt="Carrot Logo"
-                    style={{
-                      width: "100px", // Set a fixed size or use percentage
-                      height: "100px", // Set a fixed size or use percentage
-                    }}
-                  />
-                </Box>
-
-                <Typography
-                  sx={{
-                    fontSize: "24px",
-                    fontWeight: "bold",
-                    mb: 2,
-                  }}
-                >
-                  Registration completed! Welcome aboard.
-                </Typography>
+                <img
+                  src="/carrot.svg"
+                  alt="Carrot Logo"
+                  style={{ width: "100px", height: "100px" }}
+                />
+              </Box>
+              <Typography
+                sx={{
+                  fontSize: "24px",
+                  fontWeight: "bold",
+                  mb: 2,
+                }}
+              >
+                {confirmation.type === "success"
+                  ? successMessage
+                  : errorMessage}
+              </Typography>
+              {confirmation.type === "success" && (
                 <Typography
                   sx={{
                     fontSize: "16px",
@@ -380,34 +319,28 @@ const SignUpForm = () => {
                 >
                   Confirmation link has been sent to your email.
                 </Typography>
-                <CustomButton onClick={() => router.push("/")}>
-                  Log in to your account
-                </CustomButton>
-              </Box>
-            ) : (
-              // <div
-              //   className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4"
-              //   role="alert"
-              // >
-              //   <p className="font-bold">Success</p>
-              //   <p className="mb-4">Registration successful! Welcome aboard.</p>
-              //   <Link
-              //     href="/"
-              //     className="px-4 py-2 font-semibold text-white bg-green-500 rounded hover:bg-green-700"
-              //   >
-              //     Log in to your account
-              //   </Link>
-              // </div>
-              <div
-                className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4"
-                role="alert"
-              >
-                <p className="font-bold">Error</p>
-                <p>Registration failed. Please try again later.</p>
-              </div>
-            )}
+              )}
+              <CustomButton onClick={() => router.push("/")}>
+                {confirmation.type === "success"
+                  ? "Log in to your account"
+                  : "Go back to home page"}
+              </CustomButton>
+            </Box>
           </>
         )}
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          open={confirmation.show && confirmation.type === "error"}
+          variant="solid"
+          color="danger"
+          size="lg"
+        >
+          <InfoIcon />
+          Registration failed. Please try again later.
+        </Snackbar>
         <Snackbar
           anchorOrigin={{
             vertical: "bottom",
