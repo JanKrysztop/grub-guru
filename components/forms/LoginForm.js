@@ -63,7 +63,7 @@ const LoginForm = () => {
         console.error("Error fetching user profile:", profileError);
       }
 
-      router.push("/dashboard");
+      router.push("/calories-tracker");
     } catch (error) {
       console.log(error);
       if (error.response) {
