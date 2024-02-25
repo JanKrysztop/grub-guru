@@ -1,4 +1,12 @@
 import { useState } from "react";
+import { Box } from "@mui/joy";
+import AccordionGroup from "@mui/joy/AccordionGroup";
+import Accordion from "@mui/joy/Accordion";
+import AccordionDetails from "@mui/joy/AccordionDetails";
+import AccordionSummary from "@mui/joy/AccordionSummary";
+import CustomInput from "@/components/ui/CustomInput";
+import CustomButton from "@/components/ui/CustomButton";
+import Typography from "@mui/joy/Typography";
 
 const BmiCalculator = () => {
   const [weight, setWeight] = useState("");
@@ -8,7 +16,8 @@ const BmiCalculator = () => {
   const [bmi, setBmi] = useState(null);
   const [bmiCategory, setBmiCategory] = useState("");
 
-  const calculateBMI = () => {
+  const calculateBMI = (event) => {
+    event.preventDefault();
     if (weight && height) {
       const heightInMeters = height / 100;
       const calculatedBmi = (
@@ -16,77 +25,98 @@ const BmiCalculator = () => {
         (heightInMeters * heightInMeters)
       ).toFixed(2);
       setBmi(calculatedBmi);
-    }
 
-    if (bmi < 18.5) {
-      setBmiCategory("Underweight");
-    } else if (bmi < 24.9) {
-      setBmiCategory("Normal wieght");
-    } else if (bmi < 29.9) {
-      setBmiCategory("Overweight");
-    } else {
-      setBmiCategory("Obesity");
+      if (calculatedBmi < 18.5) {
+        setBmiCategory("Underweight");
+      } else if (calculatedBmi < 24.9) {
+        setBmiCategory("Normal wieght");
+      } else if (calculatedBmi < 29.9) {
+        setBmiCategory("Overweight");
+      } else {
+        setBmiCategory("Obesity");
+      }
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center space-y-4">
-      <input
-        type="number"
-        placeholder="Weight in kg"
-        value={weight}
-        onChange={(e) => setWeight(e.target.value)}
-        className="px-3 py-2 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-      />
-      <input
-        type="number"
-        placeholder="Height in cm"
-        value={height}
-        onChange={(e) => setHeight(e.target.value)}
-        className="px-3 py-2 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-      />
-      <input
-        type="number"
-        placeholder="Age"
-        value={age}
-        onChange={(e) => setAge(e.target.value)}
-        className="px-3 py-2 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-      />
-      <div className="flex items-center space-x-4">
-        <label>
-          <input
-            type="radio"
-            value="male"
-            checked={gender === "male"}
-            onChange={(e) => setGender(e.target.value)}
-            className="mr-2"
-          />
-          Male
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="female"
-            checked={gender === "female"}
-            onChange={(e) => setGender(e.target.value)}
-            className="mr-2"
-          />
-          Female
-        </label>
-      </div>
-      <button
-        onClick={calculateBMI}
-        className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
+    >
+      <AccordionGroup variant="soft">
+        <Accordion>
+          <AccordionSummary>Understanding the BMI Calculator</AccordionSummary>
+          <AccordionDetails>
+            The Body Mass Index (BMI) is a widely used measure to classify
+            underweight, normal weight, overweight, and obesity by comparing
+            your weight to your height. It's calculated by dividing your weight
+            in kilograms by the square of your height in meters (kg/m²).
+          </AccordionDetails>
+        </Accordion>
+      </AccordionGroup>
+      <Box
+        component="form"
+        onSubmit={calculateBMI}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          width: "100%",
+          maxWidth: "sm",
+          mt: 2,
+        }}
       >
-        Calculate BMI
-      </button>
-      {bmi && (
-        <div>
-          <p>Your BMI is {bmi}</p>
-          <p>Your BMI category is {bmiCategory}</p>
-        </div>
-      )}
-    </div>
+        <CustomInput
+          type="number"
+          name="height"
+          placeholder="Height in cm"
+          value={height}
+          onChange={(e) => setHeight(e.target.value)}
+          className="mb-7"
+          required
+        />
+        <CustomInput
+          type="number"
+          name="weight"
+          placeholder="Weight in kg"
+          value={weight}
+          onChange={(e) => setWeight(e.target.value)}
+          className="mb-7"
+          required
+        />
+        <CustomButton type="submit">Calculate BMI</CustomButton>
+
+        {bmi && (
+          <Box>
+            <Typography
+              sx={{
+                fontSize: "24px",
+                fontWeight: "bold",
+                mt: 2,
+                mb: 1,
+              }}
+            >
+              Your BMI is {bmi}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: "24px",
+                fontWeight: "bold",
+                mb: 5,
+              }}
+            >
+              BMI category is {bmiCategory}
+            </Typography>
+          </Box>
+        )}
+      </Box>
+    </Box>
   );
 };
 

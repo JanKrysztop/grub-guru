@@ -128,7 +128,11 @@ const MainHeader = () => {
               </MenuItem>
             </Menu>
           </Dropdown>
-
+        </Box>
+        <Box>
+          <img src="/big-logo.svg" alt="Big Logo" />
+        </Box>
+        <Box>
           <IconButton
             variant="soft"
             sx={{
@@ -148,43 +152,6 @@ const MainHeader = () => {
             {mode === "dark" ? <DarkMode /> : <LightMode />}
           </IconButton>
         </Box>
-        <img src="/big-logo.svg" alt="Big Logo" style={{ width: "20%" }} />
-        <nav>
-          <ul className="flex space-x-4">
-            {isLoggedIn ? (
-              <>
-                <li>
-                  <Link
-                    href="/profile"
-                    className="text-gray-700 hover:text-black "
-                  >
-                    Profile
-                  </Link>
-                </li>
-                <li>
-                  {/* You can add a logout function to the context and call it here */}
-                  <button onClick={handleLogout}>Logout</button>
-                </li>
-              </>
-            ) : (
-              <>
-                <li>
-                  <Link href="/" className="text-gray-700 hover:text-black ">
-                    Log In
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/authorization"
-                    className="text-gray-700 hover:text-black  "
-                  >
-                    Sign up
-                  </Link>
-                </li>
-              </>
-            )}
-          </ul>
-        </nav>
       </Box>
     </header>
   );
