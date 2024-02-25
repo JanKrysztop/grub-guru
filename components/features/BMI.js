@@ -53,8 +53,8 @@ const BmiCalculator = () => {
           <AccordionDetails>
             The Body Mass Index (BMI) is a widely used measure to classify
             underweight, normal weight, overweight, and obesity by comparing
-            your weight to your height. It's calculated by dividing your weight
-            in kilograms by the square of your height in meters (kg/m²).
+            your weight to your height. It&apos;s calculated by dividing your
+            weight in kilograms by the square of your height in meters (kg/m²).
           </AccordionDetails>
         </Accordion>
       </AccordionGroup>
