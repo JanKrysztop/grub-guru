@@ -37,7 +37,6 @@ const Calculator = () => {
       <Box
         sx={{
           width: "100%",
-          height: "80vh",
           maxWidth: "sm",
           p: 3,
           m: 2,

@@ -44,7 +44,6 @@ const BmiCalculator = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "space-between",
       }}
     >
       <AccordionGroup variant="soft">
