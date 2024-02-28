@@ -2,6 +2,20 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectBmrFormulas } from "@/redux/bmrSlice";
 import { selectActivityLevels } from "@/redux/activitySlice";
+import { Box } from "@mui/joy";
+import AccordionGroup from "@mui/joy/AccordionGroup";
+import Accordion from "@mui/joy/Accordion";
+import AccordionDetails from "@mui/joy/AccordionDetails";
+import AccordionSummary from "@mui/joy/AccordionSummary";
+import CustomInput from "@/components/ui/CustomInput";
+import CustomButton from "@/components/ui/CustomButton";
+import ToggleButtonGroup from "@mui/joy/ToggleButtonGroup";
+import { Button } from "@mui/joy";
+import { Female } from "@mui/icons-material";
+import { Male } from "@mui/icons-material";
+import Typography from "@mui/joy/Typography";
+import Select from "@mui/joy/Select";
+import Option from "@mui/joy/Option";
 
 const TdeeCalculator = () => {
   const bmrFormulas = useSelector(selectBmrFormulas);
@@ -36,107 +50,248 @@ const TdeeCalculator = () => {
       }
     }
   };
+  const calculateTDEE = (event) => {
+    event.preventDefault();
+    const calculatedBmr = bmrFormulas[formula][gender](weight, height, age);
+    setBmr(calculatedBmr.toFixed(2));
 
-  useEffect(() => {
-    if (weight && height && age && bmrFormulas[formula][gender]) {
-      const calculatedBmr = bmrFormulas[formula][gender](weight, height, age);
-      setBmr(calculatedBmr.toFixed(2));
+    // Calculate TDEE
+    const calculatedTdee = calculatedBmr * activity;
+    setTdee(calculatedTdee.toFixed(2));
+  };
+  // useEffect(() => {
+  //   if (weight && height && age && bmrFormulas[formula][gender]) {
+  //     const calculatedBmr = bmrFormulas[formula][gender](weight, height, age);
+  //     setBmr(calculatedBmr.toFixed(2));
 
-      // Calculate TDEE
-      const calculatedTdee = calculatedBmr * activity;
-      setTdee(calculatedTdee.toFixed(2));
-    }
-  }, [weight, height, age, gender, formula, activity]);
+  //     // Calculate TDEE
+  //     const calculatedTdee = calculatedBmr * activity;
+  //     setTdee(calculatedTdee.toFixed(2));
+  //   }
+  // }, [weight, height, age, gender, formula, activity]);
 
   return (
-    <div className="flex flex-col items-center justify-center space-y-4">
-      <input
-        type="number"
-        placeholder="Weight in kg"
-        value={weight}
-        onChange={(e) => setWeight(e.target.value)}
-        className="px-3 py-2 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-      />
-      <input
-        type="number"
-        placeholder="Height in cm"
-        value={height}
-        onChange={(e) => setHeight(e.target.value)}
-        className="px-3 py-2 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-      />
-      <input
-        type="number"
-        placeholder="Age"
-        value={age}
-        onChange={(e) => setAge(e.target.value)}
-        className="px-3 py-2 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-      />
-      <div className="flex items-center space-x-4">
-        <label>
-          <input
-            type="radio"
-            value="male"
-            checked={gender === "male"}
-            onChange={(e) => setGender(e.target.value)}
-            className="mr-2"
-          />
-          Male
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="female"
-            checked={gender === "female"}
-            onChange={(e) => setGender(e.target.value)}
-            className="mr-2"
-          />
-          Female
-        </label>
-      </div>
-      <div className="flex items-center space-x-4">
-        <label>
-          <input
-            type="radio"
-            value="Mifflin"
-            checked={formula === "Mifflin"}
-            onChange={(e) => setFormula(e.target.value)}
-            className="mr-2"
-          />
-          Mifflin St Jeor
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="Harris"
-            checked={formula === "Harris"}
-            onChange={(e) => setFormula(e.target.value)}
-            className="mr-2"
-          />
-          Revised Harris-Benedict
-        </label>
-      </div>
-      <select value={activity} onChange={(e) => setActivity(e.target.value)}>
-        {activityLevels.map((level) => (
-          <option key={level.id} value={level.value}>
-            {level.label}
-          </option>
-        ))}
-      </select>
-      {/* <button
-        onClick={calculateBMR}
-        className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      <AccordionGroup variant="soft">
+        <Accordion>
+          <AccordionSummary>Understanding the TDEE Calculator</AccordionSummary>
+          <AccordionDetails>
+            Total Daily Energy Expenditure (TDEE) is the total number of
+            calories you burn each day, accounting for all activities, including
+            exercising, working, and even resting. It is a critical measure for
+            anyone looking to manage their weight, whether they aim to lose,
+            gain, or maintain it. TDEE is primarily based on your Basal
+            Metabolic Rate (BMR) but also includes calories expended through
+            physical activity and the thermic effect of food. To calculate TDEE,
+            you first determine your BMR using equations like the Mifflin-St
+            Jeor or the Revised Harris-Benedict, depending on your BMI. Then,
+            you adjust this number based on your activity level, ranging from
+            sedentary to extra active. For instance, if your BMR is 1500
+            calories and you have a moderate activity level, your TDEE might be
+            around 2250 calories a day. Understanding and accurately calculating
+            your TDEE is essential for creating a diet plan that aligns with
+            your fitness goals, ensuring you consume the right amount of
+            calories to support your lifestyle and activity level.
+            <strong>
+              If your BMI is equal or greater then 30 you should use Mifflin-St
+              Jeor Equation, otherwise use Revised Harris-Benedict Equation
+            </strong>
+          </AccordionDetails>
+        </Accordion>
+      </AccordionGroup>
+      <Box
+        component="form"
+        onSubmit={calculateTDEE}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          width: "100%",
+          maxWidth: "sm",
+          mt: 2,
+        }}
       >
-        Calculate BMR
-      </button> */}
-      {tdee && (
-        <div>
-          <p>
-            Your TDEE is <span className="text-green-500">{tdee}</span>{" "}
-            Calories/day
-          </p>
-        </div>
-      )}
-    </div>
+        <CustomInput
+          type="number"
+          placeholder="Weight in kg"
+          value={weight}
+          onChange={(e) => setWeight(e.target.value)}
+          className="mb-7"
+          required
+        />
+        <CustomInput
+          type="number"
+          placeholder="Height in cm"
+          value={height}
+          onChange={(e) => setHeight(e.target.value)}
+          className="mb-7"
+          required
+        />
+        <CustomInput
+          type="number"
+          placeholder="Age"
+          value={age}
+          onChange={(e) => setAge(e.target.value)}
+          className="mb-7"
+          required
+        />
+        <ToggleButtonGroup
+          value={gender}
+          onChange={(event, newValue) => {
+            setGender(newValue);
+          }}
+          className="mb-7"
+          sx={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+          required
+        >
+          <Button
+            value="female"
+            sx={{
+              width: "180px ",
+              height: "40px ",
+              borderRadius: "16px",
+              // backgroundColor: "#292B29",
+              ...(gender === "female" && {
+                backgroundColor: "#F7D9BB!important",
+                color: "#E78B01",
+                border: "2px solid #E78B01 !important",
+              }),
+            }}
+          >
+            Female{" "}
+            <Female
+              sx={{
+                ...(gender === "female" && {
+                  color: "#E78B01",
+                }),
+              }}
+            />
+          </Button>
+          <Button
+            value="male"
+            sx={{
+              width: "180px ",
+              height: "40px",
+              borderRadius: "16px",
+              // backgroundColor: "#292B29",
+              ...(gender === "male" && {
+                backgroundColor: "#F7D9BB!important",
+                color: "#E78B01",
+                border: "2px solid #E78B01 !important",
+              }),
+            }}
+          >
+            Male{" "}
+            <Male
+              sx={{
+                ...(gender === "male" && {
+                  color: "#E78B01",
+                }),
+              }}
+            />
+          </Button>
+        </ToggleButtonGroup>
+        <ToggleButtonGroup
+          value={formula}
+          onChange={(event, newValue) => {
+            setFormula(newValue);
+          }}
+          className="mb-7"
+          sx={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+          required
+        >
+          <Button
+            value="Mifflin"
+            sx={{
+              width: "180px ",
+              height: "40px ",
+              borderRadius: "16px",
+              // backgroundColor: "#292B29",
+              ...(formula === "Mifflin" && {
+                backgroundColor: "#F7D9BB!important",
+                color: "#E78B01",
+                border: "2px solid #E78B01 !important",
+              }),
+            }}
+          >
+            Mifflin St Jeor{" "}
+          </Button>
+          <Button
+            value="Harris"
+            sx={{
+              width: "180px ",
+              height: "40px",
+              borderRadius: "16px",
+              // backgroundColor: "#292B29",
+              ...(formula === "Harris" && {
+                backgroundColor: "#F7D9BB!important",
+                color: "#E78B01",
+                border: "2px solid #E78B01 !important",
+              }),
+            }}
+          >
+            Revised Harris-Benedict{" "}
+          </Button>
+        </ToggleButtonGroup>
+        <Select
+          value={activity}
+          onChange={(e, newValue) => setActivity(newValue)}
+          sx={{ width: "100%", mb: 3 }}
+        >
+          {activityLevels.map((level) => (
+            <Option key={level.id} value={level.value} label={level.mainText}>
+              <Box component="span" sx={{ display: "block" }}>
+                <Typography component="span" level="title-sm">
+                  {level.mainText}
+                </Typography>
+                <Typography level="body-xs">{level.secondaryText}</Typography>
+              </Box>
+            </Option>
+          ))}
+        </Select>
+        <CustomButton type="submit">Calculate TDEE</CustomButton>
+
+        {tdee && (
+          //     <div>
+          //       <p>
+          //         Your TDEE is <span className="text-green-500">{tdee}</span>{" "}
+          //         Calories/day
+          //       </p>
+          //     </div>
+          //   )}
+          <Box>
+            <Typography
+              sx={{
+                fontSize: "24px",
+                fontWeight: "bold",
+                mt: 2,
+                mb: 1,
+              }}
+            >
+              Your TDEE is {tdee} Calories/day
+            </Typography>
+          </Box>
+        )}
+      </Box>
+    </Box>
   );
 };
 
