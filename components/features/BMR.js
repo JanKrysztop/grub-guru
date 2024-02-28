@@ -52,7 +52,7 @@ const BmrCalculator = () => {
             The Basal Metabolic Rate (BMR) is a measure of the number of
             calories your body needs to perform basic life-sustaining functions,
             such as breathing, circulation, cell production, and nutrient
-            processing. It's an essential metric for anyone looking to
+            processing. It&apos;s an essential metric for anyone looking to
             understand their metabolic health, manage their weight, or calculate
             their dietary needs. The BMR is calculated based on several factors,
             including age, sex, weight, and height, providing a personalized
