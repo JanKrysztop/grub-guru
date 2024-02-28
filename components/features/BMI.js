@@ -73,19 +73,19 @@ const BmiCalculator = () => {
       >
         <CustomInput
           type="number"
-          name="height"
-          placeholder="Height in cm"
-          value={height}
-          onChange={(e) => setHeight(e.target.value)}
+          name="weight"
+          placeholder="Weight in kg"
+          value={weight}
+          onChange={(e) => setWeight(e.target.value)}
           className="mb-7"
           required
         />
         <CustomInput
           type="number"
-          name="weight"
-          placeholder="Weight in kg"
-          value={weight}
-          onChange={(e) => setWeight(e.target.value)}
+          name="height"
+          placeholder="Height in cm"
+          value={height}
+          onChange={(e) => setHeight(e.target.value)}
           className="mb-7"
           required
         />
