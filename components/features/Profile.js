@@ -2,7 +2,15 @@ import React, { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUserData, setUserData } from "@/redux/userSlice";
 import axios from "axios";
-
+import { Box } from "@mui/joy";
+import CustomInput from "@/components/ui/CustomInput";
+import CustomButton from "@/components/ui/CustomButton";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import Typography from "@mui/joy/Typography";
+import Badge from "@mui/joy/Badge";
+import { Edit } from "@mui/icons-material";
+import IconButton from "@mui/joy/IconButton";
+import Button from "@mui/joy/Button";
 const Profile = () => {
   const dispatch = useDispatch();
   const userData = useSelector(selectUserData);
@@ -74,173 +82,245 @@ const Profile = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="w-96 p-6 bg-white rounded shadow-md">
-        <h1 className="mb-4 text-2xl font-bold text-center text-gray-700">
-          Profile
-        </h1>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
+    >
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: "sm",
+          p: 3,
+          m: 2,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+          }}
+        >
+          <Box
+            sx={{
+              width: "120px",
+              height: "120px",
+              bgcolor: "background.surface",
+              borderRadius: "60px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              mb: 2,
+              border: "5px solid #549801",
+              position: "relative",
+            }}
+          >
+            <AccountCircle
+              sx={{
+                fontSize: "var(--Icon-fontSize, 120px)",
+                color: "#549801",
+              }}
+            />
+            <IconButton
+              size="md"
+              variant="solid"
+              onClick={handleEdit}
+              sx={{
+                position: "absolute",
+                bottom: -10,
+                right: -5,
+                width: "20px",
+                height: "20px",
+                borderRadius: "20px",
+              }}
+            >
+              <Edit />
+            </IconButton>
+          </Box>
+        </Box>
 
         {isEditing ? (
           <>
-            <label
-              className="block mb-2 text-sm font-bold text-gray-700"
-              htmlFor="username"
-            >
-              Username
+            <label htmlFor="username">
+              <Typography sx={{ mb: 1 }}>Username</Typography>
             </label>
-            <input
+            <CustomInput
               type="text"
               id="username"
               name="username"
+              placeholder="Username"
               value={updatedData.username}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              placeholder="Username"
+              className="mb-2"
             />
 
-            <label
-              className="block mb-2 text-sm font-bold text-gray-700"
-              htmlFor="age"
-            >
-              Age
+            <label htmlFor="age">
+              <Typography sx={{ mb: 1 }}> Age</Typography>
             </label>
-            <input
+            <CustomInput
               type="text"
               id="age"
               name="age"
+              placeholder="Age"
               value={updatedData.age}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              placeholder="Age"
+              className="mb-2"
             />
 
-            <label
-              className="block mb-2 text-sm font-bold text-gray-700"
-              htmlFor="weight"
-            >
-              Weight
+            <label htmlFor="weight">
+              <Typography sx={{ mb: 1 }}> Weight</Typography>
             </label>
-            <input
+            <CustomInput
               type="text"
               id="weight"
               name="weight"
+              placeholder="Weight"
               value={updatedData.weight}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              placeholder="Weight"
+              className="mb-2"
             />
-            <label
-              className="block mb-2 text-sm font-bold text-gray-700"
-              htmlFor="recommendedCalories"
-            >
-              Daily calories
+            <label htmlFor="recommendedCalories">
+              <Typography sx={{ mb: 1 }}> Daily calories</Typography>
             </label>
-            <input
+            <CustomInput
               type="text"
               id="recommendedCalories"
               name="recommendedCalories"
+              placeholder="Calories"
               value={updatedData.recommendedCalories}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-              placeholder="Calories"
+              className="mb-7"
             />
-            <button
-              onClick={handleSave}
-              className="w-full px-3 py-2 text-white bg-green-500 rounded hover:bg-green-700"
-            >
+            <CustomButton onClick={handleSave} sx={{ mb: 2 }}>
               Save
-            </button>
-            <button
+            </CustomButton>
+            <CustomButton
+              styleType="secondary"
               onClick={() => setIsEditing(false)}
-              className="w-full px-3 py-2 text-white bg-gray-500 rounded hover:bg-gray-700 mt-4"
             >
               Cancel
-            </button>
+            </CustomButton>
           </>
         ) : (
           !isChangingPassword && (
             <>
-              <p>
-                <strong>Username:</strong> {userData?.username}
-              </p>
-              <p>
-                <strong>Email:</strong> {userData?.email}
-              </p>
-              <p>
-                <strong>Age:</strong> {userData?.age}
-              </p>
-              <p>
-                <strong>Weight:</strong> {userData?.weight}
-              </p>
-              <p>
-                <strong>Daily calories:</strong> {userData?.recommendedCalories}
-              </p>
-              <button
-                onClick={handleEdit}
-                className="w-full px-3 py-2 text-white bg-blue-500 rounded hover:bg-blue-700 mt-4"
+              <Typography
+                sx={{
+                  fontSize: "18px",
+                  mt: 2,
+                  mb: 1,
+                }}
               >
-                Edit Profile
-              </button>
+                <strong>Username:</strong> {userData?.username}
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "18px",
+                  mt: 2,
+                  mb: 1,
+                }}
+              >
+                <strong>Email:</strong> {userData?.email}
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "18px",
+                  mt: 2,
+                  mb: 1,
+                }}
+              >
+                <strong>Age:</strong> {userData?.age}
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "18px",
+                  mt: 2,
+                  mb: 1,
+                }}
+              >
+                <strong>Weight:</strong> {userData?.weight}
+              </Typography>
+              <Typography
+                sx={{
+                  fontSize: "18px",
+                  mt: 2,
+                  mb: 1,
+                }}
+              >
+                <strong>Daily calories:</strong> {userData?.recommendedCalories}
+              </Typography>
             </>
           )
         )}
         {isChangingPassword ? (
           <>
-            <label
-              className="block mb-2 text-sm font-bold text-gray-700"
-              htmlFor="currentPassword"
-            >
-              Current Password
+            <label htmlFor="currentPassword">
+              <Typography sx={{ mb: 1 }}>Current Password</Typography>
             </label>
-            <input
+            <CustomInput
               type="password"
               id="currentPassword"
               value={currentPassword}
               onChange={(e) => setCurrentPassword(e.target.value)}
-              className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
               placeholder="Current Password"
+              className="mb-2"
             />
-
-            <label
-              className="block mb-2 text-sm font-bold text-gray-700"
-              htmlFor="newPassword"
-            >
-              New Password
+            <label htmlFor="newPassword">
+              <Typography sx={{ mb: 1 }}>New Password</Typography>
             </label>
-            <input
+            <CustomInput
               type="password"
               id="newPassword"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              className="w-full px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
               placeholder="New Password"
+              className="mb-7"
             />
-
-            <button
-              onClick={handleChangePassword}
-              className="w-full px-3 py-2 text-white bg-green-500 rounded hover:bg-green-700"
-            >
-              Change Password
-            </button>
-            <button
+            <CustomButton onClick={handleChangePassword} sx={{ mb: 2 }}>
+              Save
+            </CustomButton>
+            <CustomButton
+              styleType="secondary"
               onClick={() => setIsChangingPassword(false)}
-              className="w-full px-3 py-2 text-white bg-gray-500 rounded hover:bg-gray-700 mt-4"
             >
               Cancel
-            </button>
+            </CustomButton>
           </>
         ) : (
           !isEditing && (
-            <button
-              onClick={() => setIsChangingPassword(true)}
-              className="w-full px-3 py-2 text-white bg-red-500 rounded hover:bg-red-700 mt-4"
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              marginTop={1}
             >
-              Change Password
-            </button>
+              <Typography
+                sx={{
+                  fontSize: "18px",
+                }}
+              >
+                <strong>Password:</strong>
+              </Typography>
+              <Button
+                onClick={() => setIsChangingPassword(true)}
+                variant="plain"
+                size="xl"
+                color="warning"
+                sx={{
+                  p: 1,
+                  color: "#E78B01",
+                }}
+              >
+                Change password
+              </Button>
+            </Box>
           )
         )}
-      </div>
-    </div>
+      </Box>
+    </Box>
   );
 };
 
