@@ -3,7 +3,7 @@ import { forwardRef } from "react";
 
 const primaryButtonStyles = {
   width: "100%",
-  height: "40px",
+  height: "48px",
   borderRadius: "16px",
   backgroundColor: "#549801",
   color: "#022611",
@@ -25,7 +25,7 @@ const primaryButtonStyles = {
 };
 const secondaryButtonStyles = {
   width: "100%",
-  height: "40px",
+  height: "48px",
   border: "2px solid #549801",
   borderRadius: "16px",
   backgroundColor: "#FAFAFA",

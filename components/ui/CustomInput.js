@@ -1,7 +1,7 @@
 import Input from "@mui/joy/Input";
 import { forwardRef } from "react";
 const customInputStyles = {
-  height: "40px",
+  height: "48px",
   borderRadius: "16px",
   width: "100%",
   "&.MuiInput-root.Mui-focused, &.MuiInput-root.Mui-focused::before": {

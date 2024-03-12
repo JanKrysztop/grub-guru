@@ -71,6 +71,26 @@ router.get("/entry", async (req, res) => {
   }
 });
 
+router.get("/entries-range", async (req, res) => {
+  const { userId, startDate, endDate } = req.query;
+
+  // Parse start and end dates
+  const parsedStartDate = moment(startDate).startOf("day").toDate();
+  const parsedEndDate = moment(endDate).endOf("day").toDate();
+
+  try {
+    const journalEntries = await JournalEntry.find({
+      userId,
+      date: { $gte: parsedStartDate, $lte: parsedEndDate },
+    });
+    res.status(200).json(journalEntries);
+  } catch (error) {
+    res.status(500).json({
+      error: "An error occurred while retrieving journal entries.",
+    });
+  }
+});
+
 router.put("/update", async (req, res) => {
   const { userId, date, weight, photos } = req.body;
 
