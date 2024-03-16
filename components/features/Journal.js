@@ -5,9 +5,20 @@ import WebcamComponent from "./Camera";
 import { format, startOfMonth, endOfMonth, getMonth, getYear } from "date-fns";
 import { useSelector } from "react-redux";
 import { selectUserData } from "@/redux/userSlice";
-import { Box } from "@mui/joy";
+import { Box, Button, Snackbar, AspectRatio } from "@mui/joy";
 import Calendar from "./Calendar";
-
+import CustomInput from "@/components/ui/CustomInput";
+import CustomButton from "@/components/ui/CustomButton";
+import { AddAPhotoRounded, Close as CloseIcon } from "@mui/icons-material";
+import Typography from "@mui/joy/Typography";
+import Modal from "@mui/joy/Modal";
+import ModalDialog from "@mui/joy/ModalDialog";
+import DialogTitle from "@mui/joy/DialogTitle";
+import DialogContent from "@mui/joy/DialogContent";
+import ModalClose from "@mui/joy/ModalClose";
+import InfoIcon from "@mui/icons-material/Info";
+import { CheckCircle } from "@mui/icons-material";
+import Badge from "@mui/joy/Badge";
 const Journal = () => {
   const userData = useSelector(selectUserData);
 
@@ -16,8 +27,26 @@ const Journal = () => {
   const [photos, setPhotos] = useState([]);
   const [date, setDate] = useState(new Date());
   const [entries, setEntries] = useState([]);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    type: "",
+    message: "",
+  });
+  const [showPhotoModal, setShowPhotoModal] = useState(false);
+  const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
   const prevDateRef = useRef();
 
+  const handleOpenPhotoModal = (index) => {
+    setSelectedPhotoIndex(index);
+    setShowPhotoModal(true);
+  };
+  const handleDeletePhoto = (index) => {
+    setPhotos(photos.filter((_, photoIndex) => photoIndex !== index));
+  };
+  const handleModalDelete = (index) => {
+    handleDeletePhoto(index);
+    setShowPhotoModal(false);
+  };
   const handleWeightChange = (e) => {
     setWeight(e.target.value);
   };
@@ -94,8 +123,19 @@ const Journal = () => {
         payload
       );
       console.log("Entry created:", response.data);
+      setEntries((currentEntries) => [...currentEntries, response.data]);
+      setSnackbar({
+        open: true,
+        type: "success",
+        message: "Entry successfully created!",
+      });
     } catch (error) {
       console.log(error);
+      setSnackbar({
+        open: true,
+        type: "error",
+        message: "Failed to create entry. Please try again.",
+      });
     }
   };
 
@@ -114,58 +154,169 @@ const Journal = () => {
         entries={entries}
       />
       <Box
+        component="form"
         sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
           width: "100%",
           maxWidth: "sm",
           p: 3,
           m: 2,
         }}
       >
-        <form className="flex flex-col items-center w-full max-w-md">
-          <input
-            type="number"
-            value={weight}
-            onChange={handleWeightChange}
-            placeholder="Enter your weight"
-            className="px-3 py-2 mb-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-          />
-        </form>
-        <button
-          onClick={() => setShowCamera(true)}
-          className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
+        <CustomInput
+          type="number"
+          value={weight}
+          onChange={handleWeightChange}
+          placeholder="Enter your weight"
+        />
+        <Badge
+          badgeContent={photos.length}
+          variant="solid"
+          sx={{
+            margin: 2,
+            "& .MuiBadge-badge": {
+              backgroundColor: "#549801 !important", // Force override
+            },
+          }}
         >
-          Take a Photo
-        </button>
-        {showCamera && (
-          <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-4 rounded">
-              <WebcamComponent photos={photos} setPhotos={setPhotos} />
-              <button
-                onClick={() => setShowCamera(false)}
-                className="mt-4 px-4 py-2 text-white bg-red-500 rounded hover:bg-red-700"
-              >
-                Close Camera
-              </button>
-            </div>
-          </div>
-        )}
-        <div className="flex space-x-4 mt-4">
+          <Button
+            onClick={() => setShowCamera(true)}
+            variant="soft"
+            color="neutral"
+            sx={{
+              // m: 2,
+              display: "flex",
+              flexDirection: "column",
+              width: "120px",
+              height: "120px",
+            }}
+          >
+            <AddAPhotoRounded sx={{ width: "60px", height: "60px" }} />
+            Add photo
+          </Button>
+        </Badge>
+        <Modal
+          open={showCamera}
+          onClose={() => setShowCamera(false)}
+          size="lg"
+          variant="soft"
+        >
+          <ModalDialog
+            size="lg"
+            sx={{
+              width: "100%",
+              maxWidth: "600px",
+              height: "70vh",
+              maxHeight: "800px",
+            }}
+          >
+            <ModalClose variant="plain" sx={{ m: 1 }} />
+            <DialogTitle>Add photos</DialogTitle>
+            <DialogContent>
+              <WebcamComponent
+                handleDeletePhoto={handleDeletePhoto}
+                photos={photos}
+                setPhotos={setPhotos}
+              />
+            </DialogContent>
+          </ModalDialog>
+        </Modal>
+
+        <Box sx={{ display: "flex", gap: "10px", p: 1, m: 1 }}>
           {photos.map((photo, index) => (
-            <img
+            <Button
+              onClick={() => handleOpenPhotoModal(index)}
               key={index}
-              src={photo}
-              alt={`Captured ${index}`}
-              className="w-full h-32"
-            />
+              sx={{
+                p: 0,
+                m: 0,
+                width: "76px", // Fixed width for thumbnails
+                height: "76px", // Fixed height for thumbnails
+                marginTop: "10px",
+                borderRadius: "8px", // Added for consistency with AspectRatio
+                overflow: "hidden", // Ensures the image is clipped to the border radius
+              }}
+            >
+              <img
+                src={photo}
+                alt={`Captured ${index}`}
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                }}
+              />
+            </Button>
           ))}
-        </div>
-        <button
-          onClick={handleCreateEntry}
-          className="mt-4 px-4 py-2 text-white bg-red-500 rounded hover:bg-red-700"
-        >
-          Save entry
-        </button>
+          <Modal
+            size="lg"
+            variant="soft"
+            open={showPhotoModal}
+            onClose={() => setShowPhotoModal(false)}
+          >
+            <ModalDialog
+              size="lg"
+              sx={{
+                width: "100%",
+                maxWidth: "600px",
+                height: "70vh",
+                maxHeight: "800px",
+              }}
+            >
+              <ModalClose variant="plain" sx={{ m: 1 }} />
+              <DialogTitle>Photo {selectedPhotoIndex + 1}</DialogTitle>
+              <DialogContent
+                sx={{
+                  display: "flex",
+                  alignContent: "center",
+                  justifyContent: "space-around",
+                }}
+              >
+                <AspectRatio objectFit="contain">
+                  <img
+                    src={photos[selectedPhotoIndex]}
+                    alt="Selected"
+                    // style={{ width: "100%", objectFit: "contain" }}
+                  />
+                </AspectRatio>
+                <CustomButton
+                  onClick={() => handleModalDelete(selectedPhotoIndex)}
+                >
+                  Delete photo
+                </CustomButton>
+              </DialogContent>
+            </ModalDialog>
+          </Modal>
+        </Box>
+
+        <CustomButton onClick={handleCreateEntry}> Save entry</CustomButton>
       </Box>
+
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        autoHideDuration={4000}
+        open={snackbar.open}
+        variant="solid"
+        color={
+          snackbar.open && snackbar.type === "success"
+            ? "success"
+            : snackbar.open
+            ? "danger"
+            : undefined
+        }
+        size="lg"
+        onClose={() => {
+          setSnackbar((prevState) => ({ ...prevState, open: false }));
+        }}
+      >
+        {snackbar.type === "success" ? <CheckCircle /> : <InfoIcon />}
+        {snackbar.message}
+      </Snackbar>
     </Box>
   );
 };
