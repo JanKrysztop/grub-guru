@@ -4,6 +4,7 @@ import storage from "redux-persist/lib/storage";
 import userReducer from "./userSlice";
 import bmrReducer from "./bmrSlice";
 import activityReducer from "./activitySlice";
+import themeReducer from "./themeSlice";
 
 const persistConfig = {
   key: "root",
@@ -17,6 +18,7 @@ export const store = configureStore({
     user: persistedReducer,
     bmr: bmrReducer,
     activity: activityReducer,
+    theme: themeReducer,
   },
   middleware: getDefaultMiddleware({
     serializableCheck: {

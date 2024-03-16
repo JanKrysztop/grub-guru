@@ -14,7 +14,7 @@ import { Female } from "@mui/icons-material";
 import { Male } from "@mui/icons-material";
 import Typography from "@mui/joy/Typography";
 
-const BmrCalculator = () => {
+const BmrCalculator = ({ backgroundColor }) => {
   const bmrFormulas = useSelector(selectBmrFormulas);
 
   const [weight, setWeight] = useState("");
@@ -128,7 +128,7 @@ const BmrCalculator = () => {
               width: "180px ",
               height: "40px ",
               borderRadius: "16px",
-              // backgroundColor: "#292B29",
+              backgroundColor: backgroundColor,
               ...(gender === "female" && {
                 backgroundColor: "#F7D9BB!important",
                 color: "#E78B01",
@@ -151,7 +151,7 @@ const BmrCalculator = () => {
               width: "180px ",
               height: "40px",
               borderRadius: "16px",
-              // backgroundColor: "#292B29",
+              backgroundColor: backgroundColor,
               ...(gender === "male" && {
                 backgroundColor: "#F7D9BB!important",
                 color: "#E78B01",
@@ -189,7 +189,7 @@ const BmrCalculator = () => {
               width: "180px ",
               height: "40px ",
               borderRadius: "16px",
-              // backgroundColor: "#292B29",
+              backgroundColor: backgroundColor,
               ...(formula === "Mifflin" && {
                 backgroundColor: "#F7D9BB!important",
                 color: "#E78B01",
@@ -205,7 +205,7 @@ const BmrCalculator = () => {
               width: "180px ",
               height: "40px",
               borderRadius: "16px",
-              // backgroundColor: "#292B29",
+              backgroundColor: backgroundColor,
               ...(formula === "Harris" && {
                 backgroundColor: "#F7D9BB!important",
                 color: "#E78B01",

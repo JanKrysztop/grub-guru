@@ -3,7 +3,10 @@ import Typography from "@mui/joy/Typography";
 import ToggleButtonGroup from "@mui/joy/ToggleButtonGroup";
 import Button from "@mui/joy/Button";
 import CustomButton from "@/components/ui/CustomButton";
+import { useSelector } from "react-redux";
+import { selectComponentBackground } from "@/redux/themeSlice";
 const StepTwo = ({ onPrev, onNext, goal, setGoal }) => {
+  const backgroundColor = useSelector(selectComponentBackground);
   return (
     <Box
       sx={{
@@ -51,7 +54,7 @@ const StepTwo = ({ onPrev, onNext, goal, setGoal }) => {
             height: "40px ",
             borderRadius: "16px",
 
-            // backgroundColor: "#292B29",
+            backgroundColor: backgroundColor,
             ...(goal === "lose" && {
               backgroundColor: "#F7D9BB!important",
               color: "#E78B01",
@@ -67,7 +70,7 @@ const StepTwo = ({ onPrev, onNext, goal, setGoal }) => {
             width: "100% ",
             height: "40px ",
             borderRadius: "16px !important",
-            // backgroundColor: "#292B29",
+            backgroundColor: backgroundColor,
             ...(goal === "maintain" && {
               backgroundColor: "#F7D9BB!important",
               color: "#E78B01",
@@ -83,7 +86,7 @@ const StepTwo = ({ onPrev, onNext, goal, setGoal }) => {
             width: "100% ",
             height: "40px ",
             borderRadius: "16px",
-            // backgroundColor: "#292B29",
+            backgroundColor: backgroundColor,
             ...(goal === "gain" && {
               backgroundColor: "#F7D9BB!important",
               color: "#E78B01",

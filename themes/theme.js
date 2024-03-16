@@ -1,21 +1,28 @@
-// theme.js
-//TODO: is this needed?
-import { createTheme } from "@mui/joy/styles";
+// const themeOptions = {
+//   components: {
+//     JoyInput: {
+//       variants: [
+//         {
+//           props: { variant: "outlined" }, // Apply this customization to the 'outlined' variant, for example
+//           style: {
+//             lightColorScheme: {
+//               backgroundColor: "#c8e6c9", // Background color for light mode
+//               "&:hover": {
+//                 backgroundColor: "#f0f0f0", // Lighter on hover for light mode
+//               },
+//             },
+//             darkColorScheme: {
+//               backgroundColor: "#424242", // Background color for dark mode
+//               "&:hover": {
+//                 backgroundColor: "#616161", // Lighter on hover for dark mode
+//               },
+//             },
+//           },
+//         },
+//       ],
+//     },
+//   },
+//   // Other theme customizations...
+// };
 
-const lightTheme = createTheme({
-  palette: {
-    mode: "light",
-    // define light theme colors
-  },
-  // other theme settings
-});
-
-const darkTheme = createTheme({
-  palette: {
-    mode: "dark",
-    // define dark theme colors
-  },
-  // other theme settings
-});
-
-export { lightTheme, darkTheme };
+// export default themeOptions;

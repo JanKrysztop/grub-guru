@@ -2,7 +2,8 @@ import { useEffect, useState, useRef } from "react";
 import { Box, Button, Typography, Sheet, Divider } from "@mui/joy";
 import { ChevronLeft } from "@mui/icons-material";
 import { ChevronRight } from "@mui/icons-material";
-
+import { useSelector } from "react-redux";
+import { selectComponentBackground } from "@/redux/themeSlice";
 import EventNoteIcon from "@mui/icons-material/EventNote";
 import {
   format,
@@ -23,7 +24,7 @@ const Calendar = ({ date, handleDateChange, entries }) => {
   const [openCalendar, setOpenCalendar] = useState(false);
   const [currentDate, setCurrentDate] = useState(date || new Date());
   const refPicker = useRef();
-
+  const backgroundColor = useSelector(selectComponentBackground);
   useEffect(() => {
     const startWeek = startOfWeek(currentDate, { weekStartsOn: 1 });
     const endWeek = endOfWeek(currentDate, { weekStartsOn: 1 });
@@ -107,7 +108,7 @@ const Calendar = ({ date, handleDateChange, entries }) => {
             textAlign: "center",
             border: "1px solid #8E928C",
             borderRadius: "4px",
-            backgroundColor: "",
+            backgroundColor: backgroundColor,
             // "&:hover": {
             //   backgroundColor: "#E1FEEA",
             // },
@@ -177,6 +178,7 @@ const Calendar = ({ date, handleDateChange, entries }) => {
           width: "100%",
           borderRadius: "4px",
           padding: 1,
+          // backgroundColor: backgroundColor,
         }}
       >
         <Box
@@ -234,6 +236,7 @@ const Calendar = ({ date, handleDateChange, entries }) => {
                 setCurrentDate={setCurrentDate}
                 currentDate={currentDate}
                 entries={entries}
+                backgroundColor={backgroundColor}
               />
             </Box>
           </Box>

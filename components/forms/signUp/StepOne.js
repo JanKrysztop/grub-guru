@@ -17,6 +17,8 @@ import { Male } from "@mui/icons-material";
 import LinearProgress from "@mui/joy/LinearProgress";
 import Typography from "@mui/joy/Typography";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { selectComponentBackground } from "@/redux/themeSlice";
 const StepOne = ({
   onNext,
   formState,
@@ -35,7 +37,7 @@ const StepOne = ({
     upperCase: false,
     specialChar: false,
   });
-
+  const backgroundColor = useSelector(selectComponentBackground);
   const checkUnique = async (event) => {
     event.preventDefault();
     const { username, email } = formState;
@@ -235,7 +237,8 @@ const StepOne = ({
             width: "180px ",
             height: "40px ",
             borderRadius: "16px",
-            // backgroundColor: "#292B29",
+
+            backgroundColor: backgroundColor,
             ...(formState.gender === "female" && {
               backgroundColor: "#F7D9BB!important",
               color: "#E78B01",
@@ -258,7 +261,7 @@ const StepOne = ({
             width: "180px ",
             height: "40px",
             borderRadius: "16px",
-            // backgroundColor: "#292B29",
+            backgroundColor: backgroundColor,
             ...(formState.gender === "male" && {
               backgroundColor: "#F7D9BB!important",
               color: "#E78B01",

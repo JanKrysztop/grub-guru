@@ -1,16 +1,34 @@
 import Input from "@mui/joy/Input";
 import { forwardRef } from "react";
-const customInputStyles = {
-  height: "48px",
-  borderRadius: "16px",
-  width: "100%",
-  "&.MuiInput-root.Mui-focused, &.MuiInput-root.Mui-focused::before": {
-    boxShadow: `inset 0 0 0 2px #549801`,
-  },
-};
+
+import { useSelector } from "react-redux";
+import { selectComponentBackground } from "@/redux/themeSlice";
 
 const CustomInput = forwardRef(
   ({ placeholder, value, onChange, type, style, ...props }, ref) => {
+    const backgroundColor = useSelector(selectComponentBackground);
+    const customInputStyles = {
+      height: "48px",
+      borderRadius: "16px",
+      width: "100%",
+      "&.MuiInput-root.Mui-focused, &.MuiInput-root.Mui-focused::before": {
+        boxShadow: `inset 0 0 0 2px #549801`,
+      },
+      backgroundColor: backgroundColor,
+      "&input:-webkit-autofill input:-webkit-autofill:hover input:-webkit-autofill:focus input:-webkit-autofill:active":
+        {
+          transition: "background-color 5000s ease-in-out 0s",
+        },
+      '& input[type="number"]::-webkit-inner-spin-button, & input[type="number"]::-webkit-outer-spin-button':
+        {
+          WebkitAppearance: "none",
+          margin: 0,
+        },
+      '& input[type="number"]': {
+        MozAppearance: "textfield",
+      },
+    };
+
     return (
       <Input
         type={type}

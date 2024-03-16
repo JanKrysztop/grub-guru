@@ -2,6 +2,8 @@ import BMI from "../features/BMI";
 import WHR from "../features/WHR";
 import BMR from "../features/BMR";
 import TDEE from "../features/TDEE";
+import { useSelector } from "react-redux";
+import { selectComponentBackground } from "@/redux/themeSlice";
 
 import { Box, ToggleButtonGroup, Button } from "@mui/joy";
 
@@ -9,17 +11,17 @@ import { useState } from "react";
 
 const Calculator = () => {
   const [currentCalculator, setCurrentCalculator] = useState("BMI");
-
+  const backgroundColor = useSelector(selectComponentBackground);
   const renderCalculator = () => {
     switch (currentCalculator) {
       case "BMI":
         return <BMI />;
       case "WHR":
-        return <WHR />;
+        return <WHR backgroundColor={backgroundColor} />;
       case "TDEE":
-        return <TDEE />;
+        return <TDEE backgroundColor={backgroundColor} />;
       case "BMR":
-        return <BMR />;
+        return <BMR backgroundColor={backgroundColor} />;
       default:
         return "BMI";
     }
@@ -62,7 +64,7 @@ const Calculator = () => {
               width: "80px ",
               height: "40px ",
               borderRadius: "16px",
-              // backgroundColor: "#292B29",
+              backgroundColor: backgroundColor,
               ...(currentCalculator === "BMI" && {
                 backgroundColor: "#F7D9BB!important",
                 color: "#E78B01",
@@ -78,7 +80,7 @@ const Calculator = () => {
               width: "80px ",
               height: "40px ",
               borderRadius: "16px !important",
-              // backgroundColor: "#292B29",
+              backgroundColor: backgroundColor,
               ...(currentCalculator === "WHR" && {
                 backgroundColor: "#F7D9BB!important",
                 color: "#E78B01",
@@ -94,7 +96,7 @@ const Calculator = () => {
               width: "80px ",
               height: "40px ",
               borderRadius: "16px !important",
-              // backgroundColor: "#292B29",
+              backgroundColor: backgroundColor,
               ...(currentCalculator === "BMR" && {
                 backgroundColor: "#F7D9BB!important",
                 color: "#E78B01",
@@ -110,7 +112,7 @@ const Calculator = () => {
               width: "80px ",
               height: "40px ",
               borderRadius: "16px",
-              // backgroundColor: "#292B29",
+              backgroundColor: backgroundColor,
               ...(currentCalculator === "TDEE" && {
                 backgroundColor: "#F7D9BB!important",
                 color: "#E78B01",

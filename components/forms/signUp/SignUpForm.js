@@ -20,6 +20,7 @@ import { useRouter } from "next/router";
 import { useSelector } from "react-redux";
 import { selectBmrFormulas } from "@/redux/bmrSlice";
 import { selectActivityLevels } from "@/redux/activitySlice";
+import { selectComponentBackground } from "@/redux/themeSlice";
 
 const SignUpForm = () => {
   const bmrFormulas = useSelector(selectBmrFormulas);
@@ -49,6 +50,7 @@ const SignUpForm = () => {
     show: false,
     type: "",
   });
+  const backgroundColor = useSelector(selectComponentBackground);
   const successMessage = "Registration completed! Welcome aboard.";
   const errorMessage = "Ooops... Something went wrong";
   const router = useRouter();
@@ -281,7 +283,7 @@ const SignUpForm = () => {
                 sx={{
                   width: "120px",
                   height: "120px",
-                  bgcolor: "background.surface",
+                  bgcolor: backgroundColor,
                   borderRadius: "60px",
                   display: "flex",
                   justifyContent: "center",

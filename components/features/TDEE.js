@@ -17,7 +17,7 @@ import Typography from "@mui/joy/Typography";
 import Select from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
 
-const TdeeCalculator = () => {
+const TdeeCalculator = ({ backgroundColor }) => {
   const bmrFormulas = useSelector(selectBmrFormulas);
   const activityLevels = useSelector(selectActivityLevels);
 
@@ -163,7 +163,7 @@ const TdeeCalculator = () => {
               width: "180px ",
               height: "40px ",
               borderRadius: "16px",
-              // backgroundColor: "#292B29",
+              backgroundColor: backgroundColor,
               ...(gender === "female" && {
                 backgroundColor: "#F7D9BB!important",
                 color: "#E78B01",
@@ -186,7 +186,7 @@ const TdeeCalculator = () => {
               width: "180px ",
               height: "40px",
               borderRadius: "16px",
-              // backgroundColor: "#292B29",
+              backgroundColor: backgroundColor,
               ...(gender === "male" && {
                 backgroundColor: "#F7D9BB!important",
                 color: "#E78B01",
@@ -224,7 +224,7 @@ const TdeeCalculator = () => {
               width: "180px ",
               height: "40px ",
               borderRadius: "16px",
-              // backgroundColor: "#292B29",
+              backgroundColor: backgroundColor,
               ...(formula === "Mifflin" && {
                 backgroundColor: "#F7D9BB!important",
                 color: "#E78B01",
@@ -240,7 +240,7 @@ const TdeeCalculator = () => {
               width: "180px ",
               height: "40px",
               borderRadius: "16px",
-              // backgroundColor: "#292B29",
+              backgroundColor: backgroundColor,
               ...(formula === "Harris" && {
                 backgroundColor: "#F7D9BB!important",
                 color: "#E78B01",
@@ -254,7 +254,7 @@ const TdeeCalculator = () => {
         <Select
           value={activity}
           onChange={(e, newValue) => setActivity(newValue)}
-          sx={{ width: "100%", mb: 3 }}
+          sx={{ width: "100%", mb: 3, backgroundColor: backgroundColor }}
         >
           {activityLevels.map((level) => (
             <Option key={level.id} value={level.value} label={level.mainText}>

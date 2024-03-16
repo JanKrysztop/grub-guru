@@ -5,6 +5,8 @@ import Select from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
 import { useEffect } from "react";
 import Slider from "@mui/joy/Slider";
+import { useSelector } from "react-redux";
+import { selectComponentBackground } from "@/redux/themeSlice";
 
 const StepThree = ({
   onPrev,
@@ -17,6 +19,7 @@ const StepThree = ({
   goal,
   error,
 }) => {
+  const backgroundColor = useSelector(selectComponentBackground);
   return (
     <Box
       sx={{
@@ -43,7 +46,7 @@ const StepThree = ({
       <Select
         value={activity}
         onChange={(e, newValue) => setActivity(newValue)}
-        sx={{ width: "90%", mb: 3 }}
+        sx={{ width: "90%", mb: 3, backgroundColor: backgroundColor }}
       >
         {activityLevels.map((level) => (
           <Option key={level.id} value={level.value} label={level.mainText}>

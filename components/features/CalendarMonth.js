@@ -26,6 +26,7 @@ const CalendarMonth = forwardRef(
       currentDate,
       openCalendar,
       setOpenCalendar,
+      backgroundColor,
     },
     ref
   ) => {
@@ -144,6 +145,7 @@ const CalendarMonth = forwardRef(
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
+            backgroundColor: backgroundColor,
           }}
         >
           <Box sx={{ width: "100%", display: "flex", alignItems: "center" }}>

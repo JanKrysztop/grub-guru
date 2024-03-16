@@ -12,7 +12,7 @@ import { Female } from "@mui/icons-material";
 import { Male } from "@mui/icons-material";
 import Typography from "@mui/joy/Typography";
 
-const WhrCalculator = () => {
+const WhrCalculator = ({ backgroundColor }) => {
   const [gender, setGender] = useState("female");
   const [waist, setWaist] = useState("");
   const [hip, setHip] = useState("");
@@ -127,7 +127,7 @@ const WhrCalculator = () => {
               width: "180px ",
               height: "40px ",
               borderRadius: "16px",
-              // backgroundColor: "#292B29",
+              backgroundColor: backgroundColor,
               ...(gender === "female" && {
                 backgroundColor: "#F7D9BB!important",
                 color: "#E78B01",
@@ -150,7 +150,7 @@ const WhrCalculator = () => {
               width: "180px ",
               height: "40px",
               borderRadius: "16px",
-              // backgroundColor: "#292B29",
+              backgroundColor: backgroundColor,
               ...(gender === "male" && {
                 backgroundColor: "#F7D9BB!important",
                 color: "#E78B01",
