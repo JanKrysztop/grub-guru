@@ -19,6 +19,7 @@ import ModalClose from "@mui/joy/ModalClose";
 import InfoIcon from "@mui/icons-material/Info";
 import { CheckCircle } from "@mui/icons-material";
 import Badge from "@mui/joy/Badge";
+import { useColorScheme } from "@mui/joy/styles";
 const Journal = () => {
   const userData = useSelector(selectUserData);
 
@@ -35,6 +36,7 @@ const Journal = () => {
   const [showPhotoModal, setShowPhotoModal] = useState(false);
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
   const prevDateRef = useRef();
+  const { mode, setMode } = useColorScheme();
 
   const handleOpenPhotoModal = (index) => {
     setSelectedPhotoIndex(index);
@@ -177,7 +179,7 @@ const Journal = () => {
           sx={{
             margin: 2,
             "& .MuiBadge-badge": {
-              backgroundColor: "#549801 !important", // Force override
+              backgroundColor: "#549801 !important",
             },
           }}
         >
@@ -191,6 +193,7 @@ const Journal = () => {
               flexDirection: "column",
               width: "120px",
               height: "120px",
+              backgroundColor: mode === "dark" && "#494B47",
             }}
           >
             <AddAPhotoRounded sx={{ width: "60px", height: "60px" }} />

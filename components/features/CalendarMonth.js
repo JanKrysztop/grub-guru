@@ -15,6 +15,7 @@ import {
   isSameDay,
   parseISO,
 } from "date-fns";
+import { useColorScheme } from "@mui/joy/styles";
 
 const CalendarMonth = forwardRef(
   (
@@ -27,6 +28,7 @@ const CalendarMonth = forwardRef(
       openCalendar,
       setOpenCalendar,
       backgroundColor,
+      mode,
     },
     ref
   ) => {
@@ -102,9 +104,9 @@ const CalendarMonth = forwardRef(
                 p: 0,
                 m: 0,
                 backgroundColor: isSelected ? "#0B93E0" : "",
-                "&:hover": {
-                  backgroundColor: isSelected ? "#0B93E0" : "#f0f0f0",
-                },
+                // "&:hover": {
+                //   backgroundColor: isSelected ? "#0B93E0" : "#f0f0f0",
+                // },
                 color: isCurrentMonth ? "inherit" : "#d0d0d0",
                 borderRadius: "50%",
               }}
@@ -154,6 +156,11 @@ const CalendarMonth = forwardRef(
               variant="plain"
               size="lg"
               color="neutral"
+              sx={{
+                "&:hover": {
+                  backgroundColor: mode === "dark" && "#6A6D69",
+                },
+              }}
             >
               <ChevronLeft />
             </Button>
@@ -167,6 +174,11 @@ const CalendarMonth = forwardRef(
               variant="plain"
               size="lg"
               color="neutral"
+              sx={{
+                "&:hover": {
+                  backgroundColor: mode === "dark" && "#6A6D69",
+                },
+              }}
             >
               <ChevronRight />
             </Button>

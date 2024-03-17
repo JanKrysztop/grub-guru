@@ -15,10 +15,6 @@ const CustomInput = forwardRef(
         boxShadow: `inset 0 0 0 2px #549801`,
       },
       backgroundColor: backgroundColor,
-      "&input:-webkit-autofill input:-webkit-autofill:hover input:-webkit-autofill:focus input:-webkit-autofill:active":
-        {
-          transition: "background-color 5000s ease-in-out 0s",
-        },
       '& input[type="number"]::-webkit-inner-spin-button, & input[type="number"]::-webkit-outer-spin-button':
         {
           WebkitAppearance: "none",
@@ -31,6 +27,7 @@ const CustomInput = forwardRef(
 
     return (
       <Input
+        autoComplete="off"
         type={type}
         sx={{ ...customInputStyles, ...style }}
         placeholder={placeholder}

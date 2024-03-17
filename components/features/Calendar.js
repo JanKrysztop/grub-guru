@@ -5,6 +5,7 @@ import { ChevronRight } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { selectComponentBackground } from "@/redux/themeSlice";
 import EventNoteIcon from "@mui/icons-material/EventNote";
+import { useColorScheme } from "@mui/joy/styles";
 import {
   format,
   startOfWeek,
@@ -25,6 +26,7 @@ const Calendar = ({ date, handleDateChange, entries }) => {
   const [currentDate, setCurrentDate] = useState(date || new Date());
   const refPicker = useRef();
   const backgroundColor = useSelector(selectComponentBackground);
+  const { mode, setMode } = useColorScheme();
   useEffect(() => {
     const startWeek = startOfWeek(currentDate, { weekStartsOn: 1 });
     const endWeek = endOfWeek(currentDate, { weekStartsOn: 1 });
@@ -178,7 +180,7 @@ const Calendar = ({ date, handleDateChange, entries }) => {
           width: "100%",
           borderRadius: "4px",
           padding: 1,
-          // backgroundColor: backgroundColor,
+          backgroundColor: backgroundColor,
         }}
       >
         <Box
@@ -195,6 +197,11 @@ const Calendar = ({ date, handleDateChange, entries }) => {
               size="lg"
               color="neutral"
               onClick={previousWeek}
+              sx={{
+                "&:hover": {
+                  backgroundColor: mode === "dark" && "#6A6D69",
+                },
+              }}
             >
               <ChevronLeft />
             </Button>
@@ -214,6 +221,11 @@ const Calendar = ({ date, handleDateChange, entries }) => {
               size="lg"
               color="neutral"
               onClick={nextWeek}
+              sx={{
+                "&:hover": {
+                  backgroundColor: mode === "dark" && "#6A6D69",
+                },
+              }}
             >
               <ChevronRight />
             </Button>
@@ -222,7 +234,12 @@ const Calendar = ({ date, handleDateChange, entries }) => {
                 variant="plain"
                 size="lg"
                 color="neutral"
-                sx={{ marginLeft: "auto" }}
+                sx={{
+                  marginLeft: "auto",
+                  "&:hover": {
+                    backgroundColor: mode === "dark" && "#6A6D69",
+                  },
+                }}
                 onClick={handleCalendar}
               >
                 <TodayRounded />
@@ -237,6 +254,7 @@ const Calendar = ({ date, handleDateChange, entries }) => {
                 currentDate={currentDate}
                 entries={entries}
                 backgroundColor={backgroundColor}
+                mode={mode}
               />
             </Box>
           </Box>
