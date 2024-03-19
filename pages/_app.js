@@ -4,7 +4,7 @@ import { CssVarsProvider } from "@mui/joy/styles";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "@/redux/store";
-import Layout from "@/components/layout/Layout";
+import Layout from "@/components/layout/AppLayout";
 
 const App = ({ Component, pageProps }) => {
   return (
