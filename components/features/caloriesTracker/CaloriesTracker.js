@@ -9,17 +9,23 @@ import moment from "moment";
 import { format, startOfMonth, endOfMonth, getMonth, getYear } from "date-fns";
 
 import Link from "next/link";
-import NewProductModal from "../../ui/NewProductModal";
 import { useSelector } from "react-redux";
 import { selectUserData } from "@/redux/userSlice";
 import Calendar from "../Calendar";
+import CustomProductForm from "../../forms/CustomProductForm";
 import { Box, Button } from "@mui/joy";
 import CustomButton from "@/components/ui/CustomButton";
 import { ShoppingBasketRounded } from "@mui/icons-material";
+import Modal from "@mui/joy/Modal";
+import ModalDialog from "@mui/joy/ModalDialog";
+import DialogTitle from "@mui/joy/DialogTitle";
+import DialogContent from "@mui/joy/DialogContent";
+import ModalClose from "@mui/joy/ModalClose";
+import { useColorScheme } from "@mui/joy/styles";
 //Rename to nutritionTracker???
 const CaloriesTracker = () => {
   const userData = useSelector(selectUserData);
-
+  const { mode, setMode } = useColorScheme();
   const [food, setFood] = useState("");
   const [dailyNutrients, setDailyNutrients] = useState({
     calories: 0,
@@ -35,6 +41,7 @@ const CaloriesTracker = () => {
   const [waterIntake, setWaterIntake] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [entries, setEntries] = useState([]);
+  const [showNewProduct, setShowNewProduct] = useState(false);
   const prevDateRef = useRef();
 
   const fetchConsumedFoods = async () => {
@@ -248,16 +255,39 @@ const CaloriesTracker = () => {
           <ShoppingBasketRounded /> New product
         </Button> */}
         <CustomButton
-          onClick={showNewProductModal}
+          onClick={() => setShowNewProduct(true)}
           sx={{ width: "150px", alignSelf: "end" }}
         >
           {" "}
           <ShoppingBasketRounded /> New product
         </CustomButton>
-        <NewProductModal
+        {/* <NewProductModal
           isOpen={isNewProductModalOpen}
           onClose={closeNewProductModal}
-        />
+        /> */}
+        <Modal
+          open={showNewProduct}
+          onClose={() => setShowNewProduct(false)}
+          size="lg"
+          variant="soft"
+        >
+          <ModalDialog
+            size="lg"
+            sx={{
+              width: "100%",
+              maxWidth: "600px",
+              // height: "70vh",
+              maxHeight: "800px",
+              backgroundColor: mode === "dark" && "#292B29",
+            }}
+          >
+            <ModalClose variant="plain" sx={{ m: 1 }} />
+            <DialogTitle>Add new product</DialogTitle>
+            <DialogContent>
+              <CustomProductForm setShowNewProduct={setShowNewProduct} />
+            </DialogContent>
+          </ModalDialog>
+        </Modal>
         {!foodDetails && (
           <form onSubmit={handleSubmit} className="flex flex-col items-center">
             <input
