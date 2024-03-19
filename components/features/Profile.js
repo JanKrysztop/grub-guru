@@ -11,6 +11,8 @@ import Badge from "@mui/joy/Badge";
 import { Edit } from "@mui/icons-material";
 import IconButton from "@mui/joy/IconButton";
 import Button from "@mui/joy/Button";
+import { selectComponentBackground } from "@/redux/themeSlice";
+
 const Profile = () => {
   const dispatch = useDispatch();
   const userData = useSelector(selectUserData);
@@ -25,7 +27,7 @@ const Profile = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [isChangingPassword, setIsChangingPassword] = useState(false);
-
+  const backgroundColor = useSelector(selectComponentBackground);
   const updateProfile = async (payload) => {
     try {
       const response = await axios.put(
@@ -108,7 +110,7 @@ const Profile = () => {
             sx={{
               width: "120px",
               height: "120px",
-              bgcolor: "background.surface",
+              bgcolor: backgroundColor,
               borderRadius: "60px",
               display: "flex",
               justifyContent: "center",
@@ -118,12 +120,15 @@ const Profile = () => {
               position: "relative",
             }}
           >
-            <AccountCircle
+            <Typography fontSize={60} textTransform="uppercase">
+              {userData?.username.charAt(0)}
+            </Typography>
+            {/* <AccountCircle
               sx={{
                 fontSize: "var(--Icon-fontSize, 120px)",
                 color: "#549801",
               }}
-            />
+            /> */}
             <IconButton
               size="md"
               variant="solid"

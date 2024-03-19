@@ -58,7 +58,7 @@ const Journal = () => {
   };
 
   const fetchUserEntry = async () => {
-    if (!userData._id) return;
+    if (!userData?._id) return;
     setWeight("");
     setPhotos([]);
 
@@ -77,7 +77,7 @@ const Journal = () => {
   };
 
   const fetchMonthEntries = async () => {
-    if (!userData._id) return;
+    if (!userData?._id) return;
 
     try {
       // Assuming 'date' is the date object for the current month you're interested in
@@ -106,11 +106,11 @@ const Journal = () => {
       fetchMonthEntries();
     }
     prevDateRef.current = date;
-  }, [date, userData._id]);
+  }, [date, userData?._id]);
 
   useEffect(() => {
     fetchUserEntry();
-  }, [date, userData._id]);
+  }, [date, userData?._id]);
 
   const handleCreateEntry = async () => {
     try {

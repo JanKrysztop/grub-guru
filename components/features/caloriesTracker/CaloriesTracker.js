@@ -30,7 +30,7 @@ const CaloriesTracker = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const fetchConsumedFoods = async () => {
-    if (!userData._id) return;
+    if (!userData?._id) return;
     setConsumedFoods([]);
     try {
       const formattedDate = moment(date).format("YYYY-MM-DD");
@@ -67,7 +67,7 @@ const CaloriesTracker = () => {
 
   useEffect(() => {
     fetchConsumedFoods();
-  }, [date, userData._id]);
+  }, [date, userData?._id]);
 
   const saveConsumedFoods = async (foods) => {
     try {

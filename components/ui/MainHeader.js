@@ -64,6 +64,29 @@ const MainHeader = () => {
         }}
       >
         <Box>
+          <IconButton
+            variant="soft"
+            sx={{
+              borderRadius: "40px",
+              backgroundColor: mode === "dark" ? "#292b29" : "#fafafa", // Replace '#yourLightModeColor' with the desired color for light mode
+              transition: "transform 0.3s ease-in-out", // Smooth transition for the hover effect
+              "&:hover": {
+                transform: "scale(1.1)", // Slightly increase the size on hover
+                backgroundColor:
+                  mode === "dark"
+                    ? "#hoverColorDarkMode"
+                    : "#hoverColorLightMode", // Optionally change the background color on hover for each mode
+              },
+            }}
+            onClick={() => setMode(mode === "dark" ? "light" : "dark")}
+          >
+            {mode === "dark" ? <DarkMode /> : <LightMode />}
+          </IconButton>
+        </Box>
+        <Box>
+          <img src="/big-logo.svg" alt="Big Logo" width={190} />
+        </Box>
+        <Box>
           <Dropdown>
             <MenuButton
               slots={{ root: IconButton }}
@@ -128,29 +151,6 @@ const MainHeader = () => {
               </MenuItem>
             </Menu>
           </Dropdown>
-        </Box>
-        <Box>
-          <img src="/big-logo.svg" alt="Big Logo" />
-        </Box>
-        <Box>
-          <IconButton
-            variant="soft"
-            sx={{
-              borderRadius: "40px",
-              backgroundColor: mode === "dark" ? "#292b29" : "#fafafa", // Replace '#yourLightModeColor' with the desired color for light mode
-              transition: "transform 0.3s ease-in-out", // Smooth transition for the hover effect
-              "&:hover": {
-                transform: "scale(1.1)", // Slightly increase the size on hover
-                backgroundColor:
-                  mode === "dark"
-                    ? "#hoverColorDarkMode"
-                    : "#hoverColorLightMode", // Optionally change the background color on hover for each mode
-              },
-            }}
-            onClick={() => setMode(mode === "dark" ? "light" : "dark")}
-          >
-            {mode === "dark" ? <DarkMode /> : <LightMode />}
-          </IconButton>
         </Box>
       </Box>
     </header>

@@ -31,12 +31,12 @@ const LoginForm = () => {
 
   const router = useRouter();
   const { mode, setMode } = useColorScheme();
-  useEffect(() => {
-    localStorage.clear();
-    dispatch(setLoginStatus(false));
-    dispatch(setUserData(null));
-    dispatch(setUserName(null));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   localStorage.clear();
+  //   dispatch(setLoginStatus(false));
+  //   dispatch(setUserData(null));
+  //   dispatch(setUserName(null));
+  // }, [dispatch]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
