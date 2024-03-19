@@ -1,3 +1,5 @@
+//THIS COMPONENT IS CURRENTLY UNUSED
+
 import { useZxing } from "react-zxing";
 
 const BarcodeScannerComponent = ({ onDetected }) => {

@@ -71,4 +71,32 @@ router.get("/daily-nutrients", async (req, res) => {
   }
 });
 
+router.get("/nutrients-range", async (req, res) => {
+  const { userId, startDate, endDate } = req.query;
+
+  // Parse start and end dates to cover the full days
+  const parsedStartDate = moment(startDate).startOf("day").toDate();
+  const parsedEndDate = moment(endDate).endOf("day").toDate();
+
+  try {
+    const nutritionRecords = await Nutrition.find({
+      userId,
+      date: { $gte: parsedStartDate, $lte: parsedEndDate },
+      waterIntake: { $gt: 0 },
+      foods: { $ne: [] },
+    });
+
+    if (!nutritionRecords || nutritionRecords.length === 0) {
+      // If no records are found, return an empty array
+      return res.status(200).json([]);
+    }
+
+    res.status(200).json(nutritionRecords);
+  } catch (error) {
+    res.status(500).json({
+      error: "An error occurred while retrieving daily nutrients.",
+    });
+  }
+});
+
 module.exports = router;

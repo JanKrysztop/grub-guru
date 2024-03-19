@@ -1,15 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import Calendar from "react-calendar";
-import DatePicker from "react-date-picker";
+// import Calendar from "react-calendar";
+// import DatePicker from "react-date-picker";
 import "react-date-picker/dist/DatePicker.css";
 import "react-calendar/dist/Calendar.css";
 import FoodDetails from "./FoodDetails";
 import moment from "moment";
+import { format, startOfMonth, endOfMonth, getMonth, getYear } from "date-fns";
+
 import Link from "next/link";
 import NewProductModal from "../../ui/NewProductModal";
 import { useSelector } from "react-redux";
 import { selectUserData } from "@/redux/userSlice";
+import Calendar from "../Calendar";
+import { Box, Button } from "@mui/joy";
+import CustomButton from "@/components/ui/CustomButton";
+import { ShoppingBasketRounded } from "@mui/icons-material";
 //Rename to nutritionTracker???
 const CaloriesTracker = () => {
   const userData = useSelector(selectUserData);
@@ -28,12 +34,14 @@ const CaloriesTracker = () => {
   const [isNewProductModalOpen, setIsNewProductModalOpen] = useState(false);
   const [waterIntake, setWaterIntake] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [entries, setEntries] = useState([]);
+  const prevDateRef = useRef();
 
   const fetchConsumedFoods = async () => {
     if (!userData?._id) return;
     setConsumedFoods([]);
     try {
-      const formattedDate = moment(date).format("YYYY-MM-DD");
+      const formattedDate = format(date, "yyyy-MM-dd");
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_MAIN_URL}/nutrition/daily-nutrients?userId=${userData._id}&date=${formattedDate}`
       );
@@ -64,7 +72,37 @@ const CaloriesTracker = () => {
       console.error(error);
     }
   };
+  const fetchMonthEntries = async () => {
+    if (!userData?._id) return;
 
+    try {
+      // Assuming 'date' is the date object for the current month you're interested in
+      // Calculate the start and end of the month for 'date'
+      const startDate = startOfMonth(date);
+      const endDate = endOfMonth(date);
+
+      // Format startDate and endDate to YYYY-MM-DD format for the API call
+      const formattedStartDate = format(startDate, "yyyy-MM-dd");
+      const formattedEndDate = format(endDate, "yyyy-MM-dd");
+
+      const response = await axios.get(
+        `${process.env.NEXT_PUBLIC_MAIN_URL}/nutrition/nutrients-range?userId=${userData._id}&startDate=${formattedStartDate}&endDate=${formattedEndDate}`
+      );
+      setEntries(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    if (
+      !prevDateRef.current ||
+      getMonth(prevDateRef.current) !== getMonth(date) ||
+      getYear(prevDateRef.current) !== getYear(date)
+    ) {
+      fetchMonthEntries();
+    }
+    prevDateRef.current = date;
+  }, [date, userData?._id]);
   useEffect(() => {
     fetchConsumedFoods();
   }, [date, userData?._id]);
@@ -77,10 +115,11 @@ const CaloriesTracker = () => {
         foods: foods,
         waterIntake: waterIntake,
       };
-      await axios.post(
+      const response = await axios.post(
         `${process.env.NEXT_PUBLIC_MAIN_URL}/nutrition/track-nutrition`,
         payload
       );
+      setEntries((currentEntries) => [...currentEntries, response.data]);
     } catch (error) {
       console.log(error);
     }
@@ -174,31 +213,51 @@ const CaloriesTracker = () => {
     }
   };
   return (
-    <>
-      <div className="flex flex-col px-10 py-10 items-end justify-center bg-gray-100">
-        <button
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}
+    >
+      {" "}
+      <Calendar
+        handleDateChange={handleDateChange}
+        date={date}
+        entries={entries}
+      />
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          width: "100%",
+          maxWidth: "sm",
+          p: 3,
+          m: 2,
+        }}
+      >
+        {/* <button
           onClick={showNewProductModal}
           className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
         >
           Add new product
         </button>
+        <Button color="neutral">
+          <ShoppingBasketRounded /> New product
+        </Button> */}
+        <CustomButton
+          onClick={showNewProductModal}
+          sx={{ width: "150px", alignSelf: "end" }}
+        >
+          {" "}
+          <ShoppingBasketRounded /> New product
+        </CustomButton>
         <NewProductModal
           isOpen={isNewProductModalOpen}
           onClose={closeNewProductModal}
         />
-      </div>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-        <h1 className="mb-6 text-3xl font-bold text-gray-700">
-          Calories Tracker
-        </h1>
-        {/* <button
-          type="button"
-          onClick={saveConsumedFoods}
-          className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
-        >
-          Save
-        </button> */}
-        <DatePicker onChange={handleDateChange} value={date} />
         {!foodDetails && (
           <form onSubmit={handleSubmit} className="flex flex-col items-center">
             <input
@@ -299,8 +358,8 @@ const CaloriesTracker = () => {
             </button>
           ))}
         </div>
-      </div>
-    </>
+      </Box>
+    </Box>
   );
 };
 

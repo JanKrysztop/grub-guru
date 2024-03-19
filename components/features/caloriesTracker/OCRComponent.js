@@ -1,3 +1,5 @@
+//THIS COMPONENT IS CURRENTLY UNUSED
+
 import { createWorker } from "tesseract.js";
 import { useState, useEffect, useRef, useCallback } from "react";
 import Webcam from "react-webcam";
