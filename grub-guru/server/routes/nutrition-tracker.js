@@ -4,7 +4,7 @@ const router = express.Router();
 const moment = require("moment");
 
 router.post("/track-nutrition", async (req, res) => {
-  const { userId, date, foods, waterIntake } = req.body;
+  const { userId, date, meals, waterIntake } = req.body;
 
   try {
     // Parse the date string using moment.js
@@ -30,7 +30,7 @@ router.post("/track-nutrition", async (req, res) => {
       {
         userId,
         date: startOfDay, // Set the date part to the start of the day
-        foods,
+        meals,
         waterIntake,
       },
       { new: true, upsert: true } // Return the updated document and create if not exists

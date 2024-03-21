@@ -36,7 +36,7 @@ const LoginForm = () => {
   //   dispatch(setLoginStatus(false));
   //   dispatch(setUserData(null));
   //   dispatch(setUserName(null));
-  // }, [dispatch]);
+  // }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

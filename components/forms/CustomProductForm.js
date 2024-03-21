@@ -6,7 +6,7 @@ import { Box, Typography } from "@mui/joy";
 import CustomInput from "@/components/ui/CustomInput";
 import CustomButton from "@/components/ui/CustomButton";
 
-const CustomProductForm = ({ setShowNewProduct }) => {
+const CustomProductForm = ({ setShowNewProduct, snackbar, setSnackbar }) => {
   const userData = useSelector(selectUserData);
 
   const [formData, setFormData] = useState({
@@ -49,8 +49,18 @@ const CustomProductForm = ({ setShowNewProduct }) => {
       console.log("added food", response.data);
 
       setShowNewProduct(false);
+      setSnackbar({
+        open: true,
+        type: "success",
+        message: "New product successfully created!",
+      });
     } catch (error) {
       console.log(error);
+      setSnackbar({
+        open: true,
+        type: "error",
+        message: "Failed to create new product. Please try again.",
+      });
     }
   };
 
@@ -129,7 +139,18 @@ const CustomProductForm = ({ setShowNewProduct }) => {
         className="mb-14"
       />
 
-      <CustomButton type="submit" sx={{ marginBottom: 2 }}>
+      <CustomButton
+        disabled={
+          !formData.label ||
+          !formData.ENERC_KCAL ||
+          !formData.CHOCDF ||
+          !formData.PROCNT ||
+          !formData.FAT ||
+          !formData.servingSize
+        }
+        type="submit"
+        sx={{ marginBottom: 2 }}
+      >
         Add
       </CustomButton>
       <CustomButton

@@ -7,13 +7,24 @@ import "react-calendar/dist/Calendar.css";
 import FoodDetails from "./FoodDetails";
 import moment from "moment";
 import { format, startOfMonth, endOfMonth, getMonth, getYear } from "date-fns";
-
+import MealList from "./MealList";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { selectUserData } from "@/redux/userSlice";
 import Calendar from "../Calendar";
 import CustomProductForm from "../../forms/CustomProductForm";
-import { Box, Button } from "@mui/joy";
+import {
+  Box,
+  Button,
+  Sheet,
+  Card,
+  Typography,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Divider,
+} from "@mui/joy";
 import CustomButton from "@/components/ui/CustomButton";
 import { ShoppingBasketRounded } from "@mui/icons-material";
 import Modal from "@mui/joy/Modal";
@@ -21,29 +32,45 @@ import ModalDialog from "@mui/joy/ModalDialog";
 import DialogTitle from "@mui/joy/DialogTitle";
 import DialogContent from "@mui/joy/DialogContent";
 import ModalClose from "@mui/joy/ModalClose";
+import { Snackbar } from "@mui/joy";
+import InfoIcon from "@mui/icons-material/Info";
+import { CheckCircle } from "@mui/icons-material";
 import { useColorScheme } from "@mui/joy/styles";
+import { AddCircleOutlineRounded } from "@mui/icons-material";
 //Rename to nutritionTracker???
 const CaloriesTracker = () => {
   const userData = useSelector(selectUserData);
   const { mode, setMode } = useColorScheme();
-  const [food, setFood] = useState("");
+
   const [dailyNutrients, setDailyNutrients] = useState({
     calories: 0,
     carbs: 0,
     protein: 0,
     fat: 0,
   });
-  const [foodList, setFoodList] = useState([]);
-  const [foodDetails, setFoodDetails] = useState(null);
-  const [consumedFoods, setConsumedFoods] = useState([]);
+
+  // const [consumedFoods, setConsumedFoods] = useState([]);
+  const [consumedFoods, setConsumedFoods] = useState({
+    breakfast: [],
+    secondBreakfast: [],
+    lunch: [],
+    snack: [],
+    dinner: [],
+  });
   const [date, setDate] = useState(new Date());
   const [isNewProductModalOpen, setIsNewProductModalOpen] = useState(false);
   const [waterIntake, setWaterIntake] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [entries, setEntries] = useState([]);
   const [showNewProduct, setShowNewProduct] = useState(false);
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    type: "",
+    message: "",
+  });
+  const [showSelectFood, setShowSelectFood] = useState(false);
   const prevDateRef = useRef();
-
+  const mealTypes = Object.keys(consumedFoods);
   const fetchConsumedFoods = async () => {
     if (!userData?._id) return;
     setConsumedFoods([]);
@@ -52,11 +79,18 @@ const CaloriesTracker = () => {
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_MAIN_URL}/nutrition/daily-nutrients?userId=${userData._id}&date=${formattedDate}`
       );
-      const fetchedFoods = response.data.foods || [];
-      const fetchedWaterIntake = response.data.waterIntake || 0;
-      setConsumedFoods(fetchedFoods);
-      setWaterIntake(fetchedWaterIntake);
-      setActiveIndex(Math.floor(fetchedWaterIntake / 200));
+      const { meals, waterIntake } = response.data;
+      setConsumedFoods(
+        meals || {
+          breakfast: [],
+          secondBreakfast: [],
+          lunch: [],
+          snack: [],
+          dinner: [],
+        }
+      );
+      setWaterIntake(waterIntake || 0);
+      setActiveIndex(Math.floor(waterIntake / 200));
       // Calculate total nutrients for the day
       const totalNutrients = fetchedFoods.reduce(
         (total, food) => {
@@ -114,86 +148,64 @@ const CaloriesTracker = () => {
     fetchConsumedFoods();
   }, [date, userData?._id]);
 
-  const saveConsumedFoods = async (foods) => {
+  const saveConsumedFoods = async (food, mealType) => {
     try {
       const payload = {
         userId: userData._id,
         date: date,
-        foods: foods,
+        food: {
+          ...food,
+          mealType: mealType,
+        },
         waterIntake: waterIntake,
       };
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_MAIN_URL}/nutrition/track-nutrition`,
         payload
       );
+      // Assuming your backend returns the saved entry, including it in the current entries
       setEntries((currentEntries) => [...currentEntries, response.data]);
     } catch (error) {
       console.log(error);
     }
   };
+  // const saveConsumedFoods = async (foods) => {
+  //   try {
+  //     const payload = {
+  //       userId: userData._id,
+  //       date: date,
+  //       foods: foods,
+  //       waterIntake: waterIntake,
+  //     };
+  //     const response = await axios.post(
+  //       `${process.env.NEXT_PUBLIC_MAIN_URL}/nutrition/track-nutrition`,
+  //       payload
+  //     );
+  //     setEntries((currentEntries) => [...currentEntries, response.data]);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   useEffect(() => {
     saveConsumedFoods();
   }, [waterIntake]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.get(
-        `${process.env.NEXT_PUBLIC_MAIN_URL}/api/food-search?food=${food}`
-      );
-
-      // Map and transform the general food search results.
-      const generalFoodList = response.data.hints.map((item) => {
-        const energyNutrient = item.food.nutrients.ENERC_KCAL;
-        return {
-          ...item.food,
-          energyNutrient,
-          isCustom: false,
-        };
-      });
-
-      const customFoodResponse = await axios.get(
-        `${process.env.NEXT_PUBLIC_MAIN_URL}/custom-food/${userData._id}`
-      );
-      console.log(customFoodResponse);
-
-      // Filter custom foods based on the search term.
-      const matchingCustomFoods = customFoodResponse.data
-        .filter((customItem) =>
-          customItem.label.toLowerCase().includes(food.toLowerCase())
-        )
-        .map((item) => ({
-          ...item,
-          isCustom: true, // add the isCustom flag for custom items
-        }));
-
-      // Combine and prioritize the custom foods.
-      const combinedList = [...matchingCustomFoods, ...generalFoodList];
-      console.log(combinedList);
-      setFoodList(combinedList);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const handleSelect = (item) => {
-    setFoodDetails(item);
-  };
-
-  const handleAdd = (food, servingSize) => {
+  const handleAdd = (food, servingSize, mealType) => {
     setDailyNutrients((prevNutrients) => ({
       calories: Math.floor(prevNutrients.calories + food.energyNutrient),
       carbs: Math.floor(prevNutrients.carbs + food.nutrients.CHOCDF),
       protein: Math.floor(prevNutrients.protein + food.nutrients.PROCNT),
       fat: Math.floor(prevNutrients.fat + food.nutrients.FAT),
     }));
-    const newConsumedFoods = [...consumedFoods, { ...food, servingSize }];
-    setConsumedFoods(newConsumedFoods);
-    setFood("");
-    setFoodList([]);
-    setFoodDetails(null);
-    saveConsumedFoods(newConsumedFoods);
+    setConsumedFoods((prevFoods) => ({
+      ...prevFoods,
+      [mealType]: [...prevFoods[mealType], { ...food, servingSize }],
+    }));
+    // setFood("");
+    // setFoodList([]);
+    // setFoodDetails(null);
+    saveConsumedFoods({ ...food, servingSize }, mealType);
   };
 
   const handleDateChange = (selectedDate) => {
@@ -241,8 +253,8 @@ const CaloriesTracker = () => {
           alignItems: "center",
           width: "100%",
           maxWidth: "sm",
-          p: 3,
-          m: 2,
+          // p: 1,
+          m: 1,
         }}
       >
         {/* <button
@@ -256,15 +268,12 @@ const CaloriesTracker = () => {
         </Button> */}
         <CustomButton
           onClick={() => setShowNewProduct(true)}
-          sx={{ width: "150px", alignSelf: "end" }}
+          styleType="secondary"
+          sx={{ width: "160px", alignSelf: "end" }}
         >
           {" "}
-          <ShoppingBasketRounded /> New product
+          <ShoppingBasketRounded sx={{ marginRight: "4px" }} /> New product
         </CustomButton>
-        {/* <NewProductModal
-          isOpen={isNewProductModalOpen}
-          onClose={closeNewProductModal}
-        /> */}
         <Modal
           open={showNewProduct}
           onClose={() => setShowNewProduct(false)}
@@ -284,56 +293,23 @@ const CaloriesTracker = () => {
             <ModalClose variant="plain" sx={{ m: 1 }} />
             <DialogTitle>Add new product</DialogTitle>
             <DialogContent>
-              <CustomProductForm setShowNewProduct={setShowNewProduct} />
+              <CustomProductForm
+                snackbar={snackbar}
+                setSnackbar={setSnackbar}
+                setShowNewProduct={setShowNewProduct}
+              />
             </DialogContent>
           </ModalDialog>
         </Modal>
-        {!foodDetails && (
-          <form onSubmit={handleSubmit} className="flex flex-col items-center">
-            <input
-              type="text"
-              value={food}
-              onChange={(e) => setFood(e.target.value)}
-              placeholder="Enter food item"
-              className="px-3 py-2 my-4 text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            />
-            <button
-              type="submit"
-              className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
-            >
-              Search Food
-            </button>
-          </form>
-        )}
-        {foodDetails ? (
-          <FoodDetails
-            food={foodDetails}
-            foodList={foodList}
-            setFoodDetails={setFoodDetails}
-            setFoodList={setFoodList}
-            onAdd={handleAdd}
-          />
-        ) : (
-          foodList.length > 0 && (
-            <div className="mt-4 border rounded shadow p-4 h-96 overflow-auto">
-              <ul>
-                {foodList.map((item, index) => (
-                  <li
-                    key={index}
-                    onClick={() => handleSelect(item)}
-                    className={
-                      item.isCustom
-                        ? "cursor-pointer bg-green-200 p-2 rounded"
-                        : "cursor-pointer hover:bg-gray-200 p-2 rounded"
-                    }
-                  >
-                    {item.label}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )
-        )}
+        <MealList
+          mealTypes={mealTypes}
+          consumedFoods={consumedFoods}
+          mode={mode}
+          handleAdd={handleAdd}
+          showSelectFood={showSelectFood}
+          setShowSelectFood={setShowSelectFood}
+        />
+        {/*
         <div className="flex gap-5">
           <p className="mt-6 text-2xl text-gray-700">
             {dailyNutrients.calories} calories
@@ -387,7 +363,30 @@ const CaloriesTracker = () => {
               )}
             </button>
           ))}
-        </div>
+        </div> */}
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          autoHideDuration={4000}
+          open={snackbar.open}
+          variant="solid"
+          color={
+            snackbar.open && snackbar.type === "success"
+              ? "success"
+              : snackbar.open
+              ? "danger"
+              : undefined
+          }
+          size="lg"
+          onClose={() => {
+            setSnackbar((prevState) => ({ ...prevState, open: false }));
+          }}
+        >
+          {snackbar.type === "success" ? <CheckCircle /> : <InfoIcon />}
+          {snackbar.message}
+        </Snackbar>
       </Box>
     </Box>
   );

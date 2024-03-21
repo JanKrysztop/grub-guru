@@ -6,7 +6,13 @@ const NutritionSchema = new mongoose.Schema({
     required: true,
   },
   date: Date,
-  foods: [],
+  meals: {
+    breakfast: [{ type: mongoose.Schema.Types.Mixed }],
+    secondBreakfast: [{ type: mongoose.Schema.Types.Mixed }],
+    lunch: [{ type: mongoose.Schema.Types.Mixed }],
+    snack: [{ type: mongoose.Schema.Types.Mixed }],
+    dinner: [{ type: mongoose.Schema.Types.Mixed }],
+  },
   waterIntake: { Number },
 });
 
