@@ -92,22 +92,22 @@ const CaloriesTracker = () => {
       setWaterIntake(waterIntake || 0);
       setActiveIndex(Math.floor(waterIntake / 200));
       // Calculate total nutrients for the day
-      const totalNutrients = fetchedFoods.reduce(
-        (total, food) => {
-          return {
-            calories: Math.floor(total.calories + food.energyNutrient),
-            carbs: Math.floor(total.carbs + food.nutrients.CHOCDF),
-            protein: Math.floor(total.protein + food.nutrients.PROCNT),
-            fat: Math.floor(total.fat + food.nutrients.FAT),
-          };
-        },
-        {
-          calories: 0,
-          carbs: 0,
-          protein: 0,
-          fat: 0,
-        }
-      );
+      // const totalNutrients = fetchedFoods.reduce(
+      //   (total, food) => {
+      //     return {
+      //       calories: Math.floor(total.calories + food.energyNutrient),
+      //       carbs: Math.floor(total.carbs + food.nutrients.CHOCDF),
+      //       protein: Math.floor(total.protein + food.nutrients.PROCNT),
+      //       fat: Math.floor(total.fat + food.nutrients.FAT),
+      //     };
+      //   },
+      //   {
+      //     calories: 0,
+      //     carbs: 0,
+      //     protein: 0,
+      //     fat: 0,
+      //   }
+      // );
       setDailyNutrients(totalNutrients);
     } catch (error) {
       console.error(error);
@@ -308,6 +308,7 @@ const CaloriesTracker = () => {
           handleAdd={handleAdd}
           showSelectFood={showSelectFood}
           setShowSelectFood={setShowSelectFood}
+          setSnackbar={setSnackbar}
         />
         {/*
         <div className="flex gap-5">

@@ -11,13 +11,15 @@ import {
   Typography,
   SvgIcon,
   AspectRatio,
+  Card,
 } from "@mui/joy";
 import { ArrowCircleRightRounded } from "@mui/icons-material";
 import CustomButton from "@/components/ui/CustomButton";
 import CustomInput from "@/components/ui/CustomInput";
 import { VerifiedRounded } from "@mui/icons-material";
 import { ImageNotSupportedRounded } from "@mui/icons-material";
-const FoodDetails = ({ onAdd, mode }) => {
+import { DeleteRounded } from "@mui/icons-material";
+const FoodDetails = ({ onAdd, mode, setSnackbar }) => {
   const userData = useSelector(selectUserData);
   const [food, setFood] = useState("");
   const [foodList, setFoodList] = useState([]);
@@ -33,6 +35,8 @@ const FoodDetails = ({ onAdd, mode }) => {
     fat: foodDetails?.nutrients.FAT,
     carbs: foodDetails?.nutrients.CHOCDF,
   });
+  const [showDeleteMenu, setShowDeleteMenu] = useState(false);
+
   useEffect(() => {
     setServingSize(foodDetails?.servingSize || 100);
   }, [foodDetails]);
@@ -135,11 +139,20 @@ const FoodDetails = ({ onAdd, mode }) => {
         setFoodDetails(null);
         setFoodList(updatedFoods);
       }
-      closeDeleteModal();
-
+      setShowDeleteMenu(false);
+      setSnackbar({
+        open: true,
+        type: "success",
+        message: "Product deleted successfully!",
+      });
       food;
     } catch (error) {
       console.log(error);
+      setSnackbar({
+        open: true,
+        type: "error",
+        message: "Failed to create delete product. Please try again.",
+      });
     }
   };
   return (
@@ -189,6 +202,53 @@ const FoodDetails = ({ onAdd, mode }) => {
               mb: 2,
             }}
           >
+            {foodDetails.isCustom && (
+              <Box
+                sx={{ width: "100%", display: "flex", justifyContent: "end" }}
+              >
+                <Box sx={{ position: "relative", display: "inline-flex" }}>
+                  <IconButton
+                    size="lg"
+                    variant="plain"
+                    color="neutral"
+                    onClick={() => setShowDeleteMenu(true)}
+                    sx={{
+                      borderRadius: "50%",
+                      "&:hover": {
+                        backgroundColor: mode === "dark" && "#6A6D69",
+                      },
+                    }}
+                  >
+                    <DeleteRounded />
+                  </IconButton>
+                  {showDeleteMenu && (
+                    <Card
+                      sx={{
+                        width: "300px",
+                        position: "absolute",
+                        right: "75%",
+                        top: "85%", // Adjust this value as needed for spacing
+                        zIndex: 10000,
+                        bgcolor: mode === "dark" && "#494b47",
+                      }}
+                    >
+                      <Typography>
+                        Are you sure you want to delete this product?
+                      </Typography>
+                      <CustomButton onClick={handleDelete(foodDetails._id)}>
+                        Delete
+                      </CustomButton>
+                      <CustomButton
+                        onClick={() => setShowDeleteMenu(false)}
+                        styleType="secondary"
+                      >
+                        Cancel
+                      </CustomButton>
+                    </Card>
+                  )}
+                </Box>
+              </Box>
+            )}
             {foodDetails.image ? (
               <AspectRatio
                 ratio="1"
@@ -359,7 +419,7 @@ const FoodDetails = ({ onAdd, mode }) => {
           <DeleteModal
             isOpen={isDeleteModalOpen}
             onClose={closeDeleteModal}
-            onDelete={handleDelete(food._id)}
+            ss
             />
         </div>
       )}

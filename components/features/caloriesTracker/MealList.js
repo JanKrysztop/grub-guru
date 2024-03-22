@@ -25,6 +25,7 @@ const MealList = ({
   handleAdd,
   showSelectFood,
   setShowSelectFood,
+  setSnackbar,
 }) => {
   const [mealIndex, setMealIndex] = useState(null);
 
@@ -133,7 +134,7 @@ const MealList = ({
               {formatMealName(mealTypes[mealIndex])}
             </DialogTitle>
             <DialogContent>
-              <FoodDetails mode={mode} />
+              <FoodDetails mode={mode} setSnackbar={setSnackbar} />
             </DialogContent>
           </ModalDialog>
         </Modal>
