@@ -144,31 +144,71 @@ const CaloriesTracker = () => {
     }
     prevDateRef.current = date;
   }, [date, userData?._id]);
+
   useEffect(() => {
     fetchConsumedFoods();
   }, [date, userData?._id]);
 
-  const saveConsumedFoods = async (food, mealType) => {
+  const saveConsumedFoods = async (food, foodLabel, mealType) => {
+    console.log("Food", food, "Meal type", mealType);
     try {
       const payload = {
         userId: userData._id,
         date: date,
-        food: {
-          ...food,
-          mealType: mealType,
-        },
+        food: food,
+        foodLabel: foodLabel,
+        mealType: mealType,
         waterIntake: waterIntake,
       };
+
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_MAIN_URL}/nutrition/track-nutrition`,
         payload
       );
-      // Assuming your backend returns the saved entry, including it in the current entries
+      console.log("Food saved", response.data);
       setEntries((currentEntries) => [...currentEntries, response.data]);
     } catch (error) {
       console.log(error);
     }
   };
+  // const saveConsumedFoods = async (food, foodLabel, mealType) => {
+  //   console.log("FOod", food, "Meal type", mealType);
+  //   try {
+  //     const foodWithLabel = {
+  //       ...food,
+  //       label: foodLabel, // Add the label to the food object
+  //     };
+  //     const meals = {
+  //       breakfast: [],
+  //       lunch: [],
+  //       dinner: [],
+  //       snack: [],
+  //       secondBreakfast: [], // Add or remove meal types as necessary
+  //     };
+  //     if (meals.hasOwnProperty(mealType)) {
+  //       meals[mealType].push(foodWithLabel); // Add `food` to the appropriate meal type array
+  //     } else {
+  //       console.error(`Invalid meal type: ${mealType}`);
+  //       return; // Exit the function if `mealType` is invalid
+  //     }
+  //     const payload = {
+  //       userId: userData._id,
+  //       date: date,
+  //       meals: meals,
+  //       waterIntake: waterIntake,
+  //     };
+
+  //     const response = await axios.post(
+  //       `${process.env.NEXT_PUBLIC_MAIN_URL}/nutrition/track-nutrition`,
+  //       payload
+  //     );
+  //     console.log("Food saved", response.data);
+  //     // Assuming your backend returns the saved entry, including it in the current entries
+  //     setEntries((currentEntries) => [...currentEntries, response.data]);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
   // const saveConsumedFoods = async (foods) => {
   //   try {
   //     const payload = {
@@ -187,9 +227,9 @@ const CaloriesTracker = () => {
   //   }
   // };
 
-  useEffect(() => {
-    saveConsumedFoods();
-  }, [waterIntake]);
+  // useEffect(() => {
+  //   saveConsumedFoods();
+  // }, [waterIntake]);
 
   const handleAdd = (food, servingSize, mealType) => {
     setDailyNutrients((prevNutrients) => ({
@@ -309,6 +349,7 @@ const CaloriesTracker = () => {
           showSelectFood={showSelectFood}
           setShowSelectFood={setShowSelectFood}
           setSnackbar={setSnackbar}
+          saveConsumedFoods={saveConsumedFoods}
         />
         {/*
         <div className="flex gap-5">

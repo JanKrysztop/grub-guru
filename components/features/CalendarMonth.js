@@ -72,6 +72,10 @@ const CalendarMonth = forwardRef(
           day >= startOfMonth(currentMonth) && day <= endOfMonth(currentMonth);
         const isSelected = isSameDay(day, date);
         const hasEntry = entries.some((entry) => {
+          if (typeof entry.date === "undefined") {
+            console.warn("Entry date is undefined, skipping:", entry);
+            return false; // Skip this entry
+          }
           // Assuming entry.date is a string in "YYYY-MM-DD" format
           const entryDate = parseISO(entry.date);
           return isSameDay(day, entryDate);

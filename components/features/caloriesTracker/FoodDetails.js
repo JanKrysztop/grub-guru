@@ -19,7 +19,7 @@ import CustomInput from "@/components/ui/CustomInput";
 import { VerifiedRounded } from "@mui/icons-material";
 import { ImageNotSupportedRounded } from "@mui/icons-material";
 import { DeleteRounded } from "@mui/icons-material";
-const FoodDetails = ({ onAdd, mode, setSnackbar }) => {
+const FoodDetails = ({ saveConsumedFoods, mode, setSnackbar, mealType }) => {
   const userData = useSelector(selectUserData);
   const [food, setFood] = useState("");
   const [foodList, setFoodList] = useState([]);
@@ -299,7 +299,7 @@ const FoodDetails = ({ onAdd, mode, setSnackbar }) => {
               grams
             </Typography>
           </Box>
-          <Typography level="title-lg" sx={{ mt: 4, mb: 1 }}>
+          <Typography level="title-lg" sx={{ mt: 3, mb: 1 }}>
             Calories {displayedNutrients.kcal}
           </Typography>
           <Box sx={{ display: "flex", gap: 3, mb: 4 }}>
@@ -352,17 +352,23 @@ const FoodDetails = ({ onAdd, mode, setSnackbar }) => {
               </Box>
             </Box>
           </Box>
-          <CustomButton>Add</CustomButton>
+          <CustomButton
+            onClick={() =>
+              saveConsumedFoods(displayedNutrients, foodDetails.label, mealType)
+            }
+          >
+            Add
+          </CustomButton>
           {!foodDetails?.isCustom && (
             <Box
               sx={{
-                mt: 4,
+                mt: 2,
                 width: "100%",
                 display: "flex",
                 justifyContent: "end",
               }}
             >
-              <img width={250} src={`/edamam-badge.svg`} alt="Badge Icon" />
+              <img width={200} src={`/edamam-badge.svg`} alt="Badge Icon" />
             </Box>
           )}
         </Box>

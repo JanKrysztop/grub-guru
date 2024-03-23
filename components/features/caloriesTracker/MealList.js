@@ -26,6 +26,7 @@ const MealList = ({
   showSelectFood,
   setShowSelectFood,
   setSnackbar,
+  saveConsumedFoods,
 }) => {
   const [mealIndex, setMealIndex] = useState(null);
 
@@ -101,14 +102,14 @@ const MealList = ({
                 bgcolor: mode === "dark" && "#494b47", // Adjust background color as needed
               }}
             >
-              {consumedFoods[mealType].map((foodItem, index) => (
+              {/* {consumedFoods[mealType].map((foodItem, index) => (
                 <ListItem key={index}>
                   <ListItemText
                     primary={foodItem.label}
                     secondary={`${foodItem.energyNutrient} kcal`}
                   />
                 </ListItem>
-              ))}
+              ))} */}
             </List>
             <Divider />
           </Box>
@@ -134,7 +135,12 @@ const MealList = ({
               {formatMealName(mealTypes[mealIndex])}
             </DialogTitle>
             <DialogContent>
-              <FoodDetails mode={mode} setSnackbar={setSnackbar} />
+              <FoodDetails
+                mode={mode}
+                setSnackbar={setSnackbar}
+                saveConsumedFoods={saveConsumedFoods}
+                mealType={mealTypes[mealIndex]}
+              />
             </DialogContent>
           </ModalDialog>
         </Modal>
