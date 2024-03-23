@@ -5,7 +5,8 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemText,
+  ListItemContent,
+  ListItemButton,
   Sheet,
   Divider,
   Modal,
@@ -17,6 +18,7 @@ import {
 import { useState } from "react";
 import { AddCircleOutlineRounded } from "@mui/icons-material";
 import FoodDetails from "./FoodDetails";
+import DeleteMenu from "@/components/ui/DeleteMenu";
 
 const MealList = ({
   mealTypes,
@@ -29,10 +31,20 @@ const MealList = ({
   saveConsumedFoods,
 }) => {
   const [mealIndex, setMealIndex] = useState(null);
-
+  const [activeDeleteMenu, setActiveDeleteMenu] = useState({
+    mealType: null,
+    index: null,
+  });
   const selectMeal = (index) => {
     setMealIndex(index);
     setShowSelectFood(true);
+  };
+  const setShowDeleteMenu = (show, mealType, index) => {
+    if (show) {
+      setActiveDeleteMenu({ mealType, index });
+    } else {
+      setActiveDeleteMenu({ mealType: null, index: null }); // No menu is active
+    }
   };
   const formatMealName = (name) => {
     const spacedName = name?.replace(/([A-Z])/g, " $1").toLowerCase();
@@ -41,14 +53,16 @@ const MealList = ({
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   };
+  const deleteFood = () => {};
   return (
-    <Sheet
+    <Box
       sx={{
         width: "100%",
         borderRadius: "8px",
         p: 1,
         mt: 2,
-        backgroundColor: mode === "dark" && "#494b47",
+        backgroundColor: "rgba(73, 75, 71, 0.5)",
+        // backgroundColor: mode === "dark" && "#494b47",
       }}
     >
       <Box
@@ -99,17 +113,51 @@ const MealList = ({
             <List
               sx={{
                 width: "100%", // Adjust width as needed
-                bgcolor: mode === "dark" && "#494b47", // Adjust background color as needed
+
+                // bgcolor: mode === "dark" && "#494b47", // Adjust background color as needed
               }}
             >
-              {/* {consumedFoods[mealType].map((foodItem, index) => (
-                <ListItem key={index}>
-                  <ListItemText
-                    primary={foodItem.label}
-                    secondary={`${foodItem.energyNutrient} kcal`}
-                  />
+              {consumedFoods[mealType].map((foodItem, index) => (
+                <ListItem
+                  key={index}
+                  // endAction={
+                  //   <Box sx={{ zIndex: 1000, position: "relative" }}>
+                  //     <DeleteMenu
+                  //       show={
+                  //         activeDeleteMenu.index === index &&
+                  //         activeDeleteMenu.mealType === mealType
+                  //       }
+                  //       setShow={(show) =>
+                  //         setShowDeleteMenu(show, mealType, index)
+                  //       }
+                  //       handleDelete={deleteFood}
+                  //       mode={mode}
+                  //     />
+                  //   </Box>
+                  // }
+                >
+                  <ListItemContent>
+                    <Typography level="title-sm">{foodItem.label}</Typography>
+                    <Typography level="body-sm">
+                      {" "}
+                      {`${foodItem.kcal} kcal`}
+                    </Typography>
+                  </ListItemContent>
+                  <Box sx={{ zIndex: 1000, position: "relative" }}>
+                    <DeleteMenu
+                      show={
+                        activeDeleteMenu.index === index &&
+                        activeDeleteMenu.mealType === mealType
+                      }
+                      setShow={(show) =>
+                        setShowDeleteMenu(show, mealType, index)
+                      }
+                      handleDelete={deleteFood}
+                      mode={mode}
+                    />
+                  </Box>
                 </ListItem>
-              ))} */}
+              ))}
             </List>
             <Divider />
           </Box>
@@ -145,7 +193,7 @@ const MealList = ({
           </ModalDialog>
         </Modal>
       </Box>
-    </Sheet>
+    </Box>
   );
 };
 

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectUserData } from "@/redux/userSlice";
-import DeleteModal from "../../ui/DeleteModal";
+import DeleteMenu from "../../ui/DeleteMenu";
 import {
   Box,
   IconButton,
@@ -129,7 +129,7 @@ const FoodDetails = ({ saveConsumedFoods, mode, setSnackbar, mealType }) => {
     setIsDeleteModalOpen(false);
   };
 
-  const handleDelete = (id) => async () => {
+  const deleteCustomProduct = (id) => async () => {
     try {
       const response = await axios.delete(
         `${process.env.NEXT_PUBLIC_MAIN_URL}/custom-food/${id}`
@@ -203,51 +203,13 @@ const FoodDetails = ({ saveConsumedFoods, mode, setSnackbar, mealType }) => {
             }}
           >
             {foodDetails.isCustom && (
-              <Box
-                sx={{ width: "100%", display: "flex", justifyContent: "end" }}
-              >
-                <Box sx={{ position: "relative", display: "inline-flex" }}>
-                  <IconButton
-                    size="lg"
-                    variant="plain"
-                    color="neutral"
-                    onClick={() => setShowDeleteMenu(true)}
-                    sx={{
-                      borderRadius: "50%",
-                      "&:hover": {
-                        backgroundColor: mode === "dark" && "#6A6D69",
-                      },
-                    }}
-                  >
-                    <DeleteRounded />
-                  </IconButton>
-                  {showDeleteMenu && (
-                    <Card
-                      sx={{
-                        width: "300px",
-                        position: "absolute",
-                        right: "75%",
-                        top: "85%", // Adjust this value as needed for spacing
-                        zIndex: 10000,
-                        bgcolor: mode === "dark" && "#494b47",
-                      }}
-                    >
-                      <Typography>
-                        Are you sure you want to delete this product?
-                      </Typography>
-                      <CustomButton onClick={handleDelete(foodDetails._id)}>
-                        Delete
-                      </CustomButton>
-                      <CustomButton
-                        onClick={() => setShowDeleteMenu(false)}
-                        styleType="secondary"
-                      >
-                        Cancel
-                      </CustomButton>
-                    </Card>
-                  )}
-                </Box>
-              </Box>
+              <DeleteMenu
+                show={showDeleteMenu}
+                setShow={setShowDeleteMenu}
+                handleDelete={deleteCustomProduct(foodDetails._id)}
+                mode={mode}
+                icon={<DeleteRounded />}
+              />
             )}
             {foodDetails.image ? (
               <AspectRatio
@@ -411,68 +373,6 @@ const FoodDetails = ({ saveConsumedFoods, mode, setSnackbar, mealType }) => {
           </Box>
         )
       )}
-
-      {/* <div className="flex flex-col items-center justify-center bg-white p-6 rounded shadow-lg">
-      {food.isCustom && (
-        <div>
-          <button
-            type="button"
-            className="self-end mt-auto"
-            onClick={showDeleteModal}
-            >
-            <img src={`/trash.svg`} alt="Trash Icon" />
-          </button>
-          <DeleteModal
-            isOpen={isDeleteModalOpen}
-            onClose={closeDeleteModal}
-            ss
-            />
-        </div>
-      )}
-      <h2 className="text-2xl font-bold mb-4">{food.label}</h2>
-      <img
-        src={food.image}
-        alt={food.label}
-        className="w-64 h-64 object-cover mb-4"
-        />
-      <p className="text-lg mb-2">Brand: {food.brand}</p>
-      <p className="text-lg mb-2">Category: {food.category}</p>
-      <p className="text-lg mb-2">
-        Calories: {Math.floor(food.energyNutrient)}
-      </p>
-      <p className="text-lg mb-2">Carbs: {Math.floor(food.nutrients.CHOCDF)}</p>
-      <p className="text-lg mb-2">
-        Protein: {Math.floor(food.nutrients.PROCNT)}
-      </p>
-      <p className="text-lg mb-2">Fat: {Math.floor(food.nutrients.FAT)}</p>
-      <p className="text-lg mb-2">
-        Ingredients: {food.foodContentsLabel}
-      </p> 
-      <div className="mb-4">
-        <label className="block text-lg mb-2">
-          Serving Size:
-          <select
-            value={selectedServingSize?.uri}
-            onChange={handleServingSizeChange}
-            className="block w-full mt-1 rounded border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-          >
-            {food?.servingSizes?.map((servingSize) => (
-              <option key={servingSize?.uri} value={servingSize?.uri}>
-                {servingSize.label} ({servingSize.quantity})
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
-      <button
-        onClick={handleAddClick}
-        className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
-      >
-        Add to Consumed Foods
-      </button>
-      {!food?.isCustom && <img src={`/edamam-badge.svg`} alt="Badge Icon" />}
-    </div>
-     */}
     </Box>
   );
 };

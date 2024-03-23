@@ -1,8 +1,9 @@
 import { Box, IconButton, Card, Typography } from "@mui/joy";
 import CustomButton from "./CustomButton";
 import { DeleteRounded } from "@mui/icons-material";
+import { CloseRounded } from "@mui/icons-material";
 
-const DeleteModal = ({ show, setShow, handleDelete, mode, id }) => {
+const DeleteMenu = ({ show, setShow, handleDelete, mode, icon }) => {
   return (
     <Box sx={{ width: "100%", display: "flex", justifyContent: "end" }}>
       <Box sx={{ position: "relative", display: "inline-flex" }}>
@@ -18,7 +19,7 @@ const DeleteModal = ({ show, setShow, handleDelete, mode, id }) => {
             },
           }}
         >
-          <DeleteRounded />
+          {icon ? icon : <CloseRounded />}
         </IconButton>
         {show && (
           <Card
@@ -34,7 +35,7 @@ const DeleteModal = ({ show, setShow, handleDelete, mode, id }) => {
             <Typography>
               Are you sure you want to delete this product?
             </Typography>
-            <CustomButton onClick={handleDelete(id)}>Delete</CustomButton>
+            <CustomButton onClick={handleDelete}>Delete</CustomButton>
             <CustomButton onClick={() => setShow(false)} styleType="secondary">
               Cancel
             </CustomButton>
@@ -45,4 +46,4 @@ const DeleteModal = ({ show, setShow, handleDelete, mode, id }) => {
   );
 };
 
-export default DeleteModal;
+export default DeleteMenu;
