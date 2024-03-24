@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import {
   Box,
   Typography,
@@ -29,6 +30,9 @@ const MealList = ({
   setShowSelectFood,
   setSnackbar,
   saveConsumedFoods,
+  userId,
+  date,
+  fetchConsumedFoods,
 }) => {
   const [mealIndex, setMealIndex] = useState(null);
   const [activeDeleteMenu, setActiveDeleteMenu] = useState({
@@ -53,7 +57,26 @@ const MealList = ({
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
   };
-  const deleteFood = () => {};
+  const deleteFood = async (userId, date, mealType, foodId) => {
+    try {
+      const response = await axios.delete(
+        `${process.env.NEXT_PUBLIC_MAIN_URL}/nutrition/delete-food`,
+        {
+          data: {
+            userId,
+            date,
+            mealType,
+            foodId,
+          },
+        }
+      );
+      console.log("Food item deleted successfully:", response.data);
+      fetchConsumedFoods();
+      setActiveDeleteMenu(false);
+    } catch (error) {
+      console.error("Error deleting food item:", error);
+    }
+  };
   return (
     <Box
       sx={{
@@ -152,7 +175,9 @@ const MealList = ({
                       setShow={(show) =>
                         setShowDeleteMenu(show, mealType, index)
                       }
-                      handleDelete={deleteFood}
+                      handleDelete={() =>
+                        deleteFood(userId, date, mealType, foodItem._id)
+                      }
                       mode={mode}
                     />
                   </Box>
@@ -187,6 +212,7 @@ const MealList = ({
                 mode={mode}
                 setSnackbar={setSnackbar}
                 saveConsumedFoods={saveConsumedFoods}
+                setShowSelectFood={setShowSelectFood}
                 mealType={mealTypes[mealIndex]}
               />
             </DialogContent>

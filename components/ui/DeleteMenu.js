@@ -2,8 +2,28 @@ import { Box, IconButton, Card, Typography } from "@mui/joy";
 import CustomButton from "./CustomButton";
 import { DeleteRounded } from "@mui/icons-material";
 import { CloseRounded } from "@mui/icons-material";
+import { useEffect, useRef } from "react";
 
 const DeleteMenu = ({ show, setShow, handleDelete, mode, icon }) => {
+  const menuRef = useRef();
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setShow(false);
+      }
+    };
+
+    // Attach event listeners
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+
+    // Cleanup
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, [setShow]);
   return (
     <Box sx={{ width: "100%", display: "flex", justifyContent: "end" }}>
       <Box sx={{ position: "relative", display: "inline-flex" }}>
@@ -23,6 +43,7 @@ const DeleteMenu = ({ show, setShow, handleDelete, mode, icon }) => {
         </IconButton>
         {show && (
           <Card
+            ref={menuRef}
             sx={{
               width: "300px",
               position: "absolute",

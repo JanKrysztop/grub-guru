@@ -167,6 +167,7 @@ const CaloriesTracker = () => {
       );
       console.log("Food saved", response.data);
       setEntries((currentEntries) => [...currentEntries, response.data]);
+      fetchConsumedFoods();
     } catch (error) {
       console.log(error);
     }
@@ -350,6 +351,9 @@ const CaloriesTracker = () => {
           setShowSelectFood={setShowSelectFood}
           setSnackbar={setSnackbar}
           saveConsumedFoods={saveConsumedFoods}
+          userId={userData?._id}
+          date={date}
+          fetchConsumedFoods={fetchConsumedFoods}
         />
         {/*
         <div className="flex gap-5">

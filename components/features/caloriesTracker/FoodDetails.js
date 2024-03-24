@@ -19,7 +19,13 @@ import CustomInput from "@/components/ui/CustomInput";
 import { VerifiedRounded } from "@mui/icons-material";
 import { ImageNotSupportedRounded } from "@mui/icons-material";
 import { DeleteRounded } from "@mui/icons-material";
-const FoodDetails = ({ saveConsumedFoods, mode, setSnackbar, mealType }) => {
+const FoodDetails = ({
+  saveConsumedFoods,
+  setShowSelectFood,
+  mode,
+  setSnackbar,
+  mealType,
+}) => {
   const userData = useSelector(selectUserData);
   const [food, setFood] = useState("");
   const [foodList, setFoodList] = useState([]);
@@ -119,7 +125,8 @@ const FoodDetails = ({ saveConsumedFoods, mode, setSnackbar, mealType }) => {
   };
 
   const handleAddClick = () => {
-    onAdd(food, selectedServingSize);
+    saveConsumedFoods(displayedNutrients, foodDetails.label, mealType);
+    setShowSelectFood(false);
   };
   const showDeleteModal = () => {
     setIsDeleteModalOpen(true);
@@ -314,13 +321,7 @@ const FoodDetails = ({ saveConsumedFoods, mode, setSnackbar, mealType }) => {
               </Box>
             </Box>
           </Box>
-          <CustomButton
-            onClick={() =>
-              saveConsumedFoods(displayedNutrients, foodDetails.label, mealType)
-            }
-          >
-            Add
-          </CustomButton>
+          <CustomButton onClick={() => handleAddClick()}>Add</CustomButton>
           {!foodDetails?.isCustom && (
             <Box
               sx={{

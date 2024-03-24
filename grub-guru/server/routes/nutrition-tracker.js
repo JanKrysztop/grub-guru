@@ -2,6 +2,7 @@ const express = require("express");
 const Nutrition = require("../models/Nutrition");
 const router = express.Router();
 const moment = require("moment");
+const { v4: uuidv4 } = require("uuid");
 
 router.post("/track-nutrition", async (req, res) => {
   const { userId, date, food, foodLabel, mealType, waterIntake } = req.body;
@@ -20,7 +21,7 @@ router.post("/track-nutrition", async (req, res) => {
     const startOfDay = parsedDate.startOf("day").toDate();
     const endOfDay = parsedDate.endOf("day").toDate();
 
-    const foodWithLabel = { ...food, label: foodLabel };
+    const foodWithLabel = { ...food, label: foodLabel, _id: uuidv4() };
     console.log("Meal type:", mealType);
     console.log("Food:", foodWithLabel);
     // Update document to append food item to the specific mealType array
@@ -43,6 +44,35 @@ router.post("/track-nutrition", async (req, res) => {
     console.error(error);
     res.status(500).json({
       error: "An error occurred while tracking food.",
+    });
+  }
+});
+router.delete("/delete-food", async (req, res) => {
+  const { userId, date, foodId, mealType } = req.body; // Assuming foodId is passed in the request body
+
+  try {
+    const parsedDate = moment(date);
+    const startOfDay = parsedDate.startOf("day").toDate();
+    const endOfDay = parsedDate.endOf("day").toDate();
+
+    // Use $pull to remove the food item by its unique ID
+    const result = await Nutrition.findOneAndUpdate(
+      { userId, date: { $gte: startOfDay, $lt: endOfDay } },
+      { $pull: { [`meals.${mealType}`]: { _id: foodId } } }, // Remove the specific food item
+      { new: true }
+    );
+
+    if (!result) {
+      return res
+        .status(404)
+        .json({ message: "No entry found for the specified criteria." });
+    }
+
+    res.json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "An error occurred while attempting to delete the food item.",
     });
   }
 });
