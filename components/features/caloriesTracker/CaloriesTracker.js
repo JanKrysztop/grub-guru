@@ -39,6 +39,7 @@ import { useColorScheme } from "@mui/joy/styles";
 import { AddCircleOutlineRounded } from "@mui/icons-material";
 import { LinearProgress } from "@mui/joy";
 import useThemeSettings from "@/hooks/useThemeSettings";
+import WaterIcon from "@mui/icons-material/LocalDrink";
 //Rename to nutritionTracker???
 const CaloriesTracker = () => {
   const userData = useSelector(selectUserData);
@@ -61,7 +62,7 @@ const CaloriesTracker = () => {
   });
   const [date, setDate] = useState(new Date());
   const [isNewProductModalOpen, setIsNewProductModalOpen] = useState(false);
-  const [waterIntake, setWaterIntake] = useState(0);
+  const [waterConsumption, setWaterConsumption] = useState(0);
   const [activeIndex, setActiveIndex] = useState(0);
   const [entries, setEntries] = useState([]);
   const [showNewProduct, setShowNewProduct] = useState(false);
@@ -73,27 +74,57 @@ const CaloriesTracker = () => {
   const [showSelectFood, setShowSelectFood] = useState(false);
   const prevDateRef = useRef();
   const mealTypes = Object.keys(consumedFoods);
+  const objectsAreEqual = (obj1, obj2) => {
+    if (obj1 == null || obj2 == null) return false;
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
+
+    if (keys1.length !== keys2.length) {
+      return false;
+    }
+
+    for (let key of keys1) {
+      const val1 = obj1[key];
+      const val2 = obj2[key];
+      const areObjects = isObject(val1) && isObject(val2);
+      if (
+        (areObjects && !objectsAreEqual(val1, val2)) ||
+        (!areObjects && val1 !== val2)
+      ) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
+  const isObject = (object) => {
+    return object != null && typeof object === "object";
+  };
   const fetchConsumedFoods = async () => {
     if (!userData?._id) return;
-    setConsumedFoods([]);
+    // setConsumedFoods([]);
     try {
       const formattedDate = format(date, "yyyy-MM-dd");
       const response = await axios.get(
         `${process.env.NEXT_PUBLIC_MAIN_URL}/nutrition/daily-nutrients?userId=${userData._id}&date=${formattedDate}`
       );
-      const { meals, waterIntake } = response.data;
-      setConsumedFoods(
-        meals || {
+      const { meals, waterConsumption: fetchedWaterConsumption } =
+        response.data;
+      if (!meals) {
+        setConsumedFoods({
           breakfast: [],
           secondBreakfast: [],
           lunch: [],
           snack: [],
           dinner: [],
-        }
-      );
-      console.log("Consumed foods", consumedFoods);
-      setWaterIntake(waterIntake || 0);
-      setActiveIndex(Math.floor(waterIntake / 200));
+        });
+      } else if (!objectsAreEqual(meals, consumedFoods)) {
+        setConsumedFoods(meals);
+      }
+      console.log("Consumed foods", consumedFoods, fetchedWaterConsumption);
+      setWaterConsumption(fetchedWaterConsumption || 0);
+      setActiveIndex(Math.floor(fetchedWaterConsumption / 200) || 0);
       // Calculate total nutrients for the day
       let totalNutrients = { kcal: 0, carbs: 0, protein: 0, fat: 0 };
       Object.values(meals || {}).forEach((meal) => {
@@ -154,7 +185,7 @@ const CaloriesTracker = () => {
         food: food,
         foodLabel: foodLabel,
         mealType: mealType,
-        waterIntake: waterIntake,
+        waterConsumption: waterConsumption,
       };
 
       const response = await axios.post(
@@ -168,65 +199,10 @@ const CaloriesTracker = () => {
       console.log(error);
     }
   };
-  // const saveConsumedFoods = async (food, foodLabel, mealType) => {
-  //   console.log("FOod", food, "Meal type", mealType);
-  //   try {
-  //     const foodWithLabel = {
-  //       ...food,
-  //       label: foodLabel, // Add the label to the food object
-  //     };
-  //     const meals = {
-  //       breakfast: [],
-  //       lunch: [],
-  //       dinner: [],
-  //       snack: [],
-  //       secondBreakfast: [], // Add or remove meal types as necessary
-  //     };
-  //     if (meals.hasOwnProperty(mealType)) {
-  //       meals[mealType].push(foodWithLabel); // Add `food` to the appropriate meal type array
-  //     } else {
-  //       console.error(`Invalid meal type: ${mealType}`);
-  //       return; // Exit the function if `mealType` is invalid
-  //     }
-  //     const payload = {
-  //       userId: userData._id,
-  //       date: date,
-  //       meals: meals,
-  //       waterIntake: waterIntake,
-  //     };
 
-  //     const response = await axios.post(
-  //       `${process.env.NEXT_PUBLIC_MAIN_URL}/nutrition/track-nutrition`,
-  //       payload
-  //     );
-  //     console.log("Food saved", response.data);
-  //     // Assuming your backend returns the saved entry, including it in the current entries
-  //     setEntries((currentEntries) => [...currentEntries, response.data]);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-  // const saveConsumedFoods = async (foods) => {
-  //   try {
-  //     const payload = {
-  //       userId: userData._id,
-  //       date: date,
-  //       foods: foods,
-  //       waterIntake: waterIntake,
-  //     };
-  //     const response = await axios.post(
-  //       `${process.env.NEXT_PUBLIC_MAIN_URL}/nutrition/track-nutrition`,
-  //       payload
-  //     );
-  //     setEntries((currentEntries) => [...currentEntries, response.data]);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   saveConsumedFoods();
-  // }, [waterIntake]);
+  useEffect(() => {
+    saveConsumedFoods();
+  }, [waterConsumption]);
 
   const handleAdd = (food, servingSize, mealType) => {
     setDailyNutrients((prevNutrients) => ({
@@ -259,12 +235,12 @@ const CaloriesTracker = () => {
   };
 
   const handleIconClick = (index) => {
-    console.log(waterIntake, activeIndex);
+    console.log(waterConsumption, activeIndex);
     if (index === activeIndex) {
-      setWaterIntake(waterIntake + 200);
+      setWaterConsumption(waterConsumption + 200);
       setActiveIndex(index + 1);
     } else if (index === activeIndex - 1) {
-      setWaterIntake(waterIntake - 200);
+      setWaterConsumption(waterConsumption - 200);
       setActiveIndex(index);
     }
   };
@@ -287,11 +263,12 @@ const CaloriesTracker = () => {
         sx={{
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
+          // alignItems: "center",
           width: "100%",
           maxWidth: "sm",
           // p: 1,
           m: 1,
+          mb: 10,
         }}
       >
         {/* <button
@@ -306,7 +283,7 @@ const CaloriesTracker = () => {
         <CustomButton
           onClick={() => setShowNewProduct(true)}
           styleType="secondary"
-          sx={{ width: "160px", alignSelf: "end" }}
+          sx={{ mr: 1, width: "160px", alignSelf: "end" }}
         >
           {" "}
           <ShoppingBasketRounded sx={{ marginRight: "4px" }} /> New product
@@ -368,7 +345,7 @@ const CaloriesTracker = () => {
         >
           <Box sx={{ width: "100%", minWidth: "140px" }}>
             <Typography noWrap marginBottom={1}>
-              Calories {dailyNutrients.kcal}/{userData?.recommendedCalories}
+              Kcal {dailyNutrients.kcal}/{userData?.recommendedCalories}
             </Typography>
             <LinearProgress
               value={
@@ -437,61 +414,71 @@ const CaloriesTracker = () => {
             </Box>
           </Box>
         </Box>
-        {/*
-        <div className="flex gap-5">
-          <p className="mt-6 text-2xl text-gray-700">
-            {dailyNutrients.calories} calories
-          </p>
-          <p className="mt-6 text-2xl text-gray-700">
-            {dailyNutrients.carbs} carbs
-          </p>{" "}
-          <p className="mt-6 text-2xl text-gray-700">
-            {dailyNutrients.protein} protein
-          </p>{" "}
-          <p className="mt-6 text-2xl text-gray-700">
-            {dailyNutrients.fat} fat
-          </p>
-        </div>
-        {consumedFoods.length > 0 && (
-          <div className="mt-4 border rounded shadow p-4 overflow-auto">
-            <ul>
-              {consumedFoods.map((item, index) => (
-                <li key={index}>
-                  {item.label} - {item.energyNutrient} kcal
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-        <div className="mt-6 text-2xl text-gray-700">{waterIntake}/2800 ml</div>
-        <div className="grid gap-2 grid-cols-7 grid-rows-2 mt-4">
+
+        <Typography level="h4" sx={{ ml: 1, textAlign: "left" }}>
+          Fluids {waterConsumption}/2800 ml
+        </Typography>
+        <Box
+          sx={{
+            width: "100%",
+            display: "grid",
+            gridTemplateColumns: "repeat(7, 1fr)",
+            gap: 1,
+            p: 1,
+          }}
+        >
           {Array.from({ length: 14 }).map((_, index) => (
-            <button
-              type="button"
+            <IconButton
               key={index}
-              className="relative"
               onClick={() => handleIconClick(index)}
+              sx={{
+                position: "relative",
+                opacity: index < activeIndex ? 1 : 0.3,
+                "&:hover": { opacity: 1 },
+                width: "50px",
+              }}
             >
-              <img
-                className={`w-14 ${
-                  index < activeIndex ? "opacity-100" : "opacity-25"
-                }`}
-                src={`/water.svg`}
-                alt="Water Icon"
-              />
+              <img src={`/water.svg`} alt="Water Icon" />
+
               {index === activeIndex && (
-                <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center">
-                  <span className="text-white text-xl">+</span>
-                </div>
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Typography level="h4" sx={{ color: "#292B29" }}>
+                    +
+                  </Typography>
+                </Box>
               )}
               {index === activeIndex - 1 && (
-                <div className="absolute top-0 left-0 right-0 bottom-0 flex items-center justify-center">
-                  <span className="text-white text-xl">-</span>
-                </div>
+                <Box
+                  sx={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Typography level="h4" sx={{ color: "#292B29" }}>
+                    -
+                  </Typography>
+                </Box>
               )}
-            </button>
+            </IconButton>
           ))}
-        </div> */}
+        </Box>
         <Snackbar
           anchorOrigin={{
             vertical: "bottom",

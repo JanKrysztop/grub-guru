@@ -5,7 +5,8 @@ const moment = require("moment");
 const { v4: uuidv4 } = require("uuid");
 
 router.post("/track-nutrition", async (req, res) => {
-  const { userId, date, food, foodLabel, mealType, waterIntake } = req.body;
+  const { userId, date, food, foodLabel, mealType, waterConsumption } =
+    req.body;
 
   try {
     // Parse the date string using moment.js
@@ -27,7 +28,7 @@ router.post("/track-nutrition", async (req, res) => {
     // Update document to append food item to the specific mealType array
     const update = {
       $push: { [`meals.${mealType}`]: foodWithLabel },
-      $set: { waterIntake: waterIntake, date: startOfDay }, // Update waterIntake
+      $set: { waterConsumption: waterConsumption, date: startOfDay },
     };
 
     const nutrition = await Nutrition.findOneAndUpdate(

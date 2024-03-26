@@ -13,7 +13,7 @@ const NutritionSchema = new mongoose.Schema({
     snack: [{ type: mongoose.Schema.Types.Mixed }],
     dinner: [{ type: mongoose.Schema.Types.Mixed }],
   },
-  waterIntake: { Number },
+  waterConsumption: { Number },
 });
 
 module.exports = mongoose.model("Nutrition", NutritionSchema);

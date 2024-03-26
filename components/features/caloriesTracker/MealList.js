@@ -83,7 +83,7 @@ const MealList = ({
         borderRadius: "8px",
         p: 1,
         mt: 2,
-        mb: 10,
+
         backgroundColor:
           mode === "dark"
             ? "rgba(73, 75, 71, 0.5)"
