@@ -123,8 +123,10 @@ const CaloriesTracker = () => {
         setConsumedFoods(meals);
       }
       console.log("Consumed foods", consumedFoods, fetchedWaterConsumption);
-      setWaterConsumption(fetchedWaterConsumption || 0);
-      setActiveIndex(Math.floor(fetchedWaterConsumption / 200) || 0);
+      if (fetchedWaterConsumption !== waterConsumption) {
+        setWaterConsumption(fetchedWaterConsumption || 0);
+        setActiveIndex(Math.floor(fetchedWaterConsumption / 200) || 0);
+      }
       // Calculate total nutrients for the day
       let totalNutrients = { kcal: 0, carbs: 0, protein: 0, fat: 0 };
       Object.values(meals || {}).forEach((meal) => {
@@ -203,23 +205,6 @@ const CaloriesTracker = () => {
   useEffect(() => {
     saveConsumedFoods();
   }, [waterConsumption]);
-
-  const handleAdd = (food, servingSize, mealType) => {
-    setDailyNutrients((prevNutrients) => ({
-      calories: Math.floor(prevNutrients.calories + food.energyNutrient),
-      carbs: Math.floor(prevNutrients.carbs + food.nutrients.CHOCDF),
-      protein: Math.floor(prevNutrients.protein + food.nutrients.PROCNT),
-      fat: Math.floor(prevNutrients.fat + food.nutrients.FAT),
-    }));
-    setConsumedFoods((prevFoods) => ({
-      ...prevFoods,
-      [mealType]: [...prevFoods[mealType], { ...food, servingSize }],
-    }));
-    // setFood("");
-    // setFoodList([]);
-    // setFoodDetails(null);
-    saveConsumedFoods({ ...food, servingSize }, mealType);
-  };
 
   const handleDateChange = (selectedDate) => {
     setDate(selectedDate);

@@ -11,7 +11,6 @@ router.post("/track-nutrition", async (req, res) => {
   try {
     // Parse the date string using moment.js
     const parsedDate = moment(date);
-    console.log("DAATE", parsedDate);
     // Return an error if the date is not valid
     if (!parsedDate.isValid()) {
       return res.status(400).json({
@@ -23,8 +22,6 @@ router.post("/track-nutrition", async (req, res) => {
     const endOfDay = parsedDate.endOf("day").toDate();
 
     const foodWithLabel = { ...food, label: foodLabel, _id: uuidv4() };
-    console.log("Meal type:", mealType);
-    console.log("Food:", foodWithLabel);
     // Update document to append food item to the specific mealType array
     const update = {
       $push: { [`meals.${mealType}`]: foodWithLabel },
