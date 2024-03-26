@@ -1,10 +1,10 @@
 import CaloriesTracker from "@/components/features/caloriesTracker/CaloriesTracker";
 import withAuth from "@/utils/withAuth";
 
-export const getServerSideProps = withAuth(async (ctx) => {
-  // Your page's server-side logic here
+export const getServerSideProps = async (ctx) => {
+  // Add minimal logic here to test the response time
   return { props: {} };
-});
+};
 
 const CaloriesTrackerPage = () => {
   return <CaloriesTracker />;
