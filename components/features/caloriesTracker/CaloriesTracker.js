@@ -1,30 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-// import Calendar from "react-calendar";
-// import DatePicker from "react-date-picker";
-import "react-date-picker/dist/DatePicker.css";
-import "react-calendar/dist/Calendar.css";
-import FoodDetails from "./FoodDetails";
-import moment from "moment";
 import { format, startOfMonth, endOfMonth, getMonth, getYear } from "date-fns";
 import MealList from "./MealList";
-import Link from "next/link";
 import { useSelector } from "react-redux";
 import { selectUserData } from "@/redux/userSlice";
 import Calendar from "../Calendar";
 import CustomProductForm from "../../forms/CustomProductForm";
-import {
-  Box,
-  Button,
-  Sheet,
-  Card,
-  Typography,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  Divider,
-} from "@mui/joy";
+import { Box, Typography, IconButton } from "@mui/joy";
 import CustomButton from "@/components/ui/CustomButton";
 import { ShoppingBasketRounded } from "@mui/icons-material";
 import Modal from "@mui/joy/Modal";
@@ -36,10 +18,8 @@ import { Snackbar } from "@mui/joy";
 import InfoIcon from "@mui/icons-material/Info";
 import { CheckCircle } from "@mui/icons-material";
 import { useColorScheme } from "@mui/joy/styles";
-import { AddCircleOutlineRounded } from "@mui/icons-material";
 import { LinearProgress } from "@mui/joy";
 import useThemeSettings from "@/hooks/useThemeSettings";
-import WaterIcon from "@mui/icons-material/LocalDrink";
 //Rename to nutritionTracker???
 const CaloriesTracker = () => {
   const userData = useSelector(selectUserData);
