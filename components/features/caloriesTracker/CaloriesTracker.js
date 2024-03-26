@@ -37,13 +37,15 @@ import InfoIcon from "@mui/icons-material/Info";
 import { CheckCircle } from "@mui/icons-material";
 import { useColorScheme } from "@mui/joy/styles";
 import { AddCircleOutlineRounded } from "@mui/icons-material";
+import { LinearProgress } from "@mui/joy";
+import useThemeSettings from "@/hooks/useThemeSettings";
 //Rename to nutritionTracker???
 const CaloriesTracker = () => {
   const userData = useSelector(selectUserData);
   const { mode, setMode } = useColorScheme();
-
+  const { backgroundColor } = useThemeSettings();
   const [dailyNutrients, setDailyNutrients] = useState({
-    calories: 0,
+    kcal: 0,
     carbs: 0,
     protein: 0,
     fat: 0,
@@ -89,25 +91,19 @@ const CaloriesTracker = () => {
           dinner: [],
         }
       );
+      console.log("Consumed foods", consumedFoods);
       setWaterIntake(waterIntake || 0);
       setActiveIndex(Math.floor(waterIntake / 200));
       // Calculate total nutrients for the day
-      // const totalNutrients = fetchedFoods.reduce(
-      //   (total, food) => {
-      //     return {
-      //       calories: Math.floor(total.calories + food.energyNutrient),
-      //       carbs: Math.floor(total.carbs + food.nutrients.CHOCDF),
-      //       protein: Math.floor(total.protein + food.nutrients.PROCNT),
-      //       fat: Math.floor(total.fat + food.nutrients.FAT),
-      //     };
-      //   },
-      //   {
-      //     calories: 0,
-      //     carbs: 0,
-      //     protein: 0,
-      //     fat: 0,
-      //   }
-      // );
+      let totalNutrients = { kcal: 0, carbs: 0, protein: 0, fat: 0 };
+      Object.values(meals || {}).forEach((meal) => {
+        meal.forEach((food) => {
+          totalNutrients.kcal += food.kcal;
+          totalNutrients.carbs += food.carbs;
+          totalNutrients.protein += food.protein;
+          totalNutrients.fat += food.fat;
+        });
+      });
       setDailyNutrients(totalNutrients);
     } catch (error) {
       console.error(error);
@@ -346,7 +342,6 @@ const CaloriesTracker = () => {
           mealTypes={mealTypes}
           consumedFoods={consumedFoods}
           mode={mode}
-          handleAdd={handleAdd}
           showSelectFood={showSelectFood}
           setShowSelectFood={setShowSelectFood}
           setSnackbar={setSnackbar}
@@ -355,6 +350,93 @@ const CaloriesTracker = () => {
           date={date}
           fetchConsumedFoods={fetchConsumedFoods}
         />
+        <Box
+          sx={{
+            position: "fixed",
+            bottom: 0,
+            left: "50%",
+            transform: "translate(-50%)", // Centers the element
+            width: "100%",
+            maxWidth: "sm",
+            display: "flex",
+            gap: 1,
+
+            zIndex: 1000,
+            bgcolor: backgroundColor,
+            p: 2,
+          }}
+        >
+          <Box sx={{ width: "100%", minWidth: "140px" }}>
+            <Typography noWrap marginBottom={1}>
+              Calories {dailyNutrients.kcal}/{userData?.recommendedCalories}
+            </Typography>
+            <LinearProgress
+              value={
+                (dailyNutrients.kcal / userData?.recommendedCalories) * 100
+              }
+              determinate
+              variant="solid"
+              size="lg"
+              sx={{
+                color:
+                  dailyNutrients.kcal > userData?.recommendedCalories
+                    ? "red"
+                    : "#C2016D",
+                "--LinearProgress-progressThickness": "14px",
+
+                "--LinearProgress-thickness": "14px",
+              }}
+            />
+          </Box>
+          <Box sx={{ width: "100%" }}>
+            <Typography>Protein</Typography>
+            <Box
+              sx={{
+                textAlign: "center",
+                width: "100%",
+
+                bgcolor: "#E78B01",
+                borderRadius: "5px",
+              }}
+            >
+              <Typography sx={{ color: "#FAFAFA" }}>
+                {dailyNutrients.protein}g
+              </Typography>
+            </Box>
+          </Box>
+          <Box sx={{ width: "100%" }}>
+            <Typography>Fat</Typography>
+            <Box
+              sx={{
+                textAlign: "center",
+                width: "100%",
+
+                bgcolor: "#0165C2",
+                borderRadius: "5px",
+              }}
+            >
+              <Typography sx={{ color: "#FAFAFA" }}>
+                {dailyNutrients.fat}g
+              </Typography>
+            </Box>
+          </Box>
+          <Box sx={{ width: "100%" }}>
+            <Typography>Carbs</Typography>
+            <Box
+              sx={{
+                textAlign: "center",
+                width: "100%",
+
+                bgcolor: "#6DC201",
+                borderRadius: "5px",
+              }}
+            >
+              <Typography sx={{ color: "#FAFAFA" }}>
+                {dailyNutrients.carbs}g
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
         {/*
         <div className="flex gap-5">
           <p className="mt-6 text-2xl text-gray-700">

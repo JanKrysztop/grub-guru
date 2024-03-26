@@ -25,7 +25,6 @@ const MealList = ({
   mealTypes,
   consumedFoods,
   mode,
-  handleAdd,
   showSelectFood,
   setShowSelectFood,
   setSnackbar,
@@ -84,8 +83,11 @@ const MealList = ({
         borderRadius: "8px",
         p: 1,
         mt: 2,
-        backgroundColor: "rgba(73, 75, 71, 0.5)",
-        // backgroundColor: mode === "dark" && "#494b47",
+        mb: 10,
+        backgroundColor:
+          mode === "dark"
+            ? "rgba(73, 75, 71, 0.5)"
+            : "rgba(250, 250, 250, 0.5)",
       }}
     >
       <Box
