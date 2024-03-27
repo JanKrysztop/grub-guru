@@ -236,15 +236,6 @@ const CaloriesTracker = () => {
           mb: 10,
         }}
       >
-        {/* <button
-          onClick={showNewProductModal}
-          className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
-        >
-          Add new product
-        </button>
-        <Button color="neutral">
-          <ShoppingBasketRounded /> New product
-        </Button> */}
         <CustomButton
           onClick={() => setShowNewProduct(true)}
           styleType="secondary"
