@@ -114,9 +114,10 @@ const Journal = () => {
 
   const handleCreateEntry = async () => {
     try {
+      const formattedDate = format(date, "yyyy-MM-dd");
       const payload = {
         userId: userData._id,
-        date: date,
+        date: formattedDate,
         weight: weight,
         photos: photos,
       };

@@ -20,6 +20,7 @@ import { useState } from "react";
 import { AddCircleOutlineRounded } from "@mui/icons-material";
 import FoodDetails from "./FoodDetails";
 import DeleteMenu from "@/components/ui/DeleteMenu";
+import { format } from "date-fns";
 
 const MealList = ({
   mealTypes,
@@ -58,12 +59,13 @@ const MealList = ({
   };
   const deleteFood = async (userId, date, mealType, foodId) => {
     try {
+      const formattedDate = format(date, "yyyy-MM-dd");
       const response = await axios.delete(
         `${process.env.NEXT_PUBLIC_MAIN_URL}/nutrition/delete-food`,
         {
           data: {
             userId,
-            date,
+            formattedDate,
             mealType,
             foodId,
           },
