@@ -163,9 +163,10 @@ const CaloriesTracker = () => {
   const saveConsumedFoods = async (food, foodLabel, mealType) => {
     console.log("Food", food, "Meal type", mealType);
     try {
+      const formattedDate = format(date, "yyyy-MM-dd");
       const payload = {
         userId: userData._id,
-        date: date,
+        date: formattedDate,
         food: food,
         foodLabel: foodLabel,
         mealType: mealType,
