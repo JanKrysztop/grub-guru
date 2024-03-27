@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import Link from "next/link";
+import { Box, Typography } from "@mui/joy";
+import CustomButton from "@/components/ui/CustomButton";
+import useThemeSettings from "@/hooks/useThemeSettings";
 
 // maybeTODO: automatic login if the account has been verified
 const Confirm = () => {
   const router = useRouter();
   const { token } = router.query;
+  const { backgroundColor } = useThemeSettings();
 
   const [loading, setLoading] = useState(true);
-  const [confirmed, setConfirmed] = useState(false);
+  const [confirmed, setConfirmed] = useState(true);
 
   useEffect(() => {
     const confirmAccount = async () => {
@@ -32,29 +35,88 @@ const Confirm = () => {
   }, [token]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      {loading ? (
-        <p className="text-lg font-semibold text-gray-700">
-          Confirming account...
-        </p>
-      ) : confirmed ? (
-        <>
-          <p className="mb-4 text-lg font-semibold text-green-600">
-            Account confirmed successfully!
-          </p>
-          <Link
-            href="/"
-            className="px-4 py-2 font-semibold text-white bg-blue-500 rounded hover:bg-blue-700"
-          >
-            Log in to your account
-          </Link>
-        </>
-      ) : (
-        <p className="text-lg font-semibold text-red-600">
-          Error confirming account. Please try again.
-        </p>
-      )}
-    </div>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%",
+        //
+      }}
+    >
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "top",
+          textAlign: "center",
+          flexGrow: 1,
+          width: "100%",
+          maxWidth: "sm",
+          p: 3,
+          m: 2,
+        }}
+      >
+        {loading ? (
+          <Typography level="h3"> Confirming account...</Typography>
+        ) : confirmed ? (
+          <>
+            <Box
+              sx={{
+                width: "120px",
+                height: "120px",
+                bgcolor: backgroundColor,
+                borderRadius: "60px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                mb: 8,
+                border: "2px solid #549801",
+              }}
+            >
+              <img
+                src="/carrot.svg"
+                alt="Carrot Logo"
+                style={{ width: "100px", height: "100px" }}
+              />
+            </Box>
+            <Typography mb={4} level="h3">
+              Account confirmed successfully!
+            </Typography>
+            <CustomButton onClick={() => router.push("/")}>
+              Log in to your account
+            </CustomButton>
+          </>
+        ) : (
+          <>
+            <Box
+              sx={{
+                width: "120px",
+                height: "120px",
+                bgcolor: backgroundColor,
+                borderRadius: "60px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                mb: 8,
+                border: "2px solid #c41c1c",
+              }}
+            >
+              <img
+                src="/carrot.svg"
+                alt="Carrot Logo"
+                style={{ width: "100px", height: "100px" }}
+              />
+            </Box>
+            <Typography level="h3" sx={{ color: "#c41c1c" }}>
+              Error confirming account. Please try again.
+            </Typography>
+          </>
+        )}
+      </Box>
+    </Box>
   );
 };
 

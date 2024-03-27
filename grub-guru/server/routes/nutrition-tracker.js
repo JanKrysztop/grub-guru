@@ -36,7 +36,7 @@ router.post("/track-nutrition", async (req, res) => {
       update,
       { new: true, upsert: true }
     );
-    console.log("Full object", nutrition);
+
     res.status(201).json(nutrition);
   } catch (error) {
     console.error(error);

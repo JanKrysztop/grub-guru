@@ -1,9 +1,10 @@
 import Journal from "@/components/features/Journal";
 import withAuth from "@/utils/withAuth";
 
-export const getServerSideProps = withAuth(async (ctx) => {
-  return { props: {} };
-});
+//Temporarily disabled because of timeout on vercell
+// export const getServerSideProps = withAuth(async (ctx) => {
+//   return { props: {} };
+// });
 
 const JournalPage = () => {
   return <Journal />;

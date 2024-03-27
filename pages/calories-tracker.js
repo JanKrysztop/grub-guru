@@ -1,10 +1,9 @@
 import CaloriesTracker from "@/components/features/caloriesTracker/CaloriesTracker";
 import withAuth from "@/utils/withAuth";
-
-export const getServerSideProps = async (ctx) => {
-  // Add minimal logic here to test the response time
-  return { props: {} };
-};
+//Temporarily disabled because of timeout on vercell
+// export const getServerSideProps = withAuth(async (ctx) => {
+//   return { props: {} };
+// });
 
 const CaloriesTrackerPage = () => {
   return <CaloriesTracker />;
