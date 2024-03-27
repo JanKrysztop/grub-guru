@@ -52,6 +52,7 @@ const CaloriesTracker = () => {
     message: "",
   });
   const [showSelectFood, setShowSelectFood] = useState(false);
+  const [shouldSaveConsumption, setShouldSaveConsumption] = useState(false);
   const prevDateRef = useRef();
   const mealTypes = Object.keys(consumedFoods);
   const objectsAreEqual = (obj1, obj2) => {
@@ -106,6 +107,7 @@ const CaloriesTracker = () => {
       if (fetchedWaterConsumption !== waterConsumption) {
         setWaterConsumption(fetchedWaterConsumption || 0);
         setActiveIndex(Math.floor(fetchedWaterConsumption / 200) || 0);
+        setShouldSaveConsumption(false);
       }
       // Calculate total nutrients for the day
       let totalNutrients = { kcal: 0, carbs: 0, protein: 0, fat: 0 };
@@ -181,10 +183,16 @@ const CaloriesTracker = () => {
       console.log(error);
     }
   };
-
   useEffect(() => {
-    saveConsumedFoods();
-  }, [waterConsumption]);
+    if (shouldSaveConsumption) {
+      saveConsumedFoods();
+      // Reset the flag after saving
+      setShouldSaveConsumption(false);
+    }
+  }, [waterConsumption, shouldSaveConsumption]);
+  // useEffect(() => {
+  //   saveConsumedFoods();
+  // }, [waterConsumption]);
 
   const handleDateChange = (selectedDate) => {
     setDate(selectedDate);
@@ -204,9 +212,11 @@ const CaloriesTracker = () => {
     if (index === activeIndex) {
       setWaterConsumption(waterConsumption + 200);
       setActiveIndex(index + 1);
+      setShouldSaveConsumption(true);
     } else if (index === activeIndex - 1) {
       setWaterConsumption(waterConsumption - 200);
       setActiveIndex(index);
+      setShouldSaveConsumption(true);
     }
   };
   return (
