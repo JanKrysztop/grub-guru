@@ -1,24 +1,25 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
+import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectUserData } from "@/redux/userSlice";
 import DeleteMenu from "../../ui/DeleteMenu";
+import CustomButton from "@/components/ui/CustomButton";
+import CustomInput from "@/components/ui/CustomInput";
 import {
   Box,
   IconButton,
   List,
   ListItem,
   Typography,
-  SvgIcon,
   AspectRatio,
-  Card,
 } from "@mui/joy";
-import { ArrowCircleRightRounded } from "@mui/icons-material";
-import CustomButton from "@/components/ui/CustomButton";
-import CustomInput from "@/components/ui/CustomInput";
-import { VerifiedRounded } from "@mui/icons-material";
-import { ImageNotSupportedRounded } from "@mui/icons-material";
-import { DeleteRounded } from "@mui/icons-material";
+import {
+  ArrowCircleRightRounded,
+  VerifiedRounded,
+  ImageNotSupportedRounded,
+  DeleteRounded,
+} from "@mui/icons-material";
+
 const FoodDetails = ({
   saveConsumedFoods,
   setShowSelectFood,

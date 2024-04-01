@@ -1,21 +1,18 @@
 import { useEffect, useState, forwardRef } from "react";
-import { Box, Button, Typography, Sheet, Divider, Grid } from "@mui/joy";
-import { ChevronLeft, ChevronRight, EventNote } from "@mui/icons-material";
 import {
   format,
   startOfMonth,
   endOfMonth,
   startOfWeek,
   endOfWeek,
-  addDays,
-  subDays,
   addMonths,
   subMonths,
   eachDayOfInterval,
   isSameDay,
   parseISO,
 } from "date-fns";
-import { useColorScheme } from "@mui/joy/styles";
+import { Box, Button, Typography, Sheet, Divider, Grid } from "@mui/joy";
+import { ChevronLeftRounded, ChevronRightRounded } from "@mui/icons-material";
 
 const CalendarMonth = forwardRef(
   (
@@ -166,7 +163,7 @@ const CalendarMonth = forwardRef(
                 },
               }}
             >
-              <ChevronLeft />
+              <ChevronLeftRounded />
             </Button>
             <Typography
               sx={{ fontWeight: "bold", flexGrow: 1, textAlign: "center" }}
@@ -184,7 +181,7 @@ const CalendarMonth = forwardRef(
                 },
               }}
             >
-              <ChevronRight />
+              <ChevronRightRounded />
             </Button>
           </Box>
           <Divider />

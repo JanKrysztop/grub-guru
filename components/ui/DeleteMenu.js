@@ -1,8 +1,7 @@
-import { Box, IconButton, Card, Typography } from "@mui/joy";
-import CustomButton from "./CustomButton";
-import { DeleteRounded } from "@mui/icons-material";
-import { CloseRounded } from "@mui/icons-material";
 import { useEffect, useRef } from "react";
+import CustomButton from "./CustomButton";
+import { Box, IconButton, Card, Typography } from "@mui/joy";
+import CloseRounded from "@mui/icons-material/CloseRounded";
 
 const DeleteMenu = ({ show, setShow, handleDelete, mode, icon }) => {
   const menuRef = useRef();

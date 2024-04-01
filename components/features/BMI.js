@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { Box } from "@mui/joy";
-import AccordionGroup from "@mui/joy/AccordionGroup";
-import Accordion from "@mui/joy/Accordion";
-import AccordionDetails from "@mui/joy/AccordionDetails";
-import AccordionSummary from "@mui/joy/AccordionSummary";
 import CustomInput from "@/components/ui/CustomInput";
 import CustomButton from "@/components/ui/CustomButton";
-import Typography from "@mui/joy/Typography";
+import {
+  Box,
+  AccordionGroup,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Typography,
+} from "@mui/joy";
 
 const BmiCalculator = () => {
   const [weight, setWeight] = useState("");

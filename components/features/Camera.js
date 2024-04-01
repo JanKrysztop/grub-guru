@@ -1,8 +1,8 @@
 import { useState, useRef, useCallback } from "react";
 import Webcam from "react-webcam";
 import { Box, Button, Typography } from "@mui/joy";
-import { CameraswitchRounded } from "@mui/icons-material";
-import CloseIcon from "@mui/icons-material/Close";
+import { CameraswitchRounded, CloseRounded } from "@mui/icons-material";
+
 const WebcamComponent = ({ photos, setPhotos, handleDeletePhoto }) => {
   const webcamRef = useRef(null);
   const [facingMode, setFacingMode] = useState("user");
@@ -141,7 +141,7 @@ const WebcamComponent = ({ photos, setPhotos, handleDeletePhoto }) => {
                     borderRadius: "50%", // Makes the button circular
                   }}
                 >
-                  <CloseIcon sx={{ color: "white" }} />
+                  <CloseRounded sx={{ color: "white" }} />
                 </Button>
               </Box>
             ))

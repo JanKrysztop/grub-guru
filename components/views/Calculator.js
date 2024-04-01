@@ -1,13 +1,11 @@
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { selectComponentBackground } from "@/redux/themeSlice";
 import BMI from "../features/BMI";
 import WHR from "../features/WHR";
 import BMR from "../features/BMR";
 import TDEE from "../features/TDEE";
-import { useSelector } from "react-redux";
-import { selectComponentBackground } from "@/redux/themeSlice";
-
 import { Box, ToggleButtonGroup, Button } from "@mui/joy";
-
-import { useState } from "react";
 
 const Calculator = () => {
   const [currentCalculator, setCurrentCalculator] = useState("BMI");

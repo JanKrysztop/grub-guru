@@ -1,10 +1,10 @@
+import { useState } from "react";
 import axios from "axios";
-import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectUserData } from "@/redux/userSlice";
-import { Box, Typography } from "@mui/joy";
 import CustomInput from "@/components/ui/CustomInput";
 import CustomButton from "@/components/ui/CustomButton";
+import { Box, Typography } from "@mui/joy";
 
 const CustomProductForm = ({ setShowNewProduct, snackbar, setSnackbar }) => {
   const userData = useSelector(selectUserData);

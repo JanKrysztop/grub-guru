@@ -1,26 +1,32 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import { format, startOfMonth, endOfMonth, getMonth, getYear } from "date-fns";
-import MealList from "./MealList";
 import { useSelector } from "react-redux";
 import { selectUserData } from "@/redux/userSlice";
+import { format, startOfMonth, endOfMonth, getMonth, getYear } from "date-fns";
+import useThemeSettings from "@/hooks/useThemeSettings";
+import MealList from "./MealList";
 import Calendar from "../Calendar";
 import CustomProductForm from "../../forms/CustomProductForm";
-import { Box, Typography, IconButton } from "@mui/joy";
 import CustomButton from "@/components/ui/CustomButton";
-import { ShoppingBasketRounded } from "@mui/icons-material";
-import Modal from "@mui/joy/Modal";
-import ModalDialog from "@mui/joy/ModalDialog";
-import DialogTitle from "@mui/joy/DialogTitle";
-import DialogContent from "@mui/joy/DialogContent";
-import ModalClose from "@mui/joy/ModalClose";
-import { Snackbar } from "@mui/joy";
-import InfoIcon from "@mui/icons-material/Info";
-import { CheckCircle } from "@mui/icons-material";
 import { useColorScheme } from "@mui/joy/styles";
-import { LinearProgress } from "@mui/joy";
-import useThemeSettings from "@/hooks/useThemeSettings";
-//Rename to nutritionTracker???
+import {
+  Box,
+  Typography,
+  IconButton,
+  Modal,
+  ModalDialog,
+  DialogTitle,
+  DialogContent,
+  ModalClose,
+  Snackbar,
+  LinearProgress,
+} from "@mui/joy";
+import {
+  CheckCircleRounded,
+  InfoRounded,
+  ShoppingBasketRounded,
+} from "@mui/icons-material";
+
 const CaloriesTracker = () => {
   const userData = useSelector(selectUserData);
   const { mode, setMode } = useColorScheme();
@@ -466,7 +472,11 @@ const CaloriesTracker = () => {
             setSnackbar((prevState) => ({ ...prevState, open: false }));
           }}
         >
-          {snackbar.type === "success" ? <CheckCircle /> : <InfoIcon />}
+          {snackbar.type === "success" ? (
+            <CheckCircleRounded />
+          ) : (
+            <InfoRounded />
+          )}
           {snackbar.message}
         </Snackbar>
       </Box>

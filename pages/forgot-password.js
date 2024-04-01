@@ -1,14 +1,10 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
 import axios from "axios";
-import Box from "@mui/joy/Box";
-import Card from "@mui/joy/Card";
-import CardContent from "@mui/joy/CardContent";
 import CustomInput from "@/components/ui/CustomInput";
 import CustomButton from "@/components/ui/CustomButton";
-import InfoIcon from "@mui/icons-material/Info";
-import { CheckCircle } from "@mui/icons-material";
-import Snackbar from "@mui/joy/Snackbar";
-import { useRouter } from "next/router";
+import { Box, Snackbar } from "@mui/joy/";
+import { CheckCircleRounded, InfoIcon } from "@mui/icons-material";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -109,7 +105,7 @@ const ForgotPassword = () => {
             setMessage(null);
           }}
         >
-          <CheckCircle />
+          <CheckCircleRounded />
           {message}
         </Snackbar>
       </Box>

@@ -1,5 +1,8 @@
-import React from "react";
+import { useState } from "react";
 import axios from "axios";
+import { format } from "date-fns";
+import FoodDetails from "./FoodDetails";
+import DeleteMenu from "@/components/ui/DeleteMenu";
 import {
   Box,
   Typography,
@@ -7,8 +10,6 @@ import {
   List,
   ListItem,
   ListItemContent,
-  ListItemButton,
-  Sheet,
   Divider,
   Modal,
   ModalDialog,
@@ -16,11 +17,7 @@ import {
   DialogContent,
   ModalClose,
 } from "@mui/joy";
-import { useState } from "react";
-import { AddCircleOutlineRounded } from "@mui/icons-material";
-import FoodDetails from "./FoodDetails";
-import DeleteMenu from "@/components/ui/DeleteMenu";
-import { format } from "date-fns";
+import AddCircleOutlineRounded from "@mui/icons-material/AddCircleOutlineRounded";
 
 const MealList = ({
   mealTypes,

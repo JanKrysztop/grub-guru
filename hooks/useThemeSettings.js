@@ -1,8 +1,11 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import {
+  setMainBackground,
+  setComponentBackground,
+  selectMainBackground,
+} from "@/redux/themeSlice";
 import { useColorScheme } from "@mui/joy/styles";
-import { setMainBackground, setComponentBackground } from "@/redux/themeSlice";
-import { selectMainBackground } from "@/redux/themeSlice";
 
 const useThemeSettings = () => {
   const { mode, setMode } = useColorScheme();

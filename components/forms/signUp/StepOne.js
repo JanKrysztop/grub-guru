@@ -1,24 +1,25 @@
-import Box from "@mui/joy/Box";
-import Card from "@mui/joy/Card";
-import CardContent from "@mui/joy/CardContent";
-import CustomInput from "@/components/ui/CustomInput";
-import CustomButton from "@/components/ui/CustomButton";
-import InfoIcon from "@mui/icons-material/Info";
-import { CheckCircle } from "@mui/icons-material";
-import Snackbar from "@mui/joy/Snackbar";
-import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import Visibility from "@mui/icons-material/Visibility";
-import { VisibilityOff } from "@mui/icons-material";
-import ToggleButtonGroup from "@mui/joy/ToggleButtonGroup";
-import { Button } from "@mui/joy";
-import { Female } from "@mui/icons-material";
-import { Male } from "@mui/icons-material";
-import LinearProgress from "@mui/joy/LinearProgress";
-import Typography from "@mui/joy/Typography";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectComponentBackground } from "@/redux/themeSlice";
+import CustomInput from "@/components/ui/CustomInput";
+import CustomButton from "@/components/ui/CustomButton";
+import {
+  Box,
+  Snackbar,
+  ToggleButtonGroup,
+  Button,
+  LinearProgress,
+  Typography,
+} from "@mui/joy";
+import {
+  VisibilityOffRounded,
+  VisibilityRounded,
+  InfoRounded,
+  FemaleRounded,
+  MaleRounded,
+} from "@mui/icons-material";
+
 const StepOne = ({
   onNext,
   formState,
@@ -139,9 +140,9 @@ const StepOne = ({
         placeholder="Password"
         endDecorator={
           !showPassword ? (
-            <Visibility onClick={togglePasswordVisibility} />
+            <VisibilityRounded onClick={togglePasswordVisibility} />
           ) : (
-            <VisibilityOff onClick={togglePasswordVisibility} />
+            <VisibilityOffRounded onClick={togglePasswordVisibility} />
           )
         }
         required
@@ -247,7 +248,7 @@ const StepOne = ({
           }}
         >
           Female{" "}
-          <Female
+          <FemaleRounded
             sx={{
               ...(formState.gender === "female" && {
                 color: "#E78B01",
@@ -270,7 +271,7 @@ const StepOne = ({
           }}
         >
           Male{" "}
-          <Male
+          <MaleRounded
             sx={{
               ...(formState.gender === "male" && {
                 color: "#E78B01",
@@ -308,7 +309,7 @@ const StepOne = ({
           setError({ field: null, message: null });
         }}
       >
-        <InfoIcon />
+        <InfoRounded />
         {error.message}
       </Snackbar>
     </Box>

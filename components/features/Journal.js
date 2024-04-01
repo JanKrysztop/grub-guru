@@ -1,25 +1,31 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import WebcamComponent from "./Camera";
-
-import { format, startOfMonth, endOfMonth, getMonth, getYear } from "date-fns";
 import { useSelector } from "react-redux";
 import { selectUserData } from "@/redux/userSlice";
-import { Box, Button, Snackbar, AspectRatio } from "@mui/joy";
+import { format, startOfMonth, endOfMonth, getMonth, getYear } from "date-fns";
+import WebcamComponent from "./Camera";
 import Calendar from "./Calendar";
 import CustomInput from "@/components/ui/CustomInput";
 import CustomButton from "@/components/ui/CustomButton";
-import { AddAPhotoRounded, Close as CloseIcon } from "@mui/icons-material";
-import Typography from "@mui/joy/Typography";
-import Modal from "@mui/joy/Modal";
-import ModalDialog from "@mui/joy/ModalDialog";
-import DialogTitle from "@mui/joy/DialogTitle";
-import DialogContent from "@mui/joy/DialogContent";
-import ModalClose from "@mui/joy/ModalClose";
-import InfoIcon from "@mui/icons-material/Info";
-import { CheckCircle } from "@mui/icons-material";
-import Badge from "@mui/joy/Badge";
 import { useColorScheme } from "@mui/joy/styles";
+import {
+  Box,
+  Button,
+  Snackbar,
+  AspectRatio,
+  Modal,
+  ModalDialog,
+  DialogTitle,
+  DialogContent,
+  ModalClose,
+  Badge,
+} from "@mui/joy";
+import {
+  AddAPhotoRounded,
+  InfoRounded,
+  CheckCircleRounded,
+} from "@mui/icons-material";
+
 const Journal = () => {
   const userData = useSelector(selectUserData);
 
@@ -318,7 +324,7 @@ const Journal = () => {
           setSnackbar((prevState) => ({ ...prevState, open: false }));
         }}
       >
-        {snackbar.type === "success" ? <CheckCircle /> : <InfoIcon />}
+        {snackbar.type === "success" ? <CheckCircleRounded /> : <InfoRounded />}
         {snackbar.message}
       </Snackbar>
     </Box>

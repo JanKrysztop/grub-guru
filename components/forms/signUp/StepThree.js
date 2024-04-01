@@ -1,12 +1,7 @@
-import Box from "@mui/joy/Box";
-import Typography from "@mui/joy/Typography";
-import CustomButton from "@/components/ui/CustomButton";
-import Select from "@mui/joy/Select";
-import Option from "@mui/joy/Option";
-import { useEffect } from "react";
-import Slider from "@mui/joy/Slider";
 import { useSelector } from "react-redux";
 import { selectComponentBackground } from "@/redux/themeSlice";
+import CustomButton from "@/components/ui/CustomButton";
+import { Box, Typography, Select, Option, Slider } from "@mui/joy";
 
 const StepThree = ({
   onPrev,

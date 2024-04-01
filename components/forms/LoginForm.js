@@ -1,26 +1,18 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
 import { useRouter } from "next/router";
-import Image from "next/image";
-
+import { useState } from "react";
+import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setLoginStatus, setUserName, setUserData } from "@/redux/userSlice";
-
-import Box from "@mui/joy/Box";
-import Button from "@mui/joy/Button";
-import Checkbox from "@mui/joy/Checkbox";
-import Link from "@mui/joy/Link";
-import Snackbar from "@mui/joy/Snackbar";
-import Typography from "@mui/joy/Typography";
-import IconButton from "@mui/joy/IconButton";
 import CustomInput from "@/components/ui/CustomInput";
 import CustomButton from "@/components/ui/CustomButton";
-import DarkMode from "@mui/icons-material/DarkMode";
-import LightMode from "@mui/icons-material/LightMode";
-import Visibility from "@mui/icons-material/Visibility";
-import InfoIcon from "@mui/icons-material/Info";
 import { useColorScheme } from "@mui/joy/styles";
-import { VisibilityOff } from "@mui/icons-material";
+import { Box, Link, Snackbar, Typography } from "@mui/joy";
+import {
+  VisibilityOffRounded,
+  VisibilityRounded,
+  InfoRounded,
+} from "@mui/icons-material";
+
 const LoginForm = () => {
   const [login, setLogin] = useState("");
   const [password, setPassword] = useState("");
@@ -139,9 +131,9 @@ const LoginForm = () => {
             className="mb-7"
             endDecorator={
               !showPassword ? (
-                <Visibility onClick={togglePasswordVisibility} />
+                <VisibilityRounded onClick={togglePasswordVisibility} />
               ) : (
-                <VisibilityOff onClick={togglePasswordVisibility} />
+                <VisibilityOffRounded onClick={togglePasswordVisibility} />
               )
             }
           />
@@ -190,7 +182,7 @@ const LoginForm = () => {
             setError(null);
           }}
         >
-          <InfoIcon />
+          <InfoRounded />
           {error}
         </Snackbar>
       </Box>

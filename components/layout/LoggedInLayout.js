@@ -1,6 +1,6 @@
-import MainHeader from "../ui/MainHeader";
-import { Box } from "@mui/joy";
 import useThemeSettings from "@/hooks/useThemeSettings";
+import MainHeader from "../ui/MainHeader";
+import Box from "@mui/joy/Box";
 
 const LoggedInLayout = (props) => {
   const { backgroundImage, backgroundColor } = useThemeSettings();

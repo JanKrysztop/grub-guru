@@ -1,26 +1,25 @@
 import { useState, useEffect } from "react";
-
-import axios from "axios";
-import StepOne from "./StepOne";
-import StepTwo from "./StepTwo";
-import StepThree from "./StepThree";
-
-import Box from "@mui/joy/Box";
-import Stepper from "@mui/joy/Stepper";
-import Step from "@mui/joy/Step";
-import StepButton from "@mui/joy/StepButton";
-import StepIndicator from "@mui/joy/StepIndicator";
-import Check from "@mui/icons-material/Check";
-import CustomButton from "@/components/ui/CustomButton";
-import InfoIcon from "@mui/icons-material/Info";
-import Typography from "@mui/joy/Typography";
-import Snackbar from "@mui/joy/Snackbar";
 import { useRouter } from "next/router";
-
+import axios from "axios";
 import { useSelector } from "react-redux";
 import { selectBmrFormulas } from "@/redux/bmrSlice";
 import { selectActivityLevels } from "@/redux/activitySlice";
 import { selectComponentBackground } from "@/redux/themeSlice";
+import StepOne from "./StepOne";
+import StepTwo from "./StepTwo";
+import StepThree from "./StepThree";
+import CustomButton from "@/components/ui/CustomButton";
+
+import {
+  Box,
+  Stepper,
+  Step,
+  StepButton,
+  StepIndicator,
+  Typography,
+  Snackbar,
+} from "@mui/joy";
+import { InfoRounded, Check } from "@mui/icons-material";
 
 const SignUpForm = () => {
   const bmrFormulas = useSelector(selectBmrFormulas);
@@ -340,7 +339,7 @@ const SignUpForm = () => {
           color="danger"
           size="lg"
         >
-          <InfoIcon />
+          <InfoRounded />
           Registration failed. Please try again later.
         </Snackbar>
         <Snackbar
@@ -353,7 +352,7 @@ const SignUpForm = () => {
           color="danger"
           size="lg"
         >
-          <InfoIcon />
+          <InfoRounded />
           {error}
         </Snackbar>
       </Box>

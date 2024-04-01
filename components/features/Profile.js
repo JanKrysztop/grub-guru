@@ -1,17 +1,12 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { selectUserData, setUserData } from "@/redux/userSlice";
-import axios from "axios";
-import { Box } from "@mui/joy";
+import { selectComponentBackground } from "@/redux/themeSlice";
 import CustomInput from "@/components/ui/CustomInput";
 import CustomButton from "@/components/ui/CustomButton";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import Typography from "@mui/joy/Typography";
-import Badge from "@mui/joy/Badge";
-import { Edit } from "@mui/icons-material";
-import IconButton from "@mui/joy/IconButton";
-import Button from "@mui/joy/Button";
-import { selectComponentBackground } from "@/redux/themeSlice";
+import { Box, Typography, IconButton, Button } from "@mui/joy";
+import EditRounded from "@mui/icons-material/EditRounded";
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -142,7 +137,7 @@ const Profile = () => {
                 borderRadius: "20px",
               }}
             >
-              <Edit />
+              <EditRounded />
             </IconButton>
           </Box>
         </Box>

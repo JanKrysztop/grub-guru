@@ -1,32 +1,35 @@
-import axios from "axios";
-import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-
-import { useSelector } from "react-redux";
-import { selectIsLoggedIn } from "@/redux/userSlice";
+import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  selectIsLoggedIn,
+  setLoginStatus,
+  setUserData,
+  setUserName,
+} from "@/redux/userSlice";
 import { persistor } from "@/redux/store";
-import { useDispatch } from "react-redux";
-import { setLoginStatus, setUserData, setUserName } from "@/redux/userSlice";
-
-import { useColorScheme } from "@mui/joy/styles";
-import DarkMode from "@mui/icons-material/DarkMode";
-import LightMode from "@mui/icons-material/LightMode";
-import IconButton from "@mui/joy/IconButton";
-import MenuButton from "@mui/joy/MenuButton";
-import MenuItem from "@mui/joy/MenuItem";
-import Dropdown from "@mui/joy/Dropdown";
-import Menu from "@mui/joy/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
-import LocalDining from "@mui/icons-material/LocalDining";
-import Calculate from "@mui/icons-material/Calculate";
-import NoteAlt from "@mui/icons-material/NoteAlt";
-import AccountCircle from "@mui/icons-material/AccountCircle";
-import Logout from "@mui/icons-material/Logout";
-import ListItemDecorator from "@mui/joy/ListItemDecorator";
-import ListDivider from "@mui/joy/ListDivider";
-import { Container, Box } from "@mui/joy";
-import { Note } from "@mui/icons-material";
+import {
+  useColorScheme,
+  IconButton,
+  MenuButton,
+  MenuItem,
+  Dropdown,
+  Menu,
+  ListItemDecorator,
+  ListDivider,
+  Box,
+} from "@mui/joy";
+import {
+  DarkModeRounded,
+  LightModeRounded,
+  MenuRounded as MenuIcon,
+  LocalDiningRounded,
+  CalculateRounded,
+  NoteAltRounded,
+  AccountCircleRounded,
+  LogoutRounded,
+} from "@mui/icons-material";
 
 //TODO: create custom 404 page
 const MainHeader = () => {
@@ -80,7 +83,7 @@ const MainHeader = () => {
             }}
             onClick={() => setMode(mode === "dark" ? "light" : "dark")}
           >
-            {mode === "dark" ? <DarkMode /> : <LightMode />}
+            {mode === "dark" ? <DarkModeRounded /> : <LightModeRounded />}
           </IconButton>
         </Box>
         <Box>
@@ -109,7 +112,7 @@ const MainHeader = () => {
               <Link href="/calories-tracker">
                 <MenuItem>
                   <ListItemDecorator>
-                    <LocalDining />
+                    <LocalDiningRounded />
                   </ListItemDecorator>{" "}
                   Calories tracker
                 </MenuItem>
@@ -118,7 +121,7 @@ const MainHeader = () => {
               <Link href="/calculator">
                 <MenuItem>
                   <ListItemDecorator>
-                    <Calculate />
+                    <CalculateRounded />
                   </ListItemDecorator>{" "}
                   Calculators
                 </MenuItem>
@@ -127,7 +130,7 @@ const MainHeader = () => {
               <Link href="/journal">
                 <MenuItem>
                   <ListItemDecorator>
-                    <NoteAlt />
+                    <NoteAltRounded />
                   </ListItemDecorator>{" "}
                   Journal
                 </MenuItem>
@@ -137,7 +140,7 @@ const MainHeader = () => {
               <Link href="/profile">
                 <MenuItem>
                   <ListItemDecorator>
-                    <AccountCircle />
+                    <AccountCircleRounded />
                   </ListItemDecorator>{" "}
                   Profile
                 </MenuItem>
@@ -145,7 +148,7 @@ const MainHeader = () => {
               <ListDivider />
               <MenuItem onClick={handleLogout}>
                 <ListItemDecorator>
-                  <Logout />
+                  <LogoutRounded />
                 </ListItemDecorator>{" "}
                 Logout
               </MenuItem>

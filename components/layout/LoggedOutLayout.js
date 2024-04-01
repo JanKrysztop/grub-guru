@@ -1,7 +1,6 @@
-import { Box, IconButton } from "@mui/joy";
-import DarkMode from "@mui/icons-material/DarkMode";
-import LightMode from "@mui/icons-material/LightMode";
 import useThemeSettings from "@/hooks/useThemeSettings";
+import { Box, IconButton } from "@mui/joy";
+import { DarkModeRounded, LightModeRounded } from "@mui/icons-material";
 
 const LoggedOutLayout = (props) => {
   const { backgroundImage, backgroundColor, mode, setMode } =
@@ -32,7 +31,7 @@ const LoggedOutLayout = (props) => {
         }}
         onClick={() => setMode(mode === "dark" ? "light" : "dark")}
       >
-        {mode === "dark" ? <DarkMode /> : <LightMode />}
+        {mode === "dark" ? <DarkModeRounded /> : <LightModeRounded />}
       </IconButton>
       <main>{props.children}</main>
     </Box>

@@ -1,10 +1,8 @@
-import Box from "@mui/joy/Box";
-import Typography from "@mui/joy/Typography";
-import ToggleButtonGroup from "@mui/joy/ToggleButtonGroup";
-import Button from "@mui/joy/Button";
-import CustomButton from "@/components/ui/CustomButton";
 import { useSelector } from "react-redux";
 import { selectComponentBackground } from "@/redux/themeSlice";
+import CustomButton from "@/components/ui/CustomButton";
+import { Box, Typography, ToggleButtonGroup, Button } from "@mui/joy";
+
 const StepTwo = ({ onPrev, onNext, goal, setGoal }) => {
   const backgroundColor = useSelector(selectComponentBackground);
   return (

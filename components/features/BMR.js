@@ -1,18 +1,19 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectBmrFormulas } from "@/redux/bmrSlice";
-import { Box } from "@mui/joy";
-import AccordionGroup from "@mui/joy/AccordionGroup";
-import Accordion from "@mui/joy/Accordion";
-import AccordionDetails from "@mui/joy/AccordionDetails";
-import AccordionSummary from "@mui/joy/AccordionSummary";
 import CustomInput from "@/components/ui/CustomInput";
 import CustomButton from "@/components/ui/CustomButton";
-import ToggleButtonGroup from "@mui/joy/ToggleButtonGroup";
-import { Button } from "@mui/joy";
-import { Female } from "@mui/icons-material";
-import { Male } from "@mui/icons-material";
-import Typography from "@mui/joy/Typography";
+import {
+  Box,
+  AccordionGroup,
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  ToggleButtonGroup,
+  Button,
+  Typography,
+} from "@mui/joy";
+import { FemaleRounded, MaleRounded } from "@mui/icons-material";
 
 const BmrCalculator = ({ backgroundColor }) => {
   const bmrFormulas = useSelector(selectBmrFormulas);
@@ -137,7 +138,7 @@ const BmrCalculator = ({ backgroundColor }) => {
             }}
           >
             Female{" "}
-            <Female
+            <FemaleRounded
               sx={{
                 ...(gender === "female" && {
                   color: "#E78B01",
@@ -160,7 +161,7 @@ const BmrCalculator = ({ backgroundColor }) => {
             }}
           >
             Male{" "}
-            <Male
+            <MaleRounded
               sx={{
                 ...(gender === "male" && {
                   color: "#E78B01",

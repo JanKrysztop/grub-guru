@@ -1,17 +1,11 @@
 import { useEffect, useState, useRef } from "react";
-import { Box, Button, Typography, Sheet, Divider } from "@mui/joy";
-import { ChevronLeft } from "@mui/icons-material";
-import { ChevronRight } from "@mui/icons-material";
 import { useSelector } from "react-redux";
 import { selectComponentBackground } from "@/redux/themeSlice";
-import EventNoteIcon from "@mui/icons-material/EventNote";
-import { useColorScheme } from "@mui/joy/styles";
 import {
   format,
   startOfWeek,
   endOfWeek,
   addDays,
-  subDays,
   isWithinInterval,
   isSameDay,
   parseISO,
@@ -19,7 +13,13 @@ import {
   subWeeks,
 } from "date-fns";
 import CalendarMonth from "./CalendarMonth";
-import { TodayRounded } from "@mui/icons-material";
+import { useColorScheme } from "@mui/joy/styles";
+import { Box, Button, Typography, Sheet, Divider } from "@mui/joy";
+import {
+  ChevronLeftRounded,
+  ChevronRightRounded,
+  TodayRounded,
+} from "@mui/icons-material";
 
 const Calendar = ({ date, handleDateChange, entries }) => {
   const [openCalendar, setOpenCalendar] = useState(false);
@@ -207,7 +207,7 @@ const Calendar = ({ date, handleDateChange, entries }) => {
                 },
               }}
             >
-              <ChevronLeft />
+              <ChevronLeftRounded />
             </Button>
             <Typography
               sx={{
@@ -231,7 +231,7 @@ const Calendar = ({ date, handleDateChange, entries }) => {
                 },
               }}
             >
-              <ChevronRight />
+              <ChevronRightRounded />
             </Button>
             <Box sx={{ position: "relative" }}>
               <Button

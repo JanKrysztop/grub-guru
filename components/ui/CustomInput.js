@@ -1,8 +1,7 @@
-import Input from "@mui/joy/Input";
 import { forwardRef } from "react";
-
 import { useSelector } from "react-redux";
 import { selectComponentBackground } from "@/redux/themeSlice";
+import Input from "@mui/joy/Input";
 
 const CustomInput = forwardRef(
   ({ placeholder, value, onChange, type, style, ...props }, ref) => {
