@@ -25,7 +25,7 @@ const sendConfirmationEmail = async (user, host, confirmationToken) => {
     from: process.env.EMAIL_USERNAME,
     to: user.email,
     subject: "Please confirm your account",
-    text: `Welcome to Grub Guru! \n\n Please confirm your account by clicking on the following link: \n\n ${process.env.APP_URL}/confirm/${confirmationToken} \n\n`,
+    text: `Welcome to Grub Guru! \n\n Please confirm your account by clicking on the following link: \n\n ${process.env.APP_URL}/auth/confirm/${confirmationToken} \n\n`,
   };
   try {
     await transporter.sendMail(mailOptions);
@@ -322,7 +322,7 @@ router.post("/forgot-password", async (req, res) => {
       from: process.env.EMAIL_USERNAME,
       to: user.email,
       subject: "Password Reset",
-      text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\nPlease click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n${process.env.APP_URL}/reset-password/${token}\n\nIf you did not request this, please ignore this email and your password will remain unchanged.\n`,
+      text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\nPlease click on the following link, or paste this into your browser to complete the process within one hour of receiving it:\n\n${process.env.APP_URL}/auth/reset-password/${token}\n\nIf you did not request this, please ignore this email and your password will remain unchanged.\n`,
     };
 
     await transporter.sendMail(mailOptions);

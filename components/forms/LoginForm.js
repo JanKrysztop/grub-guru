@@ -140,7 +140,7 @@ const LoginForm = () => {
 
           <CustomButton type="submit">Log in</CustomButton>
           <Link
-            href="/forgot-password"
+            href="/auth/forgot-password"
             underline="hover"
             sx={{
               textAlign: "center",
@@ -160,7 +160,7 @@ const LoginForm = () => {
           <Typography>
             {"Don't have an account? "}
             <Link
-              href="/authorization"
+              href="/auth/sign-up"
               underline="hover"
               sx={{ color: "#E78B01" }}
             >
