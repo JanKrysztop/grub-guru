@@ -18,6 +18,7 @@ const LoginForm = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -32,6 +33,7 @@ const LoginForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_MAIN_URL}/users/login`,
@@ -63,6 +65,8 @@ const LoginForm = () => {
       } else {
         setError("An error occurred while trying to log in");
       }
+    } finally {
+      setLoading(false);
     }
   };
   const togglePasswordVisibility = () => {
@@ -138,7 +142,9 @@ const LoginForm = () => {
             }
           />
 
-          <CustomButton type="submit">Log in</CustomButton>
+          <CustomButton type="submit" loading={loading}>
+            Log in
+          </CustomButton>
           <Link
             href="/auth/forgot-password"
             underline="hover"

@@ -49,6 +49,7 @@ const SignUpForm = () => {
     show: false,
     type: "",
   });
+  const [loading, setLoading] = useState(false);
   const backgroundColor = useSelector(selectComponentBackground);
   const successMessage = "Registration completed! Welcome aboard.";
   const errorMessage = "Ooops... Something went wrong";
@@ -130,10 +131,9 @@ const SignUpForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formState);
+    setLoading(true);
     try {
       calculateUserCalories();
-      console.log(formState);
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_MAIN_URL}/users/register`,
         formState
@@ -143,6 +143,8 @@ const SignUpForm = () => {
     } catch (error) {
       console.error("Error:", error);
       setConfirmation({ show: true, type: "error" });
+    } finally {
+      setLoading(false);
     }
   };
   const handleNext = (upcomingStepIndex) => {
@@ -183,6 +185,7 @@ const SignUpForm = () => {
       activityLevels={activityLevels}
       goal={goal}
       error={error}
+      loading={loading}
     />,
   ];
 

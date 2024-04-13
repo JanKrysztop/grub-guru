@@ -38,6 +38,8 @@ const StepOne = ({
     upperCase: false,
     specialChar: false,
   });
+  const [loading, setLoading] = useState(false);
+
   const backgroundColor = useSelector(selectComponentBackground);
   const checkUnique = async (event) => {
     event.preventDefault();
@@ -46,7 +48,7 @@ const StepOne = ({
       username: username,
       email: email,
     };
-
+    setLoading(true);
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_MAIN_URL}/users/check-unique`,
@@ -71,6 +73,8 @@ const StepOne = ({
       } else if (message.toLowerCase().includes("email")) {
         setError({ field: "email", message: "Email is already registered." });
       }
+    } finally {
+      setLoading(false);
     }
   };
   useEffect(() => {
@@ -282,6 +286,7 @@ const StepOne = ({
       </ToggleButtonGroup>
       <CustomButton
         type="submit"
+        loading={loading}
         disabled={
           !formState.username ||
           !formState.password ||

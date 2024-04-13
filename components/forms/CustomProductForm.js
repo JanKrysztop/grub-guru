@@ -17,7 +17,7 @@ const CustomProductForm = ({ setShowNewProduct, snackbar, setSnackbar }) => {
     FAT: "",
     servingSize: "",
   });
-
+  const [loading, setLoading] = useState(false);
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({
@@ -28,6 +28,7 @@ const CustomProductForm = ({ setShowNewProduct, snackbar, setSnackbar }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     try {
       const customFood = {
         ...formData,
@@ -61,6 +62,8 @@ const CustomProductForm = ({ setShowNewProduct, snackbar, setSnackbar }) => {
         type: "error",
         message: "Failed to create new product. Please try again.",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -150,6 +153,7 @@ const CustomProductForm = ({ setShowNewProduct, snackbar, setSnackbar }) => {
         }
         type="submit"
         sx={{ marginBottom: 2 }}
+        loading={loading}
       >
         Add
       </CustomButton>

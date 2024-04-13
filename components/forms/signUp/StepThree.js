@@ -13,6 +13,7 @@ const StepThree = ({
   activityLevels,
   goal,
   error,
+  loading,
 }) => {
   const backgroundColor = useSelector(selectComponentBackground);
   return (
@@ -107,7 +108,12 @@ const StepThree = ({
           />
         </>
       )}
-      <CustomButton sx={{ my: 3 }} onClick={onSubmit} disabled={error}>
+      <CustomButton
+        sx={{ my: 3 }}
+        onClick={onSubmit}
+        disabled={error}
+        loading={loading}
+      >
         Submit
       </CustomButton>
       <CustomButton onClick={onPrev} styleType="secondary">

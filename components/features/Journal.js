@@ -41,6 +41,7 @@ const Journal = () => {
   });
   const [showPhotoModal, setShowPhotoModal] = useState(false);
   const [selectedPhotoIndex, setSelectedPhotoIndex] = useState(0);
+  const [loading, setLoading] = useState(false);
   const prevDateRef = useRef();
   const { mode, setMode } = useColorScheme();
 
@@ -119,6 +120,7 @@ const Journal = () => {
   }, [date, userData?._id]);
 
   const handleCreateEntry = async () => {
+    setLoading(true);
     try {
       const formattedDate = format(date, "yyyy-MM-dd");
       const payload = {
@@ -145,6 +147,8 @@ const Journal = () => {
         type: "error",
         message: "Failed to create entry. Please try again.",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -301,7 +305,10 @@ const Journal = () => {
           </Modal>
         </Box>
 
-        <CustomButton onClick={handleCreateEntry}> Save entry</CustomButton>
+        <CustomButton onClick={handleCreateEntry} loading={loading}>
+          {" "}
+          Save entry
+        </CustomButton>
       </Box>
 
       <Snackbar

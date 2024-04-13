@@ -22,8 +22,10 @@ const Profile = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const backgroundColor = useSelector(selectComponentBackground);
   const updateProfile = async (payload) => {
+    setLoading(true);
     try {
       const response = await axios.put(
         `${process.env.NEXT_PUBLIC_MAIN_URL}/users/update-profile`,
@@ -36,10 +38,13 @@ const Profile = () => {
       dispatch(setUserData(response.data.user));
     } catch (error) {
       console.error("Error upadting profile", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleChangePassword = async () => {
+    setLoading(true);
     try {
       const response = await axios.put(
         `${process.env.NEXT_PUBLIC_MAIN_URL}/users/change-password`,
@@ -54,6 +59,8 @@ const Profile = () => {
     } catch (error) {
       console.error("Error changing password", error);
       // Handle the error, e.g., show an error message to the user
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -194,7 +201,7 @@ const Profile = () => {
               onChange={handleInputChange}
               className="mb-7"
             />
-            <CustomButton onClick={handleSave} sx={{ mb: 2 }}>
+            <CustomButton onClick={handleSave} sx={{ mb: 2 }} loading={loading}>
               Save
             </CustomButton>
             <CustomButton
@@ -279,7 +286,11 @@ const Profile = () => {
               placeholder="New Password"
               className="mb-7"
             />
-            <CustomButton onClick={handleChangePassword} sx={{ mb: 2 }}>
+            <CustomButton
+              onClick={handleChangePassword}
+              sx={{ mb: 2 }}
+              loading={loading}
+            >
               Save
             </CustomButton>
             <CustomButton
