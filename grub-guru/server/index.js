@@ -18,7 +18,7 @@ const journalRoutes = require("./routes/journal");
 
 async function connectToDb() {
   try {
-    await mongoose.connect(process.env.DB_URL, {
+    await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       //Check what this does
